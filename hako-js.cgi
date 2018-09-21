@@ -281,8 +281,8 @@ function plchg( selnm ) {
             strn2 = point + '¤Ç' + kind + arg;
 
         }else if(cmd == $HcomZoo) { // Æ°Êª±à
-            if (suu > 33) {
-                suu = 33;
+            if (suu > $#HmonsterName) {
+                suu = $#HmonsterName;
             }
             if (monsnm[suu]) {
             }else{
