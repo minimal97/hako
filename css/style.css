@@ -1,0 +1,413 @@
+html body {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+}
+html.os-win body {
+  font-family: 'Helvetica', 'Arial', 'Meiryo', 'メイリオ', sans-serif;
+}
+html.os-mac body {
+  font-family: 'Helvetica', 'Arial', 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', sans-serif;
+}
+html.os-win form input,
+html.os-win button {
+  font-family: 'Helvetica', 'Arial', 'Meiryo', 'メイリオ', sans-serif;
+}
+
+/* Hakoniwa Skin for R.A. ＆ 海戦(帝国海戦) */
+A:LINK    { color: #0000FF;       }
+A:VISITED { color: #0000FF;       }
+A:ACTIVE  { color: #FF0000;       }
+A:HOVER   { color: #FF0000;       }
+A.M       { text-decoration:none; }
+
+BODY {
+/* font-family: Tahoma, MS UI Gothic, Chicago;*/
+  color: #000000;
+  background-color: #EEFFEE;
+  scrollbar-3d-light-color:#EEFFEE;
+  scrollbar-arrow-color:#AABBCC;
+  scrollbar-base-color:#EEFFEE;
+  scrollbar-dark-shadow-coor:#AABBCC;
+  scrollbar-face-color:#EEFFEE;
+  scrollbar-highlight-color:#EEFFEE;
+  scrollbar-shadow-color:#AABBCC;
+}
+
+TABLE {
+/* font-family: Tahoma, MS UI Gothic, Chicago; */
+  border-style: none;
+  border-width: 0px;
+}
+
+TD,TH {
+white-space : nowrap;
+}
+TH {
+  border-style: outset;
+  border-width: 1px;
+  border-color: #CCCCFF;
+  filter:blur(direction=135,strength=2);
+}
+TD {
+  border-style: outset;
+  border-width: 1px;
+  border-color: #CCCCFF;
+}
+TD.M {
+  cursor:default;
+  border-style:outset;
+  border-width:0px;
+  border-color:#CCCCFF;
+}
+TD.N { white-space : normal; }
+TD.T{
+  white-space : normal;
+  background-color: #CCFFCC;
+  text-align: center;
+  word-break: break-all;
+}
+H1   { color: #4444FF;       }
+HR   { color: #AABBCC;       }
+
+/* 折り返し禁止 */
+span.Nret
+            { display: inline-block;}
+
+/* ヘッダのリンク */
+div.HeadFootLink
+            { white-space : normal;
+              word-wrap: break-word;
+              overflow-wrap: break-word; }
+
+/* トップページの上メニュー */
+div.TopMenuLink
+            { white-space : normal;
+              word-wrap: break-word;
+              overflow-wrap: break-word; }
+
+#LinkHead    { white-space : nowrap; } /* リンク(ヘッダ) */
+.LinkFoot    { white-space : nowrap; text-align : center; } /* リンク(フッタ) */
+/* トップページ */
+#LinkTop     { white-space : nowrap; } /* リンク(新規登録、情報変更など) */
+#Turn        { white-space : nowrap; } /* ターン数表示 */
+#nexttime    { white-space : nowrap; } /* 現在の時間(次回の更新時間) */
+#myIsland    { white-space : nowrap; } /* 自分の島へ */
+#HistoryLog  { white-space : nowrap; } /* 発見の記録 */
+#islandView  { white-space : nowrap; } /* 諸島の状況 */
+
+/* 箱庭カップ */
+@media screen and (min-width: 400px) {
+    .HakoniwaCup {
+                    white-space : nowrap;
+                    font-size: 2em;
+                    font-weight: bold; }
+}
+@media screen and (max-width: 399px) {
+    .HakoniwaCup {
+                    white-space : nowrap;
+                    font-size: 1.5em;
+                    font-weight: bold; }
+}
+.NoWarp      { white-space : nowrap; }
+
+#campInfo    { white-space : nowrap; } /* 陣営の状況 */
+/* 開発画面・観光画面 */
+#islandInfo  { white-space : nowrap; text-align : center; } /* 島の情報 */
+#islandMap   { white-space : nowrap; text-align : center; } /* 島の地図 */
+#AutoCommand { white-space : nowrap; text-align : center; } /* 自動系計画送信 */
+#CommentBox  { white-space : nowrap; text-align : center; } /* コメント更新 */
+#localBBS    { white-space : normal; text-align : center; word-wrap: break-word; overflow-wrap: break-word;} /* ローカル掲示板 */
+#RecentlyLog { white-space : nowrap; } /* 最近の出来事・各島の近況 */
+#menu        { white-space : nowrap; } /* ポップアップ・メニュー(コマンド) */
+#menu2       { white-space : nowrap; } /* ポップアップ・メニュー２(旗艦・怪獣操作) */
+#extInfo     { white-space : nowrap; text-align : center; } /* 拡張データ表示 */
+/* その他 */
+#BodySpecial { white-space : normal; } /* <BODY></BODY>内 */
+#newIsland   { white-space : nowrap; text-align : center; } /* 新しい島を探す */
+#changeInfo  { white-space : nowrap; text-align : center; } /* 島の名前とパスワードの変更 */
+#localImage  { white-space : normal; text-align : center; } /* 画像のローカル設定 */
+#hakoSkin    { white-space : normal; text-align : center; } /* 箱庭スキンの設定 */
+#Successive  { white-space : nowrap; text-align : center; } /* 歴代最多人口記録 */
+#Ranking     { white-space : nowrap; text-align : center; } /* ランキング */
+#targetMap   { white-space : nowrap; text-align : center; } /* 目標補足 */
+#setupValue  { white-space : nowrap; } /* 設定一覧 */
+
+/* 履歴 */
+#BodySpecialForHistory { white-space : nowrap; }/* <BODY></BODY>内 */
+#RecentlyLogForHistory { white-space : nowrap;} /* <BODY></BODY>内 */
+
+#NoBlockHistory { white-space : nowrap; }
+#HistoryIndent { white-space : nowrap;}
+span.HistoryTurnList { white-space : normal;}
+
+/* タイトル */
+.title {
+  font-size: 32pt;
+  color: #8888FF;
+  padding-left: 5px;
+  width: 100%;
+  filter:shadow(color=#9999CC);
+}
+/* 大きい文字 */
+@media screen and (min-width: 400px) {
+    .big {
+      font-size:24pt;
+    }
+}
+@media screen and (max-width: 399px) {
+    .big {
+      font-size:16pt;
+    }
+}
+/* リアルタイマー */
+.timer {
+  background-color: #EEFFEE;
+  color: blue;
+  font-weight: bold;
+  font-size: 11pt;
+  border-style: none;
+  margin:1px 0px;
+  white-space : nowrap;
+}
+
+/* 自島艦艇 */
+.myFleet {
+/*  filter:Alpha(Opacity=100,FinishOpacity=50,Style=3);  透過 */
+  filter:FlipH(); /* 鏡像 */
+}
+.myFleetCell {
+  background-color: #330099;
+}
+/* 自陣営艦艇 */
+.campFleet {
+/*  filter:Alpha(Opacity=100,FinishOpacity=50,Style=2);  透過 */
+  filter:FlipH(); /* 鏡像 */
+}
+.campFleetCell {
+  background-color: #0000FF;
+}
+
+/* 季節 */
+.season {
+  text-indent:5px;
+  width:1px;
+  filter:Shadow(color=#9999CC);
+}
+.spring { color: yellow; } /* 春 */
+.summer { color: purple; } /* 夏 */
+.autumn { color: red;    } /* 秋 */
+.winter { color: white;  } /* 冬 */
+.month  { color: blue;   } /* 月 */
+
+.islName, .islName2, .number, .head, .headToTo, .command, .disaster, .lbbsSS, .lbbsOW,
+.money, .food, .attention, .bumon, .HCwin, .HClose { font-weight: bold; }
+.islName   { color: #A06040;       white-space: nowrap; word-wrap: break-word;      } /* 島の名前など */
+.islName2  { color: #808080;       white-space: nowrap; word-wrap: break-word;      } /* 薄くなった島の名前 */
+.number    { color: #0000FF;                            } /* 順位の番号など */
+.head      { color: #C00000;                            } /* 順位表における見だし */
+.command   { color: #D08000;       white-space: nowrap; word-wrap: break-word; } /* 開発計画名 */
+.disaster  { color: #FF0000;       white-space: nowrap; word-wrap: break-word; } /* 災害 */
+.lbbsSS    { color: #0000FF;                            } /* 観光者通信（観光者） */
+.lbbsOW    { color: #FF0000;                            } /* 観光者通信（オーナ） */
+.lbbsST    { color: gray;                               } /* 観光者通信（極秘） */
+.money     { color: goldenrod;     white-space: nowrap; word-wrap: break-word; } /* お金 */
+.food      { color: lightseagreen; white-space: nowrap; word-wrap: break-word; } /* 食料 */
+
+.rednews   { color: #FF0000;       white-space: normal; word-wrap: break-word; overflow-wrap: break-word; font-weight: bold; } /* お知らせ用 */
+
+.headToTo  { color: royalblue;      } /* toto表における見だし */
+.HCwin     { color: #0000FF;        } /* 箱庭カップ勝利 */
+.HClose    { color: #A06040;        } /* 箱庭カップ敗北 */
+
+.attention { color: #FF0000;        } /* 注意 */
+.bumon     { color: #FFFFFF;        } /* ランキングの部門名 */
+.normal    { color: #000000;        } /* 通常の文字色 */
+
+.point     { white-space : nowrap; color: royalblue;      } /* point */
+.unemploy1 { white-space : nowrap; color: royalblue;      } /* 失業率-, 牧場 */
+.unemploy2 { white-space : nowrap; color: red;            } /* 失業率+, 怪獣出現中！ */
+.shuto     { white-space : nowrap; color: mediumseagreen; } /* 首都名，ユニーク地形 */
+.house     { white-space : nowrap; color: salmon;         } /* 島主の家，島ID */
+.eisei     { white-space : nowrap; color: lightseagreen;  } /* 人工衛星 */
+.monsm     { white-space : nowrap; color: hotpink;        } /* 怪獣退治数，成長率 */
+
+/* 背景色 */
+.TitleCell   { background-color: #CCFFCC;        } /* 順位表見出し */
+.NumberCell  { background-color: #CCFFCC;        } /* 順位表順位 */
+.NumberCellAlert  { background-color: #FF0000;        } /* 順位表順位 */
+.NameCell    { background-color: #CCFFFF;        } /* 順位表島の名前 */
+.InfoCell    { background-color: #CCFFFF;        } /* 順位表島の情報 */
+.GrayCell  { background-color: #555555;        } /* 順位表順位 */
+.CommentCell { /* 順位表コメント欄 */
+  background-color: #CCFFCC;
+  white-space : normal;
+}
+.MonsterCell { /* 順位表コメント欄 */
+  background-color: #FFFFCC;
+  white-space : normal;
+}
+.InputCell   { background-color: #CCFFCC;        } /* 開発計画フォーム */
+.MapCell     { background-color: #CCFFCC;        } /* 開発計画地図 */
+.CommandCell { background-color: #CCFFCC;        } /* 開発計画入力済み計画 */
+
+.PoinCell    { background-color: moccasin;       } /* Point欄 */
+.TotoCell    { background-color: white;          } /* toto欄 */
+
+.RankingCell {                                  /* ランキング欄 */
+    background-color: lightsteelblue;
+    }
+
+@media screen and (min-width: 1000px) {
+
+    .RankingSeparate {
+        width:20%;
+    }
+}
+
+@media screen and (max-width: 999px) and (min-width: 700px){
+
+    .RankingSeparate {
+        width:50%;
+    }
+}
+
+@media screen and (max-width: 699px) {
+
+    .RankingSeparate {
+        width:100%;
+    }
+}
+.PopupCell   { background-color: #E0FFFF;        } /* Popup コマンド入力欄 */
+/* ポップアップナビ */
+.popupnavi {
+  background-color: #CCFFCC;
+  overflow-y:auto;
+  overflow-x:hidden;
+  color: blue;
+  font-weight: bold;
+  border-style: none;
+  margin:1px 0px;
+  white-space : normal;
+  scrollbar-3d-light-color:#CCFFCC;
+  scrollbar-arrow-color:#E0FFFF;
+  scrollbar-base-color:#CCFFCC;
+  scrollbar-dark-shadow-coor:#E0FFFF;
+  scrollbar-face-color:#CCFFCC;
+  scrollbar-highlight-color:#CCFFCC;
+  scrollbar-shadow-color:#E0FFFF;
+}
+
+.DamageCell  { background-color: #EECCFF;        } /* 着弾点説明表 */
+.nodamage { color: #FFFFFF; } /* 無効 */
+.defence  { color: #FFFF00; } /* 防衛 */
+.harden   { color: #0000FF; } /* 硬化or潜水 */
+.hitpoint { color: #FF0000; } /* 命中 */
+
+/* JSコマンド送信済み */
+.commandjs1  {
+  border-width:0px;
+  color: blue;
+  width: 100%;
+  height: 100%;
+  white-space : nowrap;
+  background-color: #CCFFCC;
+}
+/* JSコマンド未送信 */
+.commandjs2  {
+  border-width:0px;
+  color: red;
+  width: 100%;
+  height: 100%;
+  white-space : nowrap;
+  background-color: #FFFFFF;
+}
+
+/* 観光画面ナビゲータ・ウィンドウ */
+#NaviView{
+  visibility: hidden;
+  z-index:1;
+  position:absolute;
+  background-color: #F0FFFF;
+  border: groove #4169E1;
+  border-width: 3px;
+  width:180px;
+  margin-top : -224px;
+  padding: 3px;
+}
+.NaviTitle {
+  font-size: 12pt;
+  border-style: solid;
+  border-color: #000080;
+  border-width: 0 0 2px 0;
+}
+.NaviImg  { margin : 5px;      }
+.NaviText { margin-left: 15px; }
+
+textarea {
+}
+.NoResizeTextArea { resize:none; }
+
+.ifrm-container {
+  width:100%;
+  height:250px;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  display: inline-block;
+}
+
+.ifrm {
+  width:98%;
+  height:98%;
+  border:1;
+  display:block;
+}
+
+img.cur_p {
+    cursor:pointer;
+}
+
+
+img.maptile {
+  width: 32px;
+  height: 32px;
+  border: 0px;
+  border-style:hidden;
+}
+
+img.tile_ret {
+  transform:scale(-1, 1);
+}
+
+img.landinfoIcon {
+  width: 16px;
+  height: 16px;
+  border: 0px;
+  border-style:hidden;
+}
+
+@media screen and (min-width:601px) { /*601px以上*/
+
+}
+@media screen and (max-width:600px) { /*600px以下*/
+
+    table.TopMenu {
+        display: block;
+        max-width: 98%; /*スマホ画面ほぼ一杯に広がる感じ*/
+    }
+    tbody.TopMenu {
+        display: block;
+        max-width: 98%; /*スマホ画面ほぼ一杯に広がる感じ*/
+    }
+    tr.TopMenu {
+        display: block;
+        max-width: 98%; /*スマホ画面ほぼ一杯に広がる感じ*/
+    }
+    th.TopMenu {
+        display: block;
+        max-width: 98%; /*スマホ画面ほぼ一杯に広がる感じ*/
+    }
+    td.TopMenu {
+        display: block;
+        max-width: 98%; /*スマホ画面ほぼ一杯に広がる感じ*/
+    }
+
+}
