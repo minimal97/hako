@@ -170,13 +170,16 @@ function plchg( selnm ) {
     strn1 = '';
     var cmd;
     var suu;
+    var d;
 
     for(i = 0; i < $HcommandMax; i++)    {
+        d = 0;
         c = command[i];
         if(g[i] == 0) { g[i] = 'このコマンドは使えなくなりました'; }
         kind = '$HtagComName_' + g[i] + '$H_tagComName';
         x = c[1];
         y = c[2];
+        d = 0;
         tgt = '';
         point = '${HtagName_}(' + x + ',' + y + ')${H_tagName}';
         for(j = 0; j < islname.length ; j++) {
@@ -215,6 +218,7 @@ function plchg( selnm ) {
             }
             strn2 = tgt + point + 'へ' + kind + arg;
         }else if(cmd == $HcomEiseiLzr){ // 人工衛星レーザー
+            d = 1;
             strn2 = tgt + point + 'へ' + kind;
         }else if(  (cmd == $HcomSendMonster)
                  ||(cmd == $HcomSendPirates)){ // 怪獣派遣
@@ -243,6 +247,7 @@ function plchg( selnm ) {
             arg = '($HtagName_' + arg + '$HunitFood${H_tagName})';
             strn2 = tgt + 'へ' + kind + arg;
         }else if(cmd == $HcomDestroy){ // 掘削
+            d = 1;
             if(suu == 0){
                 strn2 = point + 'で' + kind;
             } else {
@@ -251,6 +256,7 @@ function plchg( selnm ) {
                 strn2 = point + 'で' + kind + arg;
             }
         }else if(cmd == $HcomOnsen){ // 温泉掘削
+            d = 1;
             if(suu == 0){ suu = 1; }
             arg = suu * $HcomCost[$HcomOnsen];
             arg = '(予\算$HtagName_' + arg + '$HunitMoney${H_tagName})';
@@ -267,6 +273,7 @@ function plchg( selnm ) {
                  cmd == $HcomHTget ||
                  cmd == $HcomGivefood ||
                  cmd == $HcomPropaganda) {
+            d = 1;
             if(suu == 0){ suu = 1; }
             if(suu != 1){
                 arg = '($HtagName_' + suu + '回${H_tagName})';
@@ -275,12 +282,14 @@ function plchg( selnm ) {
                 strn2 = point + 'で' + kind;
             }
         }else if(cmd == $HcomMine) { // 地雷設置
+            d = 1;
             if(suu == 0){ suu = 1; }
             if(suu > 9){ suu = 9; }
             arg = '(ダメージ$HtagName_' + suu + '${H_tagName})';
             strn2 = point + 'で' + kind + arg;
 
         }else if(cmd == $HcomZoo) { // 動物園
+            d = 1;
             if (suu > $#HmonsterName) {
                 suu = $#HmonsterName;
             }
@@ -292,15 +301,19 @@ function plchg( selnm ) {
             strn2 = point + 'で' + kind +'もしくは'+ arg + '脱出';
 
         }else if(cmd == $HcomItemUse) { // アイテムおく
+            d = 1;
             arg = '($HtagName_' + suu + '${H_tagName})';
             strn2 = point + 'で' + kind + arg;
         }else if(cmd == $HcomItemThrow) { // アイテム捨てる
+            d = 1;
             arg = '($HtagName_' + suu + '${H_tagName})';
             strn2 = kind + arg;
         }else if(cmd == $HcomHouse) { // 自宅 税率
+            d = 1;
             arg = '($HtagName_' + suu + '${H_tagName})';
             strn2 = point + 'で' + kind + arg;
-        }else if (   (cmd == $HcomFarmcpc)  ) {        // 牧場、
+        }else if (   (cmd == $HcomFarmcpc)  ) {        // 牧場
+            d = 1;
             arg = '($HtagName_' + suu + '${H_tagName})';
             if(suu == 2) {
                 strn2 = point + 'で' + kind + arg + '(${HtagName_}養豚場${H_tagName})';
@@ -311,6 +324,7 @@ function plchg( selnm ) {
             }
 
         }else if ((cmd == $HcomHaribote) ) {
+            d = 1;
             if(suu == 0){
                 strn2 = point + 'で' + kind;
             } else {
@@ -318,10 +332,12 @@ function plchg( selnm ) {
                 strn2 = point + 'で' + kind + arg;
             }
         }else if(cmd == $HcomMonument){ // 記念碑建設
+            d = 1;
             if((suu>=$HmonumentNumber)&&(suu!=94)){suu=0;}
             arg = '($HtagName_' + suu + ':' + monument_tag[suu] +'<img SRC="'+monument_img_tag[suu] +'" width=16 height=16' + '>' + '${H_tagName})';
             strn2 = point + 'で' + kind + arg;
         }else if(cmd == $HcomFune){ // 造船
+            d = 1;
             if(( (suu != 77) && (suu >= $HfuneNumber)) || (suu == 0)) { suu = 1; }
 
             if(suu == 1){ arg = '<B>$HfuneName[1]</B>'; }
@@ -357,6 +373,7 @@ function plchg( selnm ) {
                 strn2 = tgt + 'の' + arg + 'へ' + kind;
             }
         }else{
+            d=1;
             strn2 = point + 'で' + kind;
         }
         tmpnum = (i + 1);
@@ -364,6 +381,7 @@ function plchg( selnm ) {
         if(i ==selnm){
             strn2 = '<u>'+strn2+'</u>';
             tmpnum = '●' + tmpnum;
+            map_cur(x,y,d);
         }else{
             tmpnum = '○' + tmpnum;
         }
@@ -373,6 +391,21 @@ function plchg( selnm ) {
                     strn2 + '$H_normalColor</FONT></A><BR>\\n';
     }
     return strn1;
+}
+
+function map_cur(x,y,d) {
+  var p_x;
+  StyElm = document.getElementById("map_cur");
+  if(d) {
+    StyElm.style.visibility = "visible";
+    p_x = 0;
+    if(!(y%2)){p_x=16;}
+    StyElm.style.Height = 2; // y は固定
+    StyElm.style.marginLeft = ((x) * 32)-2 + (p_x);
+    StyElm.style.marginTop = (y+2) * 32-2; // y は固定
+  }else{
+    StyElm.style.visibility = "hidden";
+  }
 }
 
 function disp(str,bgclr) {
@@ -437,16 +470,18 @@ function ns(x) {
 }
 
 function set_land(x, y, lnd, img) {
+    var cmd;
     //com_str = lnd + "";
     com_str = lnd + "\\n";
     for(i = 0; i < $HcommandMax; i++)    {
         c = command[i];
         x2 = c[1];
         y2 = c[2];
-        if(x == x2 && y == y2 && (c[0] < 30 ||(c[0] > 69 && c[0] <= $HcomMax))){
+        cmd = c[0];
+        if(x == x2 && y == y2 && (cmd < 30 ||(cmd > 69 && cmd <= $HcomMax))){
             com_str += "[" + (i + 1) +"]" ;
             kind = g[i];
-            if(c[0] == $HcomDestroy){
+            if(cmd == $HcomDestroy){
                 if(c[3] == 0){
                     com_str += kind;
                 } else {
@@ -454,14 +489,14 @@ function set_land(x, y, lnd, img) {
                     arg = "(予\算" + arg + "$HunitMoney)";
                     com_str += kind + arg;
                 }
-            }else if(c[0] == $HcomFarm ||
-                     c[0] == $HcomNursery ||
-                     c[0] == $HcomFactory ||
-                     c[0] == $HcomMountain ||
-                     c[0] == $HcomFoodim ||
-                     c[0] == $HcomBoku ||
-                     c[0] == $HcomPark ||
-                     c[0] == $HcomUmiamu) {
+            }else if(cmd == $HcomFarm ||
+                     cmd == $HcomNursery ||
+                     cmd == $HcomFactory ||
+                     cmd == $HcomMountain ||
+                     cmd == $HcomFoodim ||
+                     cmd == $HcomBoku ||
+                     cmd == $HcomPark ||
+                     cmd == $HcomUmiamu) {
                 if(c[3] == 0){ c[3] = 1; }
                 if(c[3] != 1){
                     arg = "(" + c[3] + "回)";
@@ -469,9 +504,9 @@ function set_land(x, y, lnd, img) {
                 }else{
                     com_str += kind;
                 }
-            }else if(c[0] == $HcomFune || // 造船、牧場、記念碑建設
-                     c[0] == $HcomFarmcpc ||
-                     c[0] == $HcomMonument) {
+            }else if(cmd == $HcomFune || // 造船、牧場、記念碑建設
+                     cmd == $HcomFarmcpc ||
+                     cmd == $HcomMonument) {
                 if(c[3] == 0){
                     com_str += kind;
                 } else {
