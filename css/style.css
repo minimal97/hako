@@ -320,6 +320,21 @@ span.HistoryTurnList { white-space : normal;}
   white-space : nowrap;
   background-color: #FFFFFF;
 }
+/*   */
+#map_cur{
+  visibility: hidden;
+  z-index:1;
+  position:absolute;
+  background-color: rgba(0,0,0,0);
+  border: groove #FF0000;
+  border-width: 2px;
+  width:32px;
+  height:1px;
+  margin-top : 0px;
+  padding: 0px;
+  display:float;
+  pointer-events:none;
+}
 
 /* 観光画面ナビゲータ・ウィンドウ */
 #NaviView{
