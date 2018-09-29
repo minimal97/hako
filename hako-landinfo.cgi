@@ -50,9 +50,12 @@ sub ScoreBoard_Eisei {
 #----------------------------------------------------------------------
 sub ScoreBoard_BF_Point {
     my($island) = @_;
-    my ($BF_Score) = $island->{'landscore'};
+    my ($BF_Score) = '';
+    if ($island->{'landscore'}) {
+        $BF_Score = $island->{'landscore'};
 
-    $BF_Score = " <img SRC=\"${HMapImgDir}land9.gif\" alt='' class='landinfoIcon'>BF:".$BF_Score.'≈¿';
+        $BF_Score = " <img SRC=\"${HMapImgDir}land9.gif\" alt='' class='landinfoIcon'>BF:".$BF_Score.'≈¿';
+    }
 
     return $BF_Score;
 }
