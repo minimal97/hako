@@ -428,7 +428,7 @@ function disp(str,bgclr) {
 }
 
 function outp() {
-    comary = "";
+    var comary = "";
 
     for(k = 0; k < command.length; k++){
         comary = comary + command[k][0]
