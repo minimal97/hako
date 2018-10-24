@@ -38,6 +38,10 @@ sub makeJS {
     $src = <<"END";
 
 function init() {
+    var i;
+    var s;
+    var str;
+
     for(i = 0; i < command.length ;i++) {
         for(s = 0; s < $com_count ;s++) {
             var comlist2 = comlist[s];
@@ -159,7 +163,7 @@ function cmd_click(i) {
         disp(str, "#ccffcc");
     }
     outp();
-    
+
     return true;
 }
 
@@ -171,6 +175,11 @@ function plchg( selnm ) {
     var cmd;
     var suu;
     var d;
+    var kind;
+    var tgt;
+    var strn2;
+
+    var i;
 
     for(i = 0; i < $HcommandMax; i++)    {
         d = 0;
@@ -409,7 +418,7 @@ function map_cur(x,y,d) {
 }
 
 function disp(str,bgclr) {
-    if(str==null)  str = "";
+    if(str == null)  str = "";
 
     if(document.getElementById){
         document.getElementById("LINKMSG1").innerHTML = str;
@@ -655,7 +664,7 @@ function moveLAYER(layName,x,y) {
     if(x + winX*3/4 > wX) { cX = -20 - winX; } else { cX = 10; }
     if(y + winY/2 > wY) { cY = 30 - winY; } else if(y + winY > wY){ cY = 30 - winY/2; } else { cY = -30; }
     if(document.getElementById){        //NN6,IE5
-        if(document.all){                //IE5
+        if(document.all){               //IE5
             if(event.clientX + winX*3/4 > wX) { cX = -20 - winX; } else { cX = 10; }
             if(event.clientY + winY/2 > wY) { cY = 30 - winY; } else if(event.clientY + winY > wY){ cY = 30 - winY/2; } else { cY = -30; }
             el = document.getElementById(layName);
@@ -670,11 +679,11 @@ function moveLAYER(layName,x,y) {
             el.style.display = "block";
             el.style.visibility ='visible';
         }
-    } else if(document.layers){                //NN4
+    } else if(document.layers){         //NN4
         msgLay = document.layers[layName];
         msgLay.moveTo(x + cX,y + cY);
         msgLay.visibility = "show";
-    } else if(document.all){                //IE4
+    } else if(document.all){            //IE4
         msgLay = document.all(layName);
         msgLay.style.pixelLeft = x + cX;
         msgLay.style.pixelTop = y + cY;
@@ -700,7 +709,7 @@ function check_menu() {
             document.onmousemove = Mmove;
         } else if(document.layers){ // NN4 KEYDOWNイベントはWin98系で文字化けするのでコメント化
             window.captureEvents(Event.MOUSEMOVE);
-//            window.captureEvents(Event.MOUSEMOVE | Event.KEYDOWN);
+//          window.captureEvents(Event.MOUSEMOVE | Event.KEYDOWN);
             window.onMouseMove = Mmove;
         } else if(document.all){ // IE4
             document.onmousemove = Mmove;
