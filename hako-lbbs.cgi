@@ -424,18 +424,18 @@ END
 			$j = $i + 1;
 			out("<TR><TD align=center>$HtagNumber_$j$H_tagNumber</TD>");
 
-#			$speaker = "<span class='lbbsST'><B><SMALL>($2)</SMALL></B></span>" if ($HlbbsSpeaker && ($2 ne ''));
+#           $speaker = "<span class='lbbsST'><B><SMALL>($2)</SMALL></B></span>" if ($HlbbsSpeaker && ($2 ne ''));
             ($sName, $sID) = split(/,/, $2);
-            $sNo = $HidToNumber{$sID};
+            $sNo = $HidToNumber{$sID} if (defined $sID);
             $speaker = '';
-			if ($HlbbsSpeaker && ($sName ne '')) {
-				if(defined $sNo){
-					$speaker = "<span class='lbbsST'><B><SMALL>(<A STYlE=\"text-decoration:none\" HREF=\"$HthisFile?Sight=$sID\">$sName</A>)</SMALL></B></span>";
-				} else {
-					$speaker = "<span class='lbbsST'><B><SMALL>($sName)</SMALL></B></span>";
-				}
-			}
-			if ($3 == 0) {
+            if ($HlbbsSpeaker && ($sName)) {
+                if(defined $sNo){
+                    $speaker = "<span class='lbbsST'><B><SMALL>(<A STYlE=\"text-decoration:none\" HREF=\"$HthisFile?Sight=$sID\">$sName</A>)</SMALL></B></span>";
+                } else {
+                    $speaker = "<span class='lbbsST'><B><SMALL>($sName)</SMALL></B></span>";
+                }
+            }
+            if ($3 == 0) {
                 # ´Ñ¸÷¼Ô
                 if ($1 == 0) {
                     # ¸ø³«
