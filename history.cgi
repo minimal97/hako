@@ -276,7 +276,7 @@ END
     out(<<END);
 <br>
 <SELECT NAME="ID">$HislandList</SELECT>
-<INPUT type=hidden name=PASSWORD value=$HinputPassword>
+<INPUT type="hidden" name="PASSWORD" value="$HinputPassword">
 <INPUT type="submit" value="を見る">
 </FORM>
 END
@@ -292,12 +292,12 @@ sub tempFooter {
 END
 
 ##### 追加 親方20020307
-    if($Hperformance) {
-        my($uti, $sti, $cuti, $csti) = times();
+    if(USE_PERFORMANCE) {
+        my ($uti, $sti, $cuti, $csti) = times();
         $uti += $cuti;
         $sti += $csti;
-        my($cpu) = $uti + $sti;
-        my($timea) = sprintf("%.3f",Time::HiRes::time - $Hakoniwa_start_time);
+        my ($cpu) = $uti + $sti;
+        my ($timea) = sprintf("%.3f",Time::HiRes::time - $Hakoniwa_start_time);
 
     #       ログファイル書き出し(テスト計測用　普段はコメントにしておいてください)
     #       open(POUT,">>cpu-h.log");
@@ -529,6 +529,7 @@ $html3=<<_FOOTER_;
 _FOOTER_
     my($i);
     my($id);
+    my($mode);
     for($i = 0; $i < $HhtmlLogTurn; $i++) {
         $id =0;
         $mode = 0;
