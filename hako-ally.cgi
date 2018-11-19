@@ -22,7 +22,7 @@ sub aNameToId {
 
     # 全島から探す
     my ($i);
-    for($i = 0; $i < $HallyNumber; $i++) {
+    for ($i = 0; $i < $HallyNumber; $i++) {
         if ($Hally[$i]->{'name'} eq $name) {
             return $Hally[$i]->{'id'};
         }
@@ -40,7 +40,7 @@ sub aMarkToId {
 
     # 全島から探す
     my ($i);
-    for($i = 0; $i < $HallyNumber; $i++) {
+    for ($i = 0; $i < $HallyNumber; $i++) {
         if ($Hally[$i]->{'mark'} eq $mark) {
             return $Hally[$i]->{'id'};
         }
