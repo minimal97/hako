@@ -65,10 +65,10 @@ END
 <A STYlE="text-decoration:none" HREF="JavaScript:void(0)" onClick="document.allyForm.action='${HbaseDir}/${HallyBbsScript}';document.allyForm.submit();return false;">
 ${HtagBig_}<small>${HtagName_}<FONT COLOR="$HcurrentCamp->{'color'}"><B>$HcurrentCamp->{'mark'}</B></FONT>$HcurrentCamp->{'name'}${H_tagName}作戦会議室へ</A></small>${H_tagBig}
 <FORM name="allyForm" action="" method="POST" target="_blank">
-<INPUT type=hidden name="ally" value="$HcurrentCampID">
-<INPUT type=hidden name="cpass" value="$HcurrentCamp->{'password'}">
-<INPUT type=hidden name="jpass" value="$HcampPassward">
-<INPUT type=hidden name="id" value="$HcurrentID">
+<INPUT type="hidden" name="ally" value="$HcurrentCampID">
+<INPUT type="hidden" name="cpass" value="$HcurrentCamp->{'password'}">
+<INPUT type="hidden" name="jpass" value="$HcampPassward">
+<INPUT type="hidden" name="id" value="$HcurrentID">
 </FORM>
 END
     out("$Hislands[$HidToNumber{$HcurrentID}]->{'ally_turn'}");
@@ -194,9 +194,9 @@ sub campLbbsInputOW {
 
     out(<<END);
 <FORM action="$HthisFile" method="POST">
-<INPUT TYPE="hidden" NAME=JAVAMODE VALUE="$HjavaMode">
+<INPUT TYPE="hidden" NAME="JAVAMODE" VALUE="$HjavaMode">
 END
-	# out("<B>※</B>名前を変更しても所有者名が使われます。");
+    # out("<B>※</B>名前を変更しても所有者名が使われます。");
 
 
     out(<<END);
@@ -206,22 +206,22 @@ END
 <TH COLSPAN=2>内容<small>(全角${HlengthLbbsMessage}字まで)</small></TH>
 </TR>
 <TR>
-<TD><INPUT TYPE="text" SIZE=32 MAXLENGTH=32 NAME="LBBSNAME" readonly="readonly" VALUE="$HdefaultName"></TD>
-<TD COLSPAN=2><INPUT TYPE="text" SIZE=80 NAME="LBBSMESSAGE"></TD>
+<TD><INPUT TYPE="text" SIZE="32" MAXLENGTH="32" NAME="LBBSNAME" readonly="readonly" VALUE="$HdefaultName"></TD>
+<TD COLSPAN=2><INPUT TYPE="text" SIZE="80" NAME="LBBSMESSAGE"></TD>
 </TR>
 <TR>
 <TH>パスワード</TH>
 <TH COLSPAN=2>動作</TH>
 </TR>
 <TR>
-<TD><INPUT TYPE=password SIZE=16 MAXLENGTH=16 NAME=PASSWORD VALUE="$HinputPassword"></TD>
+<TD><INPUT TYPE="password" SIZE="16" MAXLENGTH="16" NAME="PASSWORD" VALUE="$HinputPassword"></TD>
 <TD align=right>
-<INPUT type=hidden name="ally" value="$HcurrentCampID">
-<INPUT type=hidden name="cpass" value="$HcurrentCamp->{'password'}">
-<INPUT type=hidden name="jpass" value="$HcampPassward">
-<INPUT type=hidden name="id" value="$HcurrentID">
-<INPUT type=hidden name="wturn" value="$HislandTurn">
-<INPUT type=hidden name="wislandname" value="$Hbbsislandname">
+<INPUT type="hidden" name="ally" value="$HcurrentCampID">
+<INPUT type="hidden" name="cpass" value="$HcurrentCamp->{'password'}">
+<INPUT type="hidden" name="jpass" value="$HcampPassward">
+<INPUT type="hidden" name="id" value="$HcurrentID">
+<INPUT type="hidden" name="wturn" value="$HislandTurn">
+<INPUT type="hidden" name="wislandname" value="$Hbbsislandname">
 <INPUT TYPE="submit" VALUE="書き込む" NAME="CAMPCHAT=${HcurrentCampID}">
 </TD>
 <TD align=right>
@@ -230,7 +230,7 @@ END
 <SELECT NAME="SENDALLY" $alistread>
 $allyList
 </SELECT>
-<INPUT type=hidden name="dummy" value="">
+<INPUT type="hidden" name="dummy" value="">
 </TD>
 </TR>
 </TABLE>
