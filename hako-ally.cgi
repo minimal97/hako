@@ -621,7 +621,7 @@ sub newAllyTop {
     my $joinCost = $HcomCost[$HcomAlly] ? "${$HcomCost[$HcomAlly]}${HunitMoney}" : '無料';
     my $joinStr = $HallyJoinComUse ? '' : "加盟・脱退の際の費用は、${HtagMoney_}$joinCost${H_tagMoney}です。<BR>";
     my $str3 = $adminMode ? "特殊パスワードは？（必須）<BR>
-<INPUT TYPE=\"password\" NAME=\"OLDPASS\" VALUE=\"$HdefaultPassword\" SIZE=32 MAXLENGTH=32 class=f><BR>同盟" : "<span class='attention'>(注意)</span><BR>
+<INPUT TYPE=\"password\" NAME=\"OLDPASS\" VALUE=\"$HdefaultPassword\" SIZE='32' MAXLENGTH='32' class='f'><BR>同盟" : "<span class='attention'>(注意)</span><BR>
 同盟の結成・変更の費用は、${HtagMoney_}${makeCost}${H_tagMoney}です。<BR>
 また、毎ターン必要とされる維持費は${HtagMoney_}$keepCost${H_tagMoney}です。<BR>
 （維持費は同盟に所属する${AfterName}で均等に負担することになります）<BR>
@@ -639,7 +639,7 @@ $HislandList
 <table border=0 width="50%"><tr><td class="M"><P>
 <FORM name="AcForm" action="$HthisFile" method="POST">
 $str3のパスワードは？（必須）<BR>
-<INPUT TYPE="text" NAME="PASSWORD" SIZE=32 VALUE="$HdefaultPassword" MAXLENGTH=32 class=f>
+<INPUT TYPE="text" NAME="PASSWORD" SIZE="32" VALUE="$HdefaultPassword" MAXLENGTH="32" class="f">
 END
 
     if ($HallyNumber) {
@@ -664,7 +664,7 @@ END
 <BR>
 $str7
 同盟の名前（変更）<small>(全角${HlengthAllyName}字まで)</small><BR>
-<INPUT TYPE="text" NAME="ALLYNAME" VALUE="$allyname" SIZE=32 MAXLENGTH=32><BR>
+<INPUT TYPE="text" NAME="ALLYNAME" VALUE="$allyname" SIZE="32" MAXLENGTH="32"><BR>
 マーク（変更）<BR>
 <SELECT NAME="MARK" onChange=colorPack() onClick=colorPack()>
 $markList
@@ -857,11 +857,11 @@ sub tempAllyPactPage {
 <INPUT TYPE="hidden"  NAME="ISLANDID" VALUE="$ally->{'id'}">
 <INPUT TYPE="submit" VALUE="送信" NAME="AllypactButton"><BR>
 <B>コメント</B><small>(全角${HlengthAllyComment}字まで：トップページの「各同盟の状況」欄に表示されます)</small><BR>
-<INPUT TYPE="text" NAME="ALLYCOMMENT"  VALUE="$ally->{'comment'}" SIZE=100 MAXLENGTH=50><BR>
+<INPUT TYPE="text" NAME="ALLYCOMMENT"  VALUE="$ally->{'comment'}" SIZE="100" MAXLENGTH="50"><BR>
 <BR>
 <B>メッセージ・盟約など</B>(「同盟の情報」欄の上に表示されます)<BR>
 タイトル<small>(全角${HlengthAllyTitle}字まで)</small><BR>
-<INPUT TYPE="text" NAME="ALLYTITLE"  VALUE="$ally->{'title'}" SIZE=100 MAXLENGTH=50><BR>
+<INPUT TYPE="text" NAME="ALLYTITLE"  VALUE="$ally->{'title'}" SIZE="100" MAXLENGTH="50"><BR>
 メッセージ<small>(全角${HlengthAllyMessage}字まで)</small><BR>
 <TEXTAREA COLS=50 ROWS=16 NAME="ALLYMESSAGE" WRAP="soft">$allyMessage</TEXTAREA>
 <BR>
@@ -955,7 +955,7 @@ sub tempAmitySetupPage() {
 <FORM action="$HthisFile" method="POST">
 <INPUT TYPE="hidden" VALUE="$HdefaultPassword" NAME="ASetup">
 <TABLE BORDER><TR>
-<TH $HbgTitleCell align=center rowspan=2>${HtagTH_}設定${H_tagTH}<BR><INPUT TYPE="submit" VALUE="変更" NAME="AmityChangeButton"></TD>
+<TH $HbgTitleCell align="center" rowspan="2">${HtagTH_}設定${H_tagTH}<BR><INPUT TYPE="submit" VALUE="変更" NAME="AmityChangeButton"></TD>
 END
 
     foreach (0..$islandNumber) {
@@ -1003,9 +1003,9 @@ END
             }
 
             if ($flag) {
-                out("<TH><input type=checkbox name=ally value=\"$id-$aId\"></TH>");
+                out("<TH><input type='checkbox' name='ally' value='$id-$aId'></TH>");
             } else {
-                out("<TH><input type=checkbox name=ally value=\"$id-$aId\" CHECKED></TH>");
+                out("<TH><input type='checkbox' name='ally' value='$id-$aId' CHECKED></TH>");
             }
         }
         out("</TR>\n");
