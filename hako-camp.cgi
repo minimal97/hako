@@ -78,7 +78,7 @@ END
 
 sub camp_comment {
 
-    local ( $Hbbsislandname  );
+    local ($Hbbsislandname);
 
     $HdefaultName = $Hislands[$HidToNumber{$HcurrentID}]->{'onm'};
     $Hbbsislandname = $Hislands[$HidToNumber{$HcurrentID}]->{'name'};
@@ -107,6 +107,7 @@ END
         open(DATAFILE, "< $HallychatData$HcurrentCampID.cht") or die("Error");
         my ($bbslinecnt) = 1;
         my ($bbsline);
+        my (@bbsmsg);
 
         while ($bbsline = <DATAFILE>){
             @bbsmsg = split(/\,/,$bbsline);
@@ -124,6 +125,7 @@ END
                     if ( $HcurrentCampID == $bbsmsg[1] ) {
 
                         if ( $bbsmsg[1] == $bbsmsg[0] ) {
+
                             $speaker = "<span class='lbbsST'><B><SMALL>($sName$AfterName)</SMALL></B></span>";
 
                         }else{
@@ -132,7 +134,6 @@ END
                             my $fromally = $Hally[$wally];
                             my $wallyName = "<FONT COLOR=\"$fromally->{'color'}\"><B>$fromally->{'mark'}</B></FONT>$fromally->{'name'}";
                             $speaker = "<span class='lbbsST'><B><SMALL>($sName$AfterName)＞$wallyName</SMALL></B></span>";
-
                         }
 
                     }else{
@@ -155,7 +156,7 @@ END
         <TD>$HtagLbbsSS_$bbsmsg[5]：$bbsmsg[3] ＞ $Hmsgtemp$speaker$H_tagLbbsSS</TD>
     </TR>
 END
-        $bbslinecnt ++;
+            $bbslinecnt ++;
         }
     } else {
         out(<<END);
@@ -164,7 +165,6 @@ END
     <TD>-</TD>
 </TR>
 END
-
     }
 
     out(<<END);
@@ -175,20 +175,20 @@ END
 
 # ローカル掲示板入力フォーム owner mode用
 sub campLbbsInputOW {
+
     my ($alistread);
-            $alistread = '';
-            $alistread = ' disabled' if ( $HcurrentCampID != $HcurrentID);
+    $alistread = '';
+    $alistread = ' disabled' if ( $HcurrentCampID != $HcurrentID);
 
-    my($allyname, $allyList);
-
+    my ($allyname, $allyList);
     my ($max) = 201;
     if ($HallyNumber) {
         my ($s);
         foreach (0..$#Hally) {
             $s = '';
-            $s = ' SELECTED' if($_ == $HidToAllyNumber{$HcurrentCampID});
+            $s = ' SELECTED' if ($_ == $HidToAllyNumber{$HcurrentCampID});
             $allyList .= "<OPTION VALUE=\"$Hally[$_]->{'id'}\"$s>$Hally[$_]->{'name'}\n";
-            $max = $Hally[$_]->{'id'} + 1 if($max <= $Hally[$_]->{'id'});
+            $max = $Hally[$_]->{'id'} + 1 if ($max <= $Hally[$_]->{'id'});
         }
     }
 
@@ -198,16 +198,15 @@ sub campLbbsInputOW {
 END
     # out("<B>※</B>名前を変更しても所有者名が使われます。");
 
-
     out(<<END);
 <TABLE BORDER>
 <TR>
 <TH>名前<small>(全角${HlengthLbbsName}字まで)</small></TH>
-<TH COLSPAN=2>内容<small>(全角${HlengthLbbsMessage}字まで)</small></TH>
+<TH COLSPAN="2">内容<small>(全角${HlengthLbbsMessage}字まで)</small></TH>
 </TR>
 <TR>
 <TD><INPUT TYPE="text" SIZE="32" MAXLENGTH="32" NAME="LBBSNAME" readonly="readonly" VALUE="$HdefaultName"></TD>
-<TD COLSPAN=2><INPUT TYPE="text" SIZE="80" NAME="LBBSMESSAGE"></TD>
+<TD COLSPAN="2"><INPUT TYPE="text" SIZE="80" NAME="LBBSMESSAGE"></TD>
 </TR>
 <TR>
 <TH>パスワード</TH>
@@ -215,16 +214,16 @@ END
 </TR>
 <TR>
 <TD><INPUT TYPE="password" SIZE="16" MAXLENGTH="16" NAME="PASSWORD" VALUE="$HinputPassword"></TD>
-<TD align=right>
+<TD align="right">
 <INPUT type="hidden" name="ally" value="$HcurrentCampID">
 <INPUT type="hidden" name="cpass" value="$HcurrentCamp->{'password'}">
 <INPUT type="hidden" name="jpass" value="$HcampPassward">
 <INPUT type="hidden" name="id" value="$HcurrentID">
 <INPUT type="hidden" name="wturn" value="$HislandTurn">
 <INPUT type="hidden" name="wislandname" value="$Hbbsislandname">
-<INPUT TYPE="submit" VALUE="書き込む" NAME="CAMPCHAT=${HcurrentCampID}">
+<INPUT type="submit" value="書き込む" NAME="CAMPCHAT=${HcurrentCampID}">
 </TD>
-<TD align=right>
+<TD align="right">
 <!-- INPUT TYPE="submit" VALUE="削除する" NAME="LbbsButtonDL$HcurrentID"-->
 ($HallyTopNameのみ)どの同盟に向けて：
 <SELECT NAME="SENDALLY" $alistread>
@@ -234,7 +233,7 @@ $allyList
 </TD>
 </TR>
 </TABLE>
-<LEFT><INPUT TYPE="submit" VALUE="リロード" NAME="camp=${HcurrentCampID}"></LEFT>
+<LEFT><INPUT type="submit" VALUE="リロード" NAME="camp=${HcurrentCampID}"></LEFT>
 </FORM>
 END
 }
@@ -242,36 +241,36 @@ END
 # 島のコマンド読み込み(陣営画面作成用)
 sub readCommands {
 
-	my ($id) = @_;
-	my (@command);
+    my ($id) = @_;
+    my (@command);
     my ($line);
 
-	open(IIN, "${HdirName}/${id}.${HsubData}");
-	foreach $y (0..$islandSize) {
-		$line = <IIN>; # 捨てる     マップデータ
-	}
+    open(IIN, "${HdirName}/${id}.${HsubData}");
+    foreach $y (0..$islandSize) {
+        $line = <IIN>; # 捨てる     マップデータ
+    }
     $line = <IIN>; # 捨てる      持ち物データ
 
-	# コマンド
-	my($i);
-	my($cnum) = ($HcampCommandTurnNumber);
+    # コマンド
+    my ($i);
+    my ($cnum) = ($HcampCommandTurnNumber);
 
-	for($i = 0; $i < $cnum; $i++) {
-		$line = <IIN>;
-		$line =~ /^([0-9]*),([0-9]*),([0-9]*),([0-9]*),([0-9]*)$/;
-		$command[$i] = {
-			'kind' => int($1),
-			'target' => int($2),
-			'x' => int($3),
-			'y' => int($4),
-			'arg' => int($5)
-		}
-	}
+    for ($i = 0; $i < $cnum; $i++) {
+        $line = <IIN>;
+        $line =~ /^([0-9]*),([0-9]*),([0-9]*),([0-9]*),([0-9]*)$/;
+        $command[$i] = {
+            'kind' => int($1),
+            'target' => int($2),
+            'x' => int($3),
+            'y' => int($4),
+            'arg' => int($5)
+        }
+    }
 
-	close(IIN);
+    close(IIN);
 
-	# コマンドのみ返す
-	return \@command,
+    # コマンドのみ返す
+    return \@command,
 }
 
 # 情報の表示
@@ -281,16 +280,20 @@ sub campAllIslandsInfo {
     campTableHeader();
 
     # 陣営に属する島のコマンドのみ読み出し
-    my($id);
-    foreach $id (@{ $HcurrentCamp->{'memberId'} }) {
-        $Hislands[$HidToNumber{$id}]->{'command'} = readCommands($id);
+    {
+        my ($id);
+        foreach $id (@{ $HcurrentCamp->{'memberId'} }) {
+            $Hislands[$HidToNumber{$id}]->{'command'} = readCommands($id);
+        }
     }
 
     # 各島の情報書き出し
-    my ($i);
-    foreach $i (0..$islandNumber) {
-        if ($HcurrentCampID == $Hislands[$i]->{'allyId'}[0]) {
-            campIslandInfo($Hislands[$i], $i+1-$HbfieldNumber); # 陣営に属する島のみ
+    {
+        my ($i);
+        foreach $i (0..$islandNumber) {
+            if ($HcurrentCampID == $Hislands[$i]->{'allyId'}[0]) {
+                campIslandInfo($Hislands[$i], $i+1-$HbfieldNumber); # 陣営に属する島のみ
+            }
         }
     }
     # テーブルフッタの書き出し
@@ -299,28 +302,27 @@ sub campAllIslandsInfo {
 }
 
 sub campIslandInfo {
-
-	my($island, $rank) = @_;
+    my ($island, $rank) = @_;
 
 	# 情報表示
-	my($id) = $island->{'id'};
-	my($name) = islandName($island);
-	my($farm) = $island->{'farm'};
-	my($factory) = $island->{'factory'};
-	my($factoryHT) = $island->{'factoryHT'};
-	my($mountain) = $island->{'mountain'};
-	my($contribution) = int($island->{'ext'}[1] / 10); # 貢献度
+	my ($id) = $island->{'id'};
+	my ($name) = islandName($island);
+	my ($farm) = $island->{'farm'};
+	my ($factory) = $island->{'factory'};
+	my ($factoryHT) = $island->{'factoryHT'};
+	my ($mountain) = $island->{'mountain'};
+	my ($contribution) = int($island->{'ext'}[1] / 10); # 貢献度
 	$farm = ($farm == 0) ? "保有せず" : "${farm}0$HunitPop";
 	$factory = ($factory == 0) ? "保有せず" : "${factory}0$HunitPop";
 	$mountain = ($mountain == 0) ? "保有せず" : "${mountain}0$HunitPop";
 
-	if($island->{'absent'}  == 0) {
-		$name = "${HtagName_}$name${H_tagName}";
-	} else {
-		$name = "${HtagName2_}$name($island->{'absent'})${H_tagName2}";
-	}
+    if ($island->{'absent'}  == 0) {
+        $name = "${HtagName_}$name${H_tagName}";
+    } else {
+        $name = "${HtagName2_}$name($island->{'absent'})${H_tagName2}";
+    }
 
-	out(<<END);
+    out(<<END);
 <TR>
 <TD $HbgNumberCell ROWSPAN=2 align=center>${HtagNumber_}$rank${H_tagNumber}</TD>
 <TD $HbgNameCell ROWSPAN=2 align=left>
@@ -341,22 +343,24 @@ $name
 </TR>
 END
 
-	out("<TR><TD $HbgCommentCell COLSPAN=9 valign=top>${HtagTH_}\n");
-	my($cnum) = ($HcampCommandTurnNumber);
+    out("<TR><TD $HbgCommentCell COLSPAN=9 valign=top>${HtagTH_}\n");
+    my ($cnum) = ($HcampCommandTurnNumber);
 
     if ($Hislands[$HidToNumber{$HcurrentID}]->{'ally_turn'} < 5) {
         $cnum = 0;
     }
 
-    my($command) = $island->{'command'};
-	for($i = 0; $i < $cnum; $i++) {
-		tempCommand($i, $command->[$i], $island->{'shr'}, 0);
-	}
+    {
+        my ($command) = $island->{'command'};
+        for ($i = 0; $i < $cnum; $i++) {
+            tempCommand($i, $command->[$i], $island->{'shr'}, 0);
+        }
+    }
 }
 
 sub campTableHeader {
-	out(<<END);
 
+    out(<<END);
 <DIV align='center'>
 <TABLE BORDER>
 <TR>
@@ -380,12 +384,7 @@ END
 #----------------------------------------------------------------------
 sub campbbswrite {
 
-    my $sendto = $HcurrentCampID;
-
-    if ( $HAnoSend ) {
-
-        $sendto = $HAnoSendto;
-    }
+    my $sendto = ($HAnoSend) ? $HAnoSendto : $HcurrentCampID;
 
     if ( 1 ) {
     	my @lines;
@@ -397,7 +396,7 @@ sub campbbswrite {
 
     	unshift(@lines, "$sendto,$HcurrentCampID,$HcurrentID,$HlbbsName,$HlbbsMessage,$Hlbbsturn,$Hlbbssendisland,\n");
 
-    	if(open(OUT, ">$HallychatData$sendto.cht")){
+    	if (open(OUT, ">$HallychatData$sendto.cht")){
     		foreach $line (@lines) {
     			print OUT $line;
     		}
@@ -413,27 +412,24 @@ sub campbbswrite {
             close(IN);
             while ($HAllylbbsMax <= @lines) { pop @lines; }
             unshift(@lines, "$sendto,$HcurrentCampID,$HcurrentID,$HlbbsName,$HlbbsMessage,$Hlbbsturn,$Hlbbssendisland,\n");
-        	if(open(OUT, ">$HallychatData$HcurrentCampID.cht")){
-        		foreach $line (@lines) {
-        			print OUT $line;
-        		}
-        		close(OUT);
+            if (open(OUT, ">$HallychatData$HcurrentCampID.cht")){
+                foreach $line (@lines) {
+                    print OUT $line;
+                }
+                close(OUT);
             } else {
                 tempProblem();
                 return;
             }
         }
-
-
-
     }
-
 }
 
 
 #----------------------------------------------------------------------
 sub campTableFooter {
-	out(<<END);
+
+    out(<<END);
 
 </TABLE>
 </DIV>
