@@ -916,29 +916,30 @@ sub amitySetupMain() {
                 }
             }
 
-			foreach (@HallyChange) {
-				($id, $aId) = split(/-/, $_);
-				$Hally[$HidToAllyNumber{$aId}]->{'score'} += $Hislands[$HidToNumber{$id}]->{'pts'};
-				next if($id == $aId);
-				push(@{$Hally[$HidToAllyNumber{$aId}]->{'memberId'}}, $id);
-				push(@{$Hislands[$HidToNumber{$id}]->{'allyId'}}, $aId);
-			}
-			foreach (0..($HallyNumber - 1)) {
-				$Hally[$_]->{'number'} = @{$Hally[$_]->{'memberId'}};
-			}
-			allyOccupy();
-			allySort();
-			writeIslandsFile();
-			unlock();
-			# 変更成功
-			tempAmitySetupPage();
-		} else {
-			# password間違い
-			unlock();
-			tempWrongPassword();
-			return;
-		}
-	}
+            foreach (@HallyChange) {
+                ($id, $aId) = split(/-/, $_);
+                $Hally[$HidToAllyNumber{$aId}]->{'score'} += $Hislands[$HidToNumber{$id}]->{'pts'};
+                next if($id == $aId);
+                push(@{$Hally[$HidToAllyNumber{$aId}]->{'memberId'}}, $id);
+                push(@{$Hislands[$HidToNumber{$id}]->{'allyId'}}, $aId);
+            }
+
+            foreach (0..($HallyNumber - 1)) {
+                $Hally[$_]->{'number'} = @{$Hally[$_]->{'memberId'}};
+            }
+            allyOccupy();
+            allySort();
+            writeIslandsFile();
+            unlock();
+            # 変更成功
+            tempAmitySetupPage();
+        } else {
+            # password間違い
+            unlock();
+            tempWrongPassword();
+            return;
+        }
+    }
 }
 
 
@@ -970,7 +971,7 @@ END
            } @idx;
 
     my $aStr = ($HarmisticeTurn) ? '陣営' : '同盟';
-    out("<TH $HbgTitleCell align=center colspan=$HallyNumber>${HtagTH_}${aStr}${H_tagTH}</TH>") if($HallyNumber);
+    out("<TH $HbgTitleCell align='center' colspan='$HallyNumber'>${HtagTH_}${aStr}${H_tagTH}</TH>") if($HallyNumber);
     out("</TR><TR>\n");
     my ($number, $island, $name, $ally);
 
@@ -1043,4 +1044,3 @@ END
 }
 
 1;
-
