@@ -21,22 +21,24 @@
 sub localBbsMain {
     # idから島番号を取得
     $HcurrentNumber = $HidToNumber{$HcurrentID};
-    my($island) = $Hislands[$HcurrentNumber];
+    my ($island) = $Hislands[$HcurrentNumber];
 
     # ヘッダ出力
-    tempHeader() if($HjavaMode ne 'java' && $HlbbsMode < 5);
+    tempHeader() if ($HjavaMode ne 'java' && $HlbbsMode < 5);
 
     # なぜかその島がない場合
-    if($HcurrentNumber eq '') {
+    if ($HcurrentNumber eq '') {
         unlock();
         tempProblem();
         return;
     }
 
     # 削除モードじゃなくて名前かメッセージがない場合
-    if($HlbbsMode < 2 || $HlbbsMode == 5) {
-        if(($HlbbsName eq '') || ($HlbbsMessage eq '')) {
-            tempHeader() if($HlbbsMode == 5);
+    if ($HlbbsMode < 2 || $HlbbsMode == 5) {
+        if (   ($HlbbsName eq '')
+            || ($HlbbsMessage eq '')) {
+
+            tempHeader() if ($HlbbsMode == 5);
             unlock();
             tempLbbsNoMessage();
             return;
@@ -59,34 +61,34 @@ sub localBbsMain {
 
         # オーナー名を設定
         # $HlbbsName = $island->{'owner'};
-	} elsif ($HlbbsMode == 0) {
-		# 観光者モード
-		my($sIsland);
+    } elsif ($HlbbsMode == 0) {
+        # 観光者モード
+        my($sIsland);
 
-		if ($HlbbsType ne 'ANON') {
-			# 公開と極秘
+        if ($HlbbsType ne 'ANON') {
+            # 公開と極秘
 
-			# idから島番号を取得
-			my($number) = $HidToNumber{$HspeakerID};
-			$sIsland = $Hislands[$number];
+            # idから島番号を取得
+            my ($number) = $HidToNumber{$HspeakerID};
+            $sIsland = $Hislands[$number];
 
-			# なぜかその島がない場合
-			if($number eq '') {
-				unlock();
-				tempProblem();
-				return;
-			}
+            # なぜかその島がない場合
+            if ($number eq '') {
+                unlock();
+                tempProblem();
+                return;
+            }
 
-			# パスワードチェック
-			if(!checkPassword($sIsland,$HinputPassword)) {
-				# password間違い
+            # パスワードチェック
+            if (!checkPassword($sIsland,$HinputPassword)) {
+                # password間違い
 				unlock();
 				tempWrongPassword();
 				return;
 			}
 
-			# オーナー名を設定
-			# $HlbbsName = $sIsland->{'owner'};
+            # オーナー名を設定
+            # $HlbbsName = $sIsland->{'owner'};
 
 			# 通信費用を払う
 			my($cost) = ($HlbbsType eq 'PUBLIC') ? $HlbbsMoneyPublic : $HlbbsMoneySecret;
@@ -109,6 +111,7 @@ sub localBbsMain {
 			$speaker = $ENV{'REMOTE_HOST'};
 			$speaker = $ENV{'REMOTE_ADDR'} if ($speaker eq '');
 		}
+
 	} elsif ($HlbbsMode == 2) {
 		# 観光者削除モード
 		my($sIsland);
@@ -226,20 +229,24 @@ sub localBbsMain {
 #----------------------------------------------------------------------
 # ローカル掲示板のメッセージを一つ後ろにずらす
 sub slideLbbsMessage {
-	my($lbbs) = @_;
-	my($i);
-	pop(@$lbbs);
-	unshift(@$lbbs, $lbbs->[0]);
+    my ($lbbs) = @_;
+
+    my ($i);
+    pop(@$lbbs);
+    unshift(@$lbbs, $lbbs->[0]);
 }
+
 
 #----------------------------------------------------------------------
 # ローカル掲示板のメッセージを一つ前にずらす
 sub slideBackLbbsMessage {
-	my($lbbs, $number) = @_;
-	my($i);
-	splice(@$lbbs, $number, 1);
-	$lbbs->[$HlbbsMax - 1] = '0<<0>>';
+    my ($lbbs, $number) = @_;
+
+    my ($i);
+    splice(@$lbbs, $number, 1);
+    $lbbs->[$HlbbsMax - 1] = '0<<0>>';
 }
+
 
 #----------------------------------------------------------------------
 # テンプレートその他
@@ -259,6 +266,7 @@ sub tempLbbsMain {
     out('</DIV>');
 }
 
+
 #----------------------------------------------------------------------
 # ローカル掲示板
 sub tempLbbsHead {
@@ -267,6 +275,7 @@ sub tempLbbsHead {
 ${HtagBig_}<span class='Nret'>${HtagName_}${HcurrentName}${H_tagName}</span><span class='Nret'>観光者通信</span>${H_tagBig}<BR>
 END
 }
+
 
 #----------------------------------------------------------------------
 # ローカル掲示板入力フォーム
@@ -293,11 +302,11 @@ END
 <TH>通信方法</TH>
 </TR>
 <TR>
-<TD><INPUT TYPE="text" SIZE="30" MAXLENGTH="30" NAME="LBBSNAME" VALUE="$HdefaultName"></TD>
-<TD$col><INPUT TYPE="text" SIZE="70" NAME="LBBSMESSAGE"></TD>
+<TD><INPUT type="text" size="30" MAXLENGTH="30" name="LBBSNAME" value="$HdefaultName"></TD>
+<TD$col><INPUT type="text" SIZE="70" name="LBBSMESSAGE"></TD>
 <TD>
-<INPUT TYPE="radio" NAME="LBBSTYPE" VALUE="PUBLIC" CHECKED>公開<br>
-<INPUT TYPE="radio" NAME="LBBSTYPE" VALUE="SECRET">極秘
+<INPUT type="radio" name="LBBSTYPE" value="PUBLIC" CHECKED>公開<br>
+<INPUT type="radio" name="LBBSTYPE" value="SECRET">極秘
 </TD>
 </TR>
 <TR>
@@ -306,38 +315,38 @@ END
 <TH$col>動作</TH>
 </TR>
 <TR>
-<TD><INPUT TYPE=password SIZE=16 MAXLENGTH=16 NAME=PASSWORD VALUE="$HdefaultPassword"></TD>
+<TD><INPUT type="password" size="16" MAXLENGTH=16 name="PASSWORD" value="$HdefaultPassword"></TD>
 <TD>
-<SELECT NAME="ISLANDID2">$HislandList</SELECT>
+<SELECT name="ISLANDID2">$HislandList</SELECT>
 END
     out(<<END) if ($HlbbsAnon);
-<INPUT TYPE="radio" NAME="LBBSTYPE" VALUE="ANON">観光客
+<INPUT type="radio" name="LBBSTYPE" value="ANON">観光客
 END
 
     out(<<END);
 </TD>
 <TD><DIV align='center'>
-<INPUT TYPE="submit" VALUE="記帳する" NAME="LbbsButtonSS$HcurrentID">
-<INPUT TYPE="submit" VALUE="極秘確認" NAME="LbbsButtonCK$HcurrentID">
+<INPUT type="submit" value="記帳する" name="LbbsButtonSS$HcurrentID">
+<INPUT type="submit" value="極秘確認" name="LbbsButtonCK$HcurrentID">
 </DIV></TD>
 END
-	if(!$HlbbsAnon) {
-		out(<<END);
-<TD align=right>
+    if (!$HlbbsAnon) {
+        out(<<END);
+<TD align="right">
 番号
-<SELECT NAME=NUMBER>
+<SELECT name="NUMBER">
 END
         {
             # 発言番号
             my($j, $i);
             for($i = 0; $i < $HlbbsMax; $i++) {
                 $j = $i + 1;
-                out("<OPTION VALUE=$i>$j\n");
+                out("<OPTION value=$i>$j\n");
             }
         }
         out(<<END);
 </SELECT><br>
-<INPUT TYPE="submit" VALUE="削除" NAME="LbbsButtonDS$HcurrentID">
+<INPUT type="submit" value="削除" name="LbbsButtonDS$HcurrentID">
 </TD>
 END
     }
@@ -354,7 +363,7 @@ sub tempLbbsInputOW {
 
 	out(<<END);
 <FORM action="$HthisFile" method="POST">
-<INPUT TYPE="hidden" NAME=JAVAMODE VALUE="$HjavaMode">
+<INPUT type="hidden" NAME=JAVAMODE value="$HjavaMode">
 END
 	# out("<B>※</B>名前を変更しても所有者名が使われます。");
 
@@ -365,17 +374,17 @@ END
 <TH COLSPAN=2>内容<small>(全角${HlengthLbbsMessage}字まで)</small></TH>
 </TR>
 <TR>
-<TD><INPUT TYPE="text" SIZE=32 MAXLENGTH=32 NAME="LBBSNAME" VALUE="$HdefaultName"></TD>
-<TD COLSPAN=2><INPUT TYPE="text" SIZE=80 NAME="LBBSMESSAGE"></TD>
+<TD><INPUT type="text" SIZE="32" MAXLENGTH="32" NAME="LBBSNAME" value="$HdefaultName"></TD>
+<TD COLSPAN=2><INPUT type="text" SIZE="80" NAME="LBBSMESSAGE"></TD>
 </TR>
 <TR>
 <TH>パスワード</TH>
 <TH COLSPAN=2>動作</TH>
 </TR>
 <TR>
-<TD><INPUT TYPE=password SIZE=16 MAXLENGTH=16 NAME=PASSWORD VALUE="$HdefaultPassword"></TD>
+<TD><INPUT type="password" SIZE="16" MAXLENGTH="16" NAME="PASSWORD" value="$HdefaultPassword"></TD>
 <TD align=right>
-<INPUT TYPE="submit" VALUE="記帳する" NAME="LbbsButtonOW$HcurrentID">
+<INPUT type="submit" VALUE="記帳する" NAME="LbbsButtonOW$HcurrentID">
 </TD>
 <TD align=right>
 番号
@@ -392,7 +401,7 @@ END
     }
 	out(<<END);
 </SELECT>
-<INPUT TYPE="submit" VALUE="削除する" NAME="LbbsButtonDL$HcurrentID">
+<INPUT type="submit" VALUE="削除する" NAME="LbbsButtonDL$HcurrentID">
 </TD>
 </TR>
 </TABLE>
@@ -418,11 +427,11 @@ END
     my ($sNo);
     my ($sName, $sID);
 
-	for($i = 0; $i < $HlbbsMax; $i++) {
-		$line = $lbbs->[$i];
-		if($line =~ /([0-9]*)\<(.*)\<([0-9]*)\>(.*)\>(.*)$/) {
-			$j = $i + 1;
-			out("<TR><TD align=center>$HtagNumber_$j$H_tagNumber</TD>");
+    for ($i = 0; $i < $HlbbsMax; $i++) {
+        $line = $lbbs->[$i];
+        if ($line =~ /([0-9]*)\<(.*)\<([0-9]*)\>(.*)\>(.*)$/) {
+            $j = $i + 1;
+            out("<TR><TD align='center'>$HtagNumber_$j$H_tagNumber</TD>");
 
 #           $speaker = "<span class='lbbsST'><B><SMALL>($2)</SMALL></B></span>" if ($HlbbsSpeaker && ($2 ne ''));
             ($sName, $sID) = split(/,/, $2);
