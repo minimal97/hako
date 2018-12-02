@@ -91,9 +91,11 @@ our @HflexTime = (3, 3, 3, 3, 9, 3);
 
 # 島の最大数(最大で100)
 our $HmaxIsland = 40;
+use constant REG_MAX_ISLAND    => 40;
 
 # 島の大きさ(変更できないかも)
 our $HislandSize = 20;
+use constant ISLAND_SIZE    => 20;
 
 # 新しい島を探せるのは管理人だけ？(0:しない、1:する)
 # （管理人だけの場合は $HjoinGiveupTurn を小さくしてください）
@@ -111,6 +113,8 @@ our $HlbbsMax = 20;
 
 # 外部簡易掲示板を使用するか(0:使用しない、1:使用する)
 our $HuseExlbbs = 0;
+use constant USE_EX_LBBS    => 0;
+
 # 使用する場合、以下を設定
 # 外部簡易掲示板のアドレス(lbbs.cgi,view.cgiの置いてあるディリクトリ)
 # 最後にスラッシュ(/)は付けない。
@@ -124,6 +128,7 @@ our $AfterName = '島';
 
 # gzipを使用して圧縮伝送する？ 0 : 未使用  1 : 使用
 our $Hgzip = 0;
+use constant USE_GZIP    => 0;
 
 # gzipのインストール先
 our $HpathGzip = '/usr/bin';
@@ -149,6 +154,7 @@ our $HhtmlLogTurn = 8;
 #「最近のできごと」をHTMLで表示するか(0:しない、1:する)
 #「最近のできごと」をHTML化しない場合は0にして下さい。
 our $HhtmlLogMode = 0;
+use constant USE_HTML_LOG_MDOE    => 0;
 
 # 各島の「近況」をhistory.cgiで表示するか？(0:しない、1:する)
 our $HuseHistory1 = 1; # 自島(開発画面)
