@@ -674,18 +674,18 @@ $markList
    <span id="CTBL"></span>
 </ilayer>
 <BR>
-マークの色コード（変更）<BR><TABLE BORDER=0><TR>
+マークの色コード（変更）<BR><TABLE BORDER="0"><TR>
 <TD align='center'>RED</TD>
 <TD align='center'>GREEN</TD>
 <TD align='center'>BLUE</TD>
 </TR><TR>
-<TD><SELECT NAME="COLOR1" onChange=colorPack() onClick=colorPack()>
-$colorList[1]</SELECT><SELECT NAME="COLOR2" onChange=colorPack() onClick=colorPack()>
+<TD><SELECT NAME="COLOR1" onChange="colorPack()" onClick="colorPack()">
+$colorList[1]</SELECT><SELECT NAME="COLOR2" onChange="colorPack()" onClick="colorPack()">
 $colorList[2]</SELECT></TD>
-<TD><SELECT NAME="COLOR3" onChange=colorPack() onClick=colorPack()>
-$colorList[3]</SELECT><SELECT NAME="COLOR4" onChange=colorPack() onClick=colorPack()>
+<TD><SELECT NAME="COLOR3" onChange="colorPack()" onClick="colorPack()">
+$colorList[3]</SELECT><SELECT NAME="COLOR4" onChange="colorPack()" onClick="colorPack()">
 $colorList[4]</SELECT></TD>
-<TD><SELECT NAME="COLOR5" onChange=colorPack() onClick=colorPack()>
+<TD><SELECT NAME="COLOR5" onChange="colorPack()" onClick="colorPack()">
 $colorList[5]</SELECT><SELECT NAME="COLOR6" onChange=colorPack() onClick=colorPack()>
 $colorList[6]</SELECT></TD>
 </TR></TABLE>
@@ -779,21 +779,21 @@ $jsAllyList
 $jsAllyIdList
 $jsAllyMarkList
 $jsAllyColorList
-	document.AcForm.ALLYID.value   = allyID[document.AcForm.ALLYNUMBER.value];
-	document.AcForm.ALLYNAME.value = ally[document.AcForm.ALLYNUMBER.value];
-	document.AcForm.MARK.value     = allyMark[document.AcForm.ALLYNUMBER.value];
-	document.AcForm.COLOR1.value   = allyColor[document.AcForm.ALLYNUMBER.value][0];
-	document.AcForm.COLOR2.value   = allyColor[document.AcForm.ALLYNUMBER.value][1];
-	document.AcForm.COLOR3.value   = allyColor[document.AcForm.ALLYNUMBER.value][2];
-	document.AcForm.COLOR4.value   = allyColor[document.AcForm.ALLYNUMBER.value][3];
-	document.AcForm.COLOR5.value   = allyColor[document.AcForm.ALLYNUMBER.value][4];
-	document.AcForm.COLOR6.value   = allyColor[document.AcForm.ALLYNUMBER.value][5];
-	colorPack();
-	return true;
+  document.AcForm.ALLYID.value   = allyID[document.AcForm.ALLYNUMBER.value];
+  document.AcForm.ALLYNAME.value = ally[document.AcForm.ALLYNUMBER.value];
+  document.AcForm.MARK.value     = allyMark[document.AcForm.ALLYNUMBER.value];
+  document.AcForm.COLOR1.value   = allyColor[document.AcForm.ALLYNUMBER.value][0];
+  document.AcForm.COLOR2.value   = allyColor[document.AcForm.ALLYNUMBER.value][1];
+  document.AcForm.COLOR3.value   = allyColor[document.AcForm.ALLYNUMBER.value][2];
+  document.AcForm.COLOR4.value   = allyColor[document.AcForm.ALLYNUMBER.value][3];
+  document.AcForm.COLOR5.value   = allyColor[document.AcForm.ALLYNUMBER.value][4];
+  document.AcForm.COLOR6.value   = allyColor[document.AcForm.ALLYNUMBER.value][5];
+  colorPack();
+  return true;
 }
 END
-	}
-	out(<<END);
+    }
+    out(<<END);
 colorPack();
 //-->
 </SCRIPT>
@@ -850,7 +850,7 @@ sub tempAllyPactPage {
 <DIV align='center'>$HtempBack</DIV><BR>
 <DIV ID='changeInfo'>
 <H1>コメント変更（$ally->{'name'}）</H1>
-<table border=0 width="50%"><tr><td class="M">
+<table border="0" width="50%"><tr><td class="M">
 <FORM action="$HthisFile" method="POST">
 <B>盟主パスワードは？</B><BR>
 <INPUT TYPE="password" NAME="Allypact" VALUE="$HdefaultPassword" SIZE=32 MAXLENGTH=32 class=f>
@@ -863,7 +863,7 @@ sub tempAllyPactPage {
 タイトル<small>(全角${HlengthAllyTitle}字まで)</small><BR>
 <INPUT TYPE="text" NAME="ALLYTITLE"  VALUE="$ally->{'title'}" SIZE="100" MAXLENGTH="50"><BR>
 メッセージ<small>(全角${HlengthAllyMessage}字まで)</small><BR>
-<TEXTAREA COLS=50 ROWS=16 NAME="ALLYMESSAGE" WRAP="soft">$allyMessage</TEXTAREA>
+<TEXTAREA COLS="50" ROWS="16" NAME="ALLYMESSAGE" WRAP="soft">$allyMessage</TEXTAREA>
 <BR>
 「タイトル」を空欄にすると『盟主からのメッセージ』というタイトルになります。<BR>
 「メッセージ」を空欄にすると「同盟の情報」欄には何も表示されなくなります。
