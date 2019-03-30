@@ -10,10 +10,10 @@
 # サーバー
 #----------------------------------------
 # このファイルを置くディレクトリ(最後にスラッシュ(/)は付けない。)
-$HbaseDir = 'http://' . "$ENV{'SERVER_NAME'}" . '/hakora';
+$HbaseDir = 'http://' . "$ENV{'SERVER_NAME'}" . '/hako';
 
 # 画像ファイルを置くディレクトリ(最後にスラッシュ(/)は付けない。)
-$HimageDir = "${HbaseDir}/hakorenas";
+$HimageDir = "${HbaseDir}";
 
 
 # 画像ファイル　こっちは 最後にスラッシュ必要
@@ -62,7 +62,7 @@ $Hemail = '管理者@どこか.どこか.どこか';
 $Hbbs = "${HbaseDir}/hako-yy-bbs.cgi";
 
 # ホームページのアドレス
-$Htoppage = 'http://サーバー/ホームページ.html';
+$Htoppage = 'サーバー/ホームページ.html';
 
 ## 画像のローカル設定の説明ページ
 $imageExp = "${HbaseDir}/e.html";
@@ -77,7 +77,7 @@ $helpHenko = "${HbaseDir}/henko_new.html";
 #----------------------------------------
 # ディレクトリのパーミッション
 # 通常は0755でよいが、0777、0705、0704等でないとできないサーバーもあるらしい
-$HdirMode = 0755;
+$HdirMode = 0777;
 
 # データディレクトリの名前
 # ここで設定した名前のディレクトリ以下にデータが格納されます。
@@ -101,6 +101,7 @@ $HsubDataold = 'island';
 # 3 シンボリックリンク
 # 4 通常ファイル(あまりお勧めでない)
 $HlockMode = 1;
+use constant SERVER_LOCK_MODE    => 1;
 
 # (注)
 # 4を選択する場合には、'key-free'という、パーミション666の空のファイルを、
