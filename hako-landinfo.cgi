@@ -17,7 +17,7 @@ sub ScoreBoard_Taiji {
         my ($flags, $monsters, $turns) = ($1, $2, $3);
 
         my ($image) = $HMapImgDir . $HmonsterImage[$monsters];
-        $prize .= "<span class='monsm'><IMG SRC=\"${image}\" TITLE=\"[$HmonsterName[$monsters]]\" ";
+        $prize .= "<span class='monsm'><IMG alt='' SRC=\"${image}\" TITLE=\"[$HmonsterName[$monsters]]\" ";
         $prize .= " class='landinfoIcon'>$island->{'taiji'}$HunitMonster退治</span> ";
     }
     return $prize;
@@ -78,9 +78,9 @@ sub ScoreBoard_Farm {
     if( $tori || $buta || $ushi) {
 
         $Farmcpc  = "<span class='unemploy1'>";
-        $Farmcpc .= "<IMG SRC=\"img/niwatori.gif\" TITLE=\"にわとり\" class='landinfoIcon'>$tori万羽" if($tori);
-        $Farmcpc .= "<IMG SRC=\"img/buta.gif\" TITLE=\"ぶた\" class='landinfoIcon'>".$buta."万頭" if($buta);
-        $Farmcpc .= "<IMG SRC=\"img/ushi.gif\" TITLE=\"うし\" class='landinfoIcon'>$ushi万頭" if($ushi);
+        $Farmcpc .= "<IMG SRC=\"img/niwatori.gif\"  alt='' TITLE=\"にわとり\" class='landinfoIcon'>$tori万羽" if ($tori);
+        $Farmcpc .= "<IMG SRC=\"img/buta.gif\"  alt='' TITLE=\"ぶた\" class='landinfoIcon'>".$buta."万頭" if ($buta);
+        $Farmcpc .= "<IMG SRC=\"img/ushi.gif\"  alt='' TITLE=\"うし\" class='landinfoIcon'>$ushi万頭" if ($ushi);
         $Farmcpc .= '</span>';
     }
 
@@ -116,13 +116,13 @@ sub ScoreBoard_Prize {
     }
     my ($alt1) = $alt;
     # $alt1 =~ s/$rt/ /g;
-    $prize .= "<IMG SRC=\"./img/prize/prize0.gif\" TITLE=\"$alt\" onMouseOver='status=\"$alt1\"; return 1;' class='landinfoIcon'> " if ($alt ne '');
+    $prize .= "<IMG SRC=\"./img/prize/prize0.gif\"  alt='' TITLE=\"$alt\" onMouseOver='status=\"$alt1\"; return 1;' class='landinfoIcon'> " if ($alt ne '');
 
     # 名前に賞の文字を追加
     my ($f) = 1;
     for ($i = 1; $i < 10; $i++) {
         if ($flags & $f) {
-            $prize .= "<IMG SRC=\"./img/prize/prize${i}.gif\" TITLE=\"${Hprize[$i]}\" ";
+            $prize .= "<IMG SRC=\"./img/prize/prize${i}.gif\" alt=''  TITLE=\"${Hprize[$i]}\" ";
             $prize .= "class='landinfoIcon'> ";
         }
         $f = $f << 1;
@@ -138,20 +138,22 @@ sub ScoreBoard_Prize {
 sub ScoreBoard_LiveMonster {
     my ($island) = @_;
 
-    my ($monsliveimg) = '';
-    my ($monsm) = '';
     my ($monsterlive) = $island->{'monsterlive'};
+    my ($ret) = '';
 
     if ($monsterlive > 0) {
+        my ($monsliveimg) = '';
+        my ($monsm) = '';
         my ($mName) = '';
         $mName = "[$HmonsterName[$island->{'monsterlivetype'}]]";
         my ($image) = $HmonsterImage[$island->{'monsterlivetype'}];
-        $monsliveimg = "<IMG SRC=\"${HMapImgDir}${image}\" TITLE=\"$mName\" ";
+        $monsliveimg = "<IMG SRC=\"${HMapImgDir}${image}\"  alt=''  TITLE=\"$mName\" ";
         $monsliveimg .= "class='landinfoIcon'>";
-        $monsm = ($monsterlive == 0) ? '' : "${monsterlive}$HunitMonster出現中!!";
+        $monsm = "${monsterlive}$HunitMonster出現中!!";
+        $ret = '<span class="unemploy2">' . $monsliveimg . $monsm . '</span> ';
     }
 
-    return ('<span class="unemploy2">' . $monsliveimg . $monsm . '</span> ');
+    return ($ret);
 }
 
 
