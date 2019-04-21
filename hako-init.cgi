@@ -24,6 +24,7 @@ require './init-server.cgi';
 
 # デバッグモード(1だと、「ターンを進める」ボタンが使用できる)
 our $Hdebug = 1;
+use constant DEBUG_MODE    => 1;
 
 # メインスクリプト
 our $HthisFile = "${HbaseDir}/hako-main.cgi";
@@ -100,6 +101,7 @@ use constant ISLAND_SIZE    => 20;
 # 新しい島を探せるのは管理人だけ？(0:しない、1:する)
 # （管理人だけの場合は $HjoinGiveupTurn を小さくしてください）
 our $HadminJoinOnly = 0;
+use constant  ADMIN_JOIN_ONLY => 0;
 
 # コマンド入力限界数
 # (ゲームが始まってから変更すると、データファイルの互換性が無くなります。)
@@ -110,6 +112,7 @@ our $HuseLbbs = 1;
 
 # ローカル掲示板行数
 our $HlbbsMax = 20;
+use constant LBBS_MAX    => 20;
 
 # 外部簡易掲示板を使用するか(0:使用しない、1:使用する)
 our $HuseExlbbs = 0;
@@ -141,6 +144,7 @@ our $HtopLogTurn = 20;
 
 #「最近の出来事」をHTML化するか(0:しない、1:する)
 our $HhtmlLogMake = 0;
+use constant HTML_LOG_MAKE    => 0;
 
 # HTML化する場合は、以下を設定
 # HTMLファイル(hakolog.html)を置くディレクトリ
