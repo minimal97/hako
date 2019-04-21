@@ -101,6 +101,7 @@ $HsubDataold = 'island';
 # 3 シンボリックリンク
 # 4 通常ファイル(あまりお勧めでない)
 $HlockMode = 1;
+use constant SERVER_LOCK_MODE    => 1;
 
 # (注)
 # 4を選択する場合には、'key-free'という、パーミション666の空のファイルを、
