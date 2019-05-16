@@ -78,6 +78,12 @@ sub logMonsAttacks {
   logOut("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>は怪獣に${HtagDisaster_}攻撃${H_tagDisaster}され被害を受けました。",$id);
 }
 
+# 首都を攻撃する
+sub logMonsAttacksSecret {
+  my($id, $name, $lName, $point) = @_;
+  logSecret("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>は怪獣に${HtagDisaster_}攻撃${H_tagDisaster}され被害を受けました。",$id);
+}
+
 # 資金・食料・衛星足りない、許可されない
 sub logNoAny { #20
 	my($id, $name, $comName, $str) = @_;
@@ -765,6 +771,33 @@ sub logRottenSeaBorn { #2
 sub logNuginugi { #1
 	my($id, $name, $point) = @_;
 	logOut("${HtagName_}${name}$point${H_tagName}に<B>王蟲</B>が脱皮しました。",$id);
+}
+
+# きしんへい食べ物ログ
+sub logKishinhei_down { #1
+    my ($island , $point , $val) = @_;
+    my ($name) = $island->{'name'} . $AfterName;
+    my ($id) = $island->{'id'};
+
+    logOut("${HtagName_}${name}$point${H_tagName}で倒れた<b>きしんへい</b>から${val}${HunitFood}のなぞ肉が出てきました。",$id);
+}
+
+# きしんへい食べ物ログ
+sub logKishinhei_kyusyu { #1
+    my ($island , $point , $val) = @_;
+    my ($name) = $island->{'name'} . $AfterName;
+    my ($id) = $island->{'id'};
+
+    logOut("${HtagName_}${name}$point${H_tagName}の<b>きしんへい</b>が周辺の住民、<b>${val}${HunitPop}</b>を吸収しました。",$id);
+}
+
+# きしんへい食べ物ログ
+sub logKishinhei_Kaihuku { #1
+    my ($island , $point) = @_;
+    my ($name) = $island->{'name'} . $AfterName;
+    my ($id) = $island->{'id'};
+
+    logOut("${HtagName_}${name}$point${H_tagName}の<b>きしんへい</b>が自動修復を行いました。",$id);
 }
 
 # レーザー命中、、
