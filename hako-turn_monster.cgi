@@ -164,6 +164,7 @@ sub ThreeWayFlame {
     my($land) = $island->{'land'};
     my($landValue) = $island->{'landValue'};
     my($landValue2) = $island->{'landValue2'};
+    my($landValue3) = $island->{'landValue3'};
     my($mKind, $mName, $mHp) = monsterSpec($landValue->[$x][$y]);
 
     my ($i , $sx , $sy);
@@ -205,6 +206,7 @@ sub ThreeWayFlame {
                         $land->[$sx][$sy] = $HlandYougan;
                         $landValue->[$sx][$sy] = random(3) + 1;
                         $landValue2->[$sx][$sy] = 0;
+                        $landValue3->[$sx][$sy] = 0;
 
                         $island->{'monsterlive'} -= 1;
                         # Êó¾©¶â
@@ -220,6 +222,7 @@ sub ThreeWayFlame {
                     $land->[$sx][$sy] = $HlandYougan;
                     $landValue->[$sx][$sy] = random(3) + 1;
                     $landValue2->[$sx][$sy] = 0;
+                    $landValue3->[$sx][$sy] = 0;
 
                     $island->{'monsterlive'} -= 1;
 
@@ -242,6 +245,7 @@ sub ThreeWayFlame {
             $land->[$sx][$sy] = $HlandYougan;
             $landValue->[$sx][$sy] = random(3) + 1;
             $landValue2->[$sx][$sy] = 0;
+            $landValue3->[$sx][$sy] = 0;
         }
 
     }
@@ -263,6 +267,7 @@ sub RetroBeam {
     my ($land) = $island->{'land'};
     my ($landValue) = $island->{'landValue'};
     my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     my ($tx,$ty,$i);
     my ($id) = $island->{'id'};
