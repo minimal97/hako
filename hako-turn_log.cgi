@@ -199,6 +199,12 @@ sub logKireDamage {
 	logOut("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>は${HtagDisaster_}暴れる${AfterName}民${H_tagDisaster}によって${HtagDisaster_}破壊${H_tagDisaster}されました。",$id);
 }
 
+# 重税被害
+sub logZeikin_fuman {
+    my ($id, $name) = @_;
+    logOut("${HtagName_}${name}${H_tagName}の住民は、<b>税金に対して、切り捨てられる資金が多いことに、不満</B>を感じています。",$id);
+}
+
 # 怪獣現る(魔方陣)
 sub logMonsComemagic {
 	my($id, $name, $mName, $point, $lName) = @_;
@@ -1120,6 +1126,16 @@ sub logTyphoon { #1
 sub logMeteo { #10
 	my($id, $name, $lName, $point, $str) = @_;
 	logOut("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>に${HtagDisaster_}隕石${H_tagDisaster}が落下$strました。",$id);
+}
+
+# 隕石、落下
+sub logMeteo_Safe {
+    my ($island) = @_;
+
+    my ($name) = islandName($island);
+    my ($id) = $island->{'id'};
+
+    logOut("${HtagName_}${name}${H_tagName}へ${HtagDisaster_}隕石${H_tagDisaster}が飛来してきましたが、迎撃衛星によって守られました。",$id);
 }
 
 # 隕石、落下 def
