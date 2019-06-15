@@ -68,9 +68,39 @@ TD.T{
 H1   { color: #4444FF;       }
 HR   { color: #AABBCC;       }
 
+@media screen and (max-width:600px) { /*600px以下*/
+    div.subtitle {
+        color: #4444FF;
+        display: block;
+        font-size: 2em;
+        margin-block-start: 0.2em;
+        margin-block-end: 0.2em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+        text-align:center;
+    }
+}
+@media screen and (min-width:601px) { /*601px以上*/
+    div.subtitle {
+        color: #4444FF;
+        display: block;
+        font-size: 2em;
+        margin-block-start: 0.67em;
+        margin-block-end: 0.67em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+    }
+}
+
 /* 折り返し禁止 */
 span.Nret
             { display: inline-block;}
+
+div.t_center {
+    text-align:center;
+}
 
 /* ヘッダのリンク */
 div.HeadFootLink
@@ -84,6 +114,17 @@ div.TopMenuLink
               word-wrap: break-word;
               overflow-wrap: break-word; }
 
+div.TopLeft {
+                display:inline-block;
+                float:Left;
+                width:330px;
+            }
+
+div.TopRight
+            {
+                display:block;
+            }
+
 #LinkHead    { white-space : nowrap; } /* リンク(ヘッダ) */
 .LinkFoot    { white-space : nowrap; text-align : center; } /* リンク(フッタ) */
 /* トップページ */
@@ -94,6 +135,23 @@ div.TopMenuLink
 #HistoryLog  { white-space : nowrap; } /* 発見の記録 */
 #islandView  { white-space : nowrap; } /* 諸島の状況 */
 
+
+@media screen and (min-width: 400px) {
+    .topHistoryLog {
+        white-space : nowrap;
+        overflow:auto;
+        height:150px;
+    }
+}
+
+@media screen and (max-width: 399px) {
+    .topHistoryLog {
+        white-space : nowrap;
+        overflow:auto;
+        height:150px;
+        width:300px;
+    }
+}
 /* 箱庭カップ */
 @media screen and (min-width: 400px) {
     .HakoniwaCup {
@@ -140,12 +198,24 @@ div.TopMenuLink
 span.HistoryTurnList { white-space : normal;}
 
 /* タイトル */
-.title {
-  font-size: 32pt;
-  color: #8888FF;
-  padding-left: 5px;
-  width: 100%;
-  filter:shadow(color=#9999CC);
+@media screen and (max-width:600px) { /*600px以下*/
+    .title {
+      font-size: 32pt;
+      color: #8888FF;
+      padding-left: 5px;
+      width: 100%;
+      filter:shadow(color=#9999CC);
+      text-align:center;
+    }
+}
+@media screen and (min-width:601px) { /*601px以上*/
+    .title {
+      font-size: 32pt;
+      color: #8888FF;
+      padding-left: 5px;
+      width: 100%;
+      filter:shadow(color=#9999CC);
+    }
 }
 /* 大きい文字 */
 @media screen and (min-width: 400px) {
@@ -231,11 +301,12 @@ span.HistoryTurnList { white-space : normal;}
 .monsm     { white-space : nowrap; color: hotpink;        } /* 怪獣退治数，成長率 */
 
 /* 背景色 */
-.TitleCell   { background-color: #CCFFCC;        } /* 順位表見出し */
-.NumberCell  { background-color: #CCFFCC;        } /* 順位表順位 */
+.TitleCell      { background-color: #CCFFCC;        } /* 順位表見出し */
+.NumberCell     { background-color: #CCFFCC;        } /* 順位表順位 */
 .NumberCellAlert  { background-color: #FF0000;        } /* 順位表順位 */
-.NameCell    { background-color: #CCFFFF;        } /* 順位表島の名前 */
-.InfoCell    { background-color: #CCFFFF;        } /* 順位表島の情報 */
+.NameCell       { background-color: #CCFFFF;        } /* 順位表島の名前 */
+.InfoCell       { background-color: #CCFFFF;        } /* 順位表島の情報 */
+.TopInfoCell    { background-color: #CCFFFF;        } /* 順位表島の情報 */
 .GrayCell  { background-color: #555555;        } /* 順位表順位 */
 .CommentCell { /* 順位表コメント欄 */
   background-color: #CCFFCC;
@@ -361,25 +432,71 @@ textarea {
 }
 .NoResizeTextArea { resize:none; }
 
-.ifrm-container {
-  width:100%;
-  height:250px;
-  overflow:auto;
-  -webkit-overflow-scrolling:touch;
-  display: inline-block;
-}
+@media screen and (min-width:601px) { /*601px以上*/
 
-.ifrm {
-  width:98%;
-  height:98%;
-  border:1;
-  display:block;
-}
+    .ifrm-container {
+      width:80%;
+      height:250px;
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
+      display: inline-block;
+    }
 
+    .ifrm {
+      width:98%;
+      height:98%;
+      border:1;
+      display:block;
+    }
+}
+@media screen and (max-width:600px) { /*600px以下*/
+    .ifrm-container {
+      width:90%;
+      height:250px;
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
+      display: inline-block;
+    }
+
+    .ifrm {
+      width:98%;
+      height:98%;
+      border:1;
+      display:block;
+    }
+}
 img.cur_p {
     cursor:pointer;
 }
 
+/* -------------------------- */
+/* ヘッダーとデータ部分の設定 */
+thead.sc , tbody.sb{
+  display:block;
+  /* font-size:0.5em; */
+}
+
+/* 溢れたらスクロール */
+tbody.sb {
+  overflow-y:scroll;
+  height:200px;
+}
+
+table.top_ary td,th{
+  table-layout:fixed;
+}
+
+table.top_ary .dd{
+  width:200px;
+}
+table.top_ary .nm{
+  width:40px;
+}
+table.top_ary .ee{
+  width:80px;
+}
+
+/* -------------------------- */
 
 img.maptile {
   width: 32px;
@@ -400,29 +517,18 @@ img.landinfoIcon {
 }
 
 @media screen and (min-width:601px) { /*601px以上*/
-
+    .topblock {
+        vertical-align:top;
+        display:inline-block;
+        width: 45%;
+    }
 }
 @media screen and (max-width:600px) { /*600px以下*/
 
-    table.TopMenu {
-        display: block;
-        max-width: 98%; /*スマホ画面ほぼ一杯に広がる感じ*/
-    }
-    tbody.TopMenu {
-        display: block;
-        max-width: 98%; /*スマホ画面ほぼ一杯に広がる感じ*/
-    }
-    tr.TopMenu {
-        display: block;
-        max-width: 98%; /*スマホ画面ほぼ一杯に広がる感じ*/
-    }
-    th.TopMenu {
-        display: block;
-        max-width: 98%; /*スマホ画面ほぼ一杯に広がる感じ*/
-    }
-    td.TopMenu {
-        display: block;
-        max-width: 98%; /*スマホ画面ほぼ一杯に広がる感じ*/
+    .topblock {
+        vertical-align:top;
+        display:inline-block;
+        width: 98%;
     }
 
 }
