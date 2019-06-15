@@ -387,7 +387,6 @@ sub campbbswrite {
     my $sendto = ($HAnoSend) ? $HAnoSendto : $HcurrentCampID;
 
     if ( 1 ) {
-    	my @lines;
 
     	open(IN, "$HallychatData$sendto.cht");
     	my @lines = <IN>;
