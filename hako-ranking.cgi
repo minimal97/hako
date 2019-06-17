@@ -13,18 +13,18 @@ require './hako-const.cgi';
 sub rankIslandMain {
     my $i;
 
-	foreach $i (0..$islandNumber) {
-		my $rena = $Hislands[$i]->{'rena'}; # ·³»öÎÏ
-		$Hislands[$i]->{'renae'} = int($rena / 10 ) + 1;
+    foreach $i (0..$islandNumber) {
+        my $rena = $Hislands[$i]->{'rena'}; # ·³»öÎÏ
+        $Hislands[$i]->{'renae'} = int($rena / 10 ) + 1;
 
-		my($sto, $std, $stk, $stwin, $stdrow, $stlose, $stwint, $stdrowt, $stloset, $styusho, $stshoka) = split(/,/, $Hislands[$i]->{'eisei4'});
-		$Hislands[$i]->{'kachiten'} = $stwin*3 + $stdrow;
-		$Hislands[$i]->{'kachitent'} = $stwint*3 + $stdrowt;
-		my $siaisu = $stwint + $stdrowt + $stloset;
-		$siaisu = 1 if($siaisu == 0);
-		$Hislands[$i]->{'shoritu'} = int($stwint / $siaisu * 100);
-		$Hislands[$i]->{'teamforce'} = $sto + $std + $stk;
-		$Hislands[$i]->{'styusho'} = $styusho;
+        my ($sto, $std, $stk, $stwin, $stdrow, $stlose, $stwint, $stdrowt, $stloset, $styusho, $stshoka) = split(/,/, $Hislands[$i]->{'eisei4'});
+        $Hislands[$i]->{'kachiten'} = $stwin*3 + $stdrow;
+        $Hislands[$i]->{'kachitent'} = $stwint*3 + $stdrowt;
+        my $siaisu = $stwint + $stdrowt + $stloset;
+        $siaisu = 1 if($siaisu == 0);
+        $Hislands[$i]->{'shoritu'} = int($stwint / $siaisu * 100);
+        $Hislands[$i]->{'teamforce'} = $sto + $std + $stk;
+        $Hislands[$i]->{'styusho'} = $styusho;
 
 		my($mshp, $msap, $msdp, $mssp) = (split(/,/, $Hislands[$i]->{'eisei5'}))[0..3];
 		$Hislands[$i]->{'force'} = $mshp + $msap + $msdp + $mssp;
@@ -35,20 +35,8 @@ sub rankIslandMain {
 		}
 	}
 
-	my $hcturn = int($HislandTurn/100) * 100;
-	my @elements   = (   'pop', 'farm'      , 'factory'       , 'mountain'        , 'fore',
-                        'tare', 'zipro'     , 'leje'          , 'monsterlive'     , 'taiji',
-                       'monta', 'hamu'      , 'pika'          , 'kei'             , 'renae',
-                       'force', 'eisei2'    , 'uni'           , 'teamforce'       , 'styusho',
-                     'shoritu', 'kachitent' , 'kachiten'      , 'tha_diff'        , 'zoo_Mons_cnt');
+    my $hcturn = int($HislandTurn/100) * 100;
 
-	my @bumonName  = (  '¿Í¸ý',      'ÇÀ¾ì' ,     '¿¦¾ì'      , 'ºÎ·¡¾ì'          ,  '¿¹ÎÓ',
-                  '¤Ë¤ï¤È¤ê¿ô',    '¤Ö¤¿¿ô' ,   '¤¦¤·¿ô'      , '²ø½Ã½Ð¸½¿ô'      , '²ø½ÃÂà¼£¿ô',
-                      'À®Ä¹ÅÙ',  '¿Í¸ýÁý²Ã' ,     '¼ýÆþ'      , 'µ­Ç°Èê¿ô'        , '·³»öµ»½Ñ',
-                'À¸ÊªÂç³ØÇ½ÎÏ', 'ÄÌ»»´Ñ¸÷µÒ', '¥æ¥Ë¡¼¥¯ÃÏ·Á¿ô', '¥µ¥Ã¥«¡¼¥Á¡¼¥àÎÏ', 'HC Í¥¾¡²ó¿ô', 
-                 'HC ÄÌ»»¾¡Î¨','HC ÄÌ»»¾¡ÅÀ', "HC${hcturn} ¾¡ÅÀ" , '100¥¿¡¼¥óÀ®Ä¹','Æ°Êª±à²ø½Ã¿ô');
-
-    
     my @bAfterName = (
                    "$HunitPop", "0$HunitPopµ¬ÌÏ", "0$HunitPopµ¬ÌÏ", "0$HunitPopµ¬ÌÏ","$HunitTree",
                         'Ëü±©', 'ËüÆ¬'      , 'ËüÆ¬'          , "$HunitMonster"   , "$HunitMonster",
@@ -61,7 +49,7 @@ sub rankIslandMain {
     my @islands;
     my @ids;
     $i = 0;
-    foreach (@elements) {
+    foreach (@BUMON_ELEMENTS) {
         $islands{$_} = $Hislands[$HidToNumber{$HrankingID[$i]}];
         $ids{$_} = $islands{$_}->{'id'};
         $i++;
@@ -84,14 +72,14 @@ sub rankIslandMain {
 </DIV >
 END
     my ($tag);
-    foreach (0..$#elements) {
-        my $id = $islands{$elements[$_]}->{'id'};
-        my $name = islandName($islands{$elements[$_]});
-        my $element = $islands{$elements[$_]}->{$elements[$_]};
+    foreach (0..$#BUMON_ELEMENTS) {
+        my $id = $islands{$BUMON_ELEMENTS[$_]}->{'id'};
+        my $name = islandName($islands{$BUMON_ELEMENTS[$_]});
+        my $element = $islands{$BUMON_ELEMENTS[$_]}->{$BUMON_ELEMENTS[$_]};
 
         $tag = 'float:Left;';
 
-        if ($_ == $#elements) {
+        if ($_ == $#BUMON_ELEMENTS) {
             $tag = '';
         }
 
@@ -101,10 +89,11 @@ END
   <td>
     <TABLE BORDER=1 width="100%">
       <TR><TD class="RankingCell" ALIGN="center" COLSPAN="2">
-      <span class="bumon">${bumonName[$_]}NO.1</span></TD></TR>
+      <span class="bumon">${BUMON_NAME[$_]}NO.1</span></TD></TR>
 END
 
-        if (($element ne '') && ($element != 0)) {
+        if (   ($element ne '')
+            && ($element != 0)) {
             out(<<END);
       <TR><TD ALIGN="center"><A STYlE="text-decoration:none" HREF="${HthisFile}?Sight=${id}" alt="ID=${id}" title="ID=${id}">${HtagName_}${name}${H_tagName}</TD></TR>
       <TR><TD ALIGN="center">${bBeforeName[$_]}${element}${bAfterName[$_]}</TD></TR>
@@ -125,7 +114,7 @@ END
         }
 #        out("</TR></TABLE>\n") if(!(($_ + 1) % 5));
     }
-#   out("</TR></TABLE>\n") if((($#elements + 1) % 5));
+#   out("</TR></TABLE>\n") if((($#BUMON_ELEMENTS + 1) % 5));
     out("</DIV>\n");
 }
 
@@ -135,15 +124,22 @@ END
 #----------------------------------------------------------------------
 # ¥á¥¤¥ó
 sub rekidaiPopMain {
-	my($flag, $line, $j, $id, $pop, $turn, $name, $n, @rekidai, $reki, $oldpop);
-	$flag = 0;
-	if(!open(RIN, "<${HdirName}/rekidai.dat")) {
-		rename("${HdirName}/rekidai.tmp", "${HdirName}/rekidai.dat");
-		if(!open(RIN, "<${HdirName}/rekidai.dat")) {
-			$flag = 1;
-		}
-	}
-	if(!$flag) {
+
+    my ($flag, $id, $pop, $turn, $name, @rekidai, $oldpop);
+
+    $flag = 0;
+
+    if (!open(RIN, "<${HdirName}/rekidai.dat")) {
+        rename("${HdirName}/rekidai.tmp", "${HdirName}/rekidai.dat");
+        if (!open(RIN, "<${HdirName}/rekidai.dat")) {
+            $flag = 1;
+        }
+    }
+
+    if (!$flag) {
+        my ($n);
+        my ($line);
+
 		$n = 0;
 		while($line = <RIN>) {
 			$line =~ /^([0-9]*),([0-9]*),([0-9]*),(.*)$/;
@@ -169,7 +165,11 @@ sub rekidaiPopMain {
 <TH $HbgTitleCell align=center>${HtagTH_}¿Í¸ý${H_tagTH}</TH>
 <TH $HbgTitleCell align=center>${HtagTH_}¥¿¡¼¥ó${H_tagTH}</TH>
 END
-	if(!$flag) {
+    if (!$flag) {
+        my ($j);
+        my ($n);
+        my ($reki);
+
 		$j = 0;
 		$n = 1;
 		$oldpop = 0;
