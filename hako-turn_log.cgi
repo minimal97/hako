@@ -1124,8 +1124,14 @@ sub logTyphoon { #1
 
 # 隕石、落下
 sub logMeteo { #10
-	my($id, $name, $lName, $point, $str) = @_;
-	logOut("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>に${HtagDisaster_}隕石${H_tagDisaster}が落下$strました。",$id);
+    my ($id, $name, $lName, $point, $str) = @_;
+    logOut("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>に${HtagDisaster_}隕石${H_tagDisaster}が落下$strました。",$id);
+}
+
+# 隕石、落下 2
+sub logMeteo2 {
+    my ($id, $name, $lName, $point, $str , $metro) = @_;
+    logOut("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>に${HtagDisaster_}${metro}${H_tagDisaster}が落下$strました。",$id);
 }
 
 # 隕石、落下
