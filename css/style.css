@@ -13,13 +13,13 @@ html.os-win button {
 }
 
 /* Hakoniwa Skin for R.A. ＆ 海戦(帝国海戦) */
-A:LINK    { color: #0000FF;       }
-A:VISITED { color: #0000FF;       }
-A:ACTIVE  { color: #FF0000;       }
-A:HOVER   { color: #FF0000;       }
-A.M       { text-decoration:none; }
+a:link    { color: #0000FF;       }
+a:visited { color: #0000FF;       }
+a:active  { color: #FF0000;       }
+a:hover   { color: #FF0000;       }
+a.m       { text-decoration:none; }
 
-BODY {
+body {
 /* font-family: Tahoma, MS UI Gothic, Chicago;*/
   color: #000000;
   background-color: #EEFFEE;
@@ -30,6 +30,13 @@ BODY {
   scrollbar-face-color:#EEFFEE;
   scrollbar-highlight-color:#EEFFEE;
   scrollbar-shadow-color:#AABBCC;
+}
+
+h1 {
+    display: block;
+    margin-block-start: 0.4em;
+    margin-block-end: 0.4em;
+/*  color: #4444FF;  */
 }
 
 TABLE {
@@ -65,12 +72,25 @@ TD.T{
   text-align: center;
   word-break: break-all;
 }
-H1   { color: #4444FF;       }
 HR   { color: #AABBCC;       }
 
+.toph2 {
+    color: #4444FF;
+}
+
 @media screen and (max-width:600px) { /*600px以下*/
-    div.subtitle {
+    .subtitle {
         color: #4444FF;
+        display: block;
+        font-size: 2em;
+        margin-block-start: 0.2em;
+        margin-block-end: 0.2em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+        text-align:center;
+    }
+    h2 {
         display: block;
         font-size: 2em;
         margin-block-start: 0.2em;
@@ -82,12 +102,21 @@ HR   { color: #AABBCC;       }
     }
 }
 @media screen and (min-width:601px) { /*601px以上*/
-    div.subtitle {
+    .subtitle {
         color: #4444FF;
         display: block;
         font-size: 2em;
-        margin-block-start: 0.67em;
-        margin-block-end: 0.67em;
+        margin-block-start: 0.2em;
+        margin-block-end: 0.2em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+    }
+    h2 {
+        display: block;
+        font-size: 2em;
+        margin-block-start: 0.2em;
+        margin-block-end: 0.2em;
         margin-inline-start: 0px;
         margin-inline-end: 0px;
         font-weight: bold;
@@ -95,7 +124,7 @@ HR   { color: #AABBCC;       }
 }
 
 /* 折り返し禁止 */
-span.Nret
+.Nret
             { display: inline-block;}
 
 div.t_center {
@@ -131,7 +160,7 @@ div.TopRight
 #LinkTop     { white-space : nowrap; } /* リンク(新規登録、情報変更など) */
 #Turn        { white-space : nowrap; } /* ターン数表示 */
 #nexttime    { white-space : nowrap; } /* 現在の時間(次回の更新時間) */
-#myIsland    { white-space : nowrap; } /* 自分の島へ */
+myIsland     { white-space : nowrap; } /* 自分の島へ */
 #HistoryLog  { white-space : nowrap; } /* 発見の記録 */
 #islandView  { white-space : nowrap; } /* 諸島の状況 */
 
@@ -169,11 +198,11 @@ div.TopRight
 
 #campInfo    { white-space : nowrap; } /* 陣営の状況 */
 /* 開発画面・観光画面 */
-#islandInfo  { white-space : nowrap; text-align : center; } /* 島の情報 */
-#islandMap   { white-space : nowrap; text-align : center; } /* 島の地図 */
+#islandInfo  { white-space : nowrap; } /* 島の情報 */
+#islandMap   { white-space : nowrap; } /* 島の地図 */
 #AutoCommand { white-space : nowrap; text-align : center; } /* 自動系計画送信 */
 #CommentBox  { white-space : nowrap; text-align : center; } /* コメント更新 */
-#localBBS    { white-space : normal; text-align : center; word-wrap: break-word; overflow-wrap: break-word;} /* ローカル掲示板 */
+#localBBS    { white-space : normal; word-wrap: break-word; overflow-wrap: break-word;} /* ローカル掲示板 */
 #RecentlyLog { white-space : nowrap; } /* 最近の出来事・各島の近況 */
 #menu        { white-space : nowrap; } /* ポップアップ・メニュー(コマンド) */
 #menu2       { white-space : nowrap; } /* ポップアップ・メニュー２(旗艦・怪獣操作) */
@@ -416,7 +445,7 @@ span.HistoryTurnList { white-space : normal;}
   border: groove #4169E1;
   border-width: 3px;
   width:180px;
-  margin-top : -224px;
+/*  margin-top : 0px; */
   padding: 3px;
 }
 .NaviTitle {
@@ -497,6 +526,10 @@ table.top_ary .ee{
 }
 
 /* -------------------------- */
+img {
+
+  vertical-align:bottom;
+}
 
 img.maptile {
   width: 32px;
