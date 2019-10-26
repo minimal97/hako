@@ -26,14 +26,14 @@ sub rankIslandMain {
         $Hislands[$i]->{'teamforce'} = $sto + $std + $stk;
         $Hislands[$i]->{'styusho'} = $styusho;
 
-		my ($mshp, $msap, $msdp, $mssp) = (split(/,/, $Hislands[$i]->{'eisei5'}))[0..3];
-		$Hislands[$i]->{'force'} = $mshp + $msap + $msdp + $mssp;
+        my ($mshp, $msap, $msdp, $mssp) = (split(/,/, $Hislands[$i]->{'eisei5'}))[0..3];
+        $Hislands[$i]->{'force'} = $mshp + $msap + $msdp + $mssp;
 
-		foreach (split(/,/, $Hislands[$i]->{'eisei6'})) {
-			$Hislands[$i]->{'tuni'} += $_;
-			$Hislands[$i]->{'uni'}++ if($_ > 0);
-		}
-	}
+        foreach (split(/,/, $Hislands[$i]->{'eisei6'})) {
+            $Hislands[$i]->{'tuni'} += $_;
+            $Hislands[$i]->{'uni'}++ if($_ > 0);
+        }
+    }
 
     my ($hcturn) = int($HislandTurn/100) * 100;
 
@@ -66,12 +66,12 @@ sub rankIslandMain {
     unlock();
 
     out(<<END);
-<DIV ID='Ranking'  style='display=inline-block;'>
-    <H1>各部門別NO.1</H1>
-    <DIV width="100%"  style='display=inline-block;'>
-        <span class='Nret'>目指せ<B>ALL NO.1</B></span>
-        <span class='Nret'>！！クリックすると、<B>観光</B>することができます。</span>
-    </DIV>
+<div id='Ranking'  style='display=inline-block;'>
+  <h1>各部門別NO.1</h1>
+  <div width="100%"  style='display=inline-block;'>
+    <span class='Nret'>目指せ<B>ALL NO.1</B></span>
+    <span class='Nret'>！！クリックすると、<B>観光</B>することができます。</span>
+  </div>
 END
     my ($tag);
     foreach (0..$#BUMON_ELEMENTS) {
@@ -86,38 +86,41 @@ END
         }
 
         out(<<END);
-<TABLE ALIGN="center" class='RankingSeparate' style='display=inline-block; $tag'>
-  <TR>
+<table align="center" class='RankingSeparate' style='display=inline-block; $tag'>
+  <tr>
   <td>
-    <TABLE BORDER=1 width="100%">
-      <TR><TD class="RankingCell" ALIGN="center" COLSPAN="2">
-      <span class="bumon">${BUMON_NAME[$_]}NO.1</span></TD></TR>
+    <table border="1" width="100%">
+      <tr>
+        <td class="RankingCell" align="center" colspan="2">
+          <span class="bumon">${BUMON_NAME[$_]}NO.1</span>
+        </td>
+      </tr>
 END
 
         if (   ($element ne '')
             && ($element != 0)) {
             out(<<END);
-      <TR><TD ALIGN="center"><A STYlE="text-decoration:none" HREF="${HthisFile}?Sight=${id}" alt="ID=${id}" title="ID=${id}">${HtagName_}${name}${H_tagName}</TD></TR>
-      <TR><TD ALIGN="center">${bBeforeName[$_]}${element}${bAfterName[$_]}</TD></TR>
-    </TABLE>
-  </TD>
-  </TR>
-</TABLE>
+      <tr><td align="center"><a style="text-decoration:none" href="${HthisFile}?Sight=${id}" alt="ID=${id}" title="ID=${id}">${HtagName_}${name}${H_tagName}</td></tr>
+      <tr><td align="center">${bBeforeName[$_]}${element}${bAfterName[$_]}</TD></TR>
+    </table>
+  </td>
+  </tr>
+</table>
 END
         } else {
             out(<<END);
-      <TR><TD ALIGN="center">${HtagName_} - ${H_tagName}</TD></TR>
-      <TR><TD ALIGN="center"> - </TD></TR>
-    </TABLE>
-  </TD>
-  </TR>
-</TABLE>
+      <tr><td align="center">${HtagName_} - ${H_tagName}</td></tr>
+      <tr><td align="center"> - </td></tr>
+    </table>
+  </td>
+  </tr>
+</table>
 END
         }
 #        out("</TR></TABLE>\n") if(!(($_ + 1) % 5));
     }
 #   out("</TR></TABLE>\n") if((($#BUMON_ELEMENTS + 1) % 5));
-    out("</DIV>\n");
+    out("</div>\n");
 }
 
 
@@ -142,74 +145,77 @@ sub rekidaiPopMain {
         my ($n);
         my ($line);
 
-		$n = 0;
-		while ($line = <RIN>) {
-			$line =~ /^([0-9]*),([0-9]*),([0-9]*),(.*)$/;
-			($id, $pop, $turn, $name) = ($1, $2, $3, $4);
-			$rekidai[$n]->{'id'} = $id;
-			$rekidai[$n]->{'pop'} = $pop;
-			$rekidai[$n]->{'turn'} = $turn;
-			$rekidai[$n]->{'name'} = $name;
-			$n++;
-		}
-		close(RIN);
-	}
-	# 開放
-	unlock();
+        $n = 0;
+        while ($line = <RIN>) {
+            $line =~ /^([0-9]*),([0-9]*),([0-9]*),(.*)$/;
+            ($id, $pop, $turn, $name) = ($1, $2, $3, $4);
+            $rekidai[$n]->{'id'} = $id;
+            $rekidai[$n]->{'pop'} = $pop;
+            $rekidai[$n]->{'turn'} = $turn;
+            $rekidai[$n]->{'name'} = $name;
+            $n++;
+        }
+        close(RIN);
+    }
+    # 開放
+    unlock();
 
-	out(<<END);
-<DIV align='center'>$HtempBack</DIV><BR>
-<DIV ID='Successive'>
-<H1>歴代最多人口記録</H1>
+    out(<<END);
+<div align='center'>$HtempBack</div><br>
+<div id='Successive'>
+<h1>歴代最多人口記録</h1>
 <table border="0" width="50%"><tr>
-<TH $HbgTitleCell align=center>${HtagTH_}順位${H_tagTH}</TH>
-<TH $HbgTitleCell align=center>${HtagTH_}${AfterName}名${H_tagTH}</TH>
-<TH $HbgTitleCell align=center>${HtagTH_}人口${H_tagTH}</TH>
-<TH $HbgTitleCell align=center>${HtagTH_}ターン${H_tagTH}</TH>
+  <th $HbgTitleCell align=center>${HtagTH_}順位${H_tagTH}</th>
+  <th $HbgTitleCell align=center>${HtagTH_}${AfterName}名${H_tagTH}</th>
+  <th $HbgTitleCell align=center>${HtagTH_}人口${H_tagTH}</th>
+  <th $HbgTitleCell align=center>${HtagTH_}ターン${H_tagTH}</th>
 END
     if (!$flag) {
         my ($j) = 0;
         my ($n) = 1;
         my ($reki);
 
-		$oldpop = 0;
-		$pop = 0;
-		while (   ($j < 10)
+        $oldpop = 0;
+        $pop = 0;
+        while (   ($j < 10)
                || ($flag) ) {
-			$reki = $rekidai[$j];
-			last unless(defined $reki->{'pop'});
-			$oldpop = $pop;
-			($id, $pop, $turn, $name) = ($reki->{'id'}, $reki->{'pop'}, $reki->{'turn'}, $reki->{'name'});
-			if(defined $HidToNumber{$id}) {
-				$name = "<A STYlE=\"text-decoration:none\" HREF=\"${HthisFile}?Sight=${id}\" alt=\"ID=${id}\" title=\"ID=${id}\">${HtagName_}$name${AfterName}${H_tagName}</A>";
-			} else {
-				$name = "${HtagName2_}$name${AfterName}${H_tagName2}";
-			}
-			$j++;
-			$n = $j if($oldpop > $pop);
-			$reki = $rekidai[$j];
-			$flag = 0 unless(defined $reki->{'pop'});
-			if($reki->{'pop'} < $pop) {
-				$flag = 0;
-			} else {
-				$flag = 1;
-			}
-			out(<<END);
-</tr><tr>
-<TD $HbgNumberCell align=right>${HtagNumber_}$n${H_tagNumber}</TD>
-<TD $HbgNameCell align=right>$name</TD>
-<TD $HbgInfoCell align=right>$pop${HunitPop}</TD>
-<TD $HbgInfoCell align=right>$turn</TD>
+            $reki = $rekidai[$j];
+            last unless(defined $reki->{'pop'});
+            $oldpop = $pop;
+            ($id, $pop, $turn, $name) = ($reki->{'id'}, $reki->{'pop'}, $reki->{'turn'}, $reki->{'name'});
+            if (defined $HidToNumber{$id}) {
+                $name = "<a style=\"text-decoration:none\" href=\"${HthisFile}?Sight=${id}\" alt=\"ID=${id}\" title=\"ID=${id}\">${HtagName_}$name${AfterName}${H_tagName}</a>";
+            } else {
+                $name = "${HtagName2_}$name${AfterName}${H_tagName2}";
+            }
+            $j++;
+            $n = $j if($oldpop > $pop);
+            $reki = $rekidai[$j];
+            $flag = 0 unless(defined $reki->{'pop'});
+            if ($reki->{'pop'} < $pop) {
+                $flag = 0;
+            } else {
+                $flag = 1;
+            }
+            out(<<END);
+</tr>
+<tr>
+  <td $HbgNumberCell align=right>${HtagNumber_}$n${H_tagNumber}</td>
+  <td $HbgNameCell align=right>$name</td>
+  <td $HbgInfoCell align=right>$pop${HunitPop}</td>
+  <td $HbgInfoCell align=right>$turn</td>
 END
-		}
-
-	} else {
-		out(<<END);
-</tr><tr><TH colspan=4>データがありません！</TH>
+        }
+    }
+    else {
+        out(<<END);
+</tr>
+<tr>
+  <th colspan=4>データがありません！</th>
 END
-	}
-		out(<<END);
-</tr></table></DIV>
+    }
+    out(<<END);
+</tr></table></div>
 END
 
 }
