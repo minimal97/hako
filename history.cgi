@@ -54,27 +54,27 @@ $bye = './hako-main.cgi';
 cookieInput();
 cgiInput();
 unless(($ENV{HTTP_REFERER}  =~ /${HbaseDir}/) || $HcurrentID) {
-    if($HskinName ne '' ){
+    if ($HskinName ne '' ) {
         $baseSKIN = $HskinName;
-    } else {
+    }
+    else {
         $baseSKIN = "${efileDir}/$HcssFile";
     }
     print qq{Content-type: text/html; charset=EUC-JP\n\n};
     out(<<END);
-<HTML>
-<HEAD>
-<TITLE>
-$title
-</TITLE>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#99FF99">
-<link rel="shortcut icon" href="./img/fav.ico">
-<link rel="stylesheet" type="text/css" href="${baseSKIN}">
-</HEAD>
+<html>
+  <head>
+    <title>$title</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#99FF99">
+    <link rel="shortcut icon" href="./img/fav.ico">
+    <link rel="stylesheet" type="text/css" href="${baseSKIN}">
+  </head>
 $body
-<H1>不正なアクセスです</H1>
+  <h1>不正なアクセスです</h1>
 ${HbaseDir} / $ENV{HTTP_REFERER} / $HcurrentID
-</BODY></HTML>
+  </body>
+</html>
 END
     exit(0);
 }
@@ -85,55 +85,63 @@ if (-e $HpasswordFile) {
     chomp($HspecialPassword = <PIN>); # 特殊パスワードを読み込む
     close(PIN);
 }
-if($HhtmlLogMake && ($HcurrentID == 0)) {
-    unless(-e "${HhtmlDir}/hakolog.html") {
+if ($HhtmlLogMake && ($HcurrentID == 0)) {
+    unless (-e "${HhtmlDir}/hakolog.html") {
         # 最近の出来事ＨＴＭＬ出力
         logPrintHtml();
         tempRefresh(3, 'ログ作成中です。そのまましばらくお待ち下さい');
-    } else {
+    }
+    else {
         tempRefresh(0, 'しばらくお待ち下さい');
     }
-} else {
-    if(!readIslandsFile()){
+}
+else {
+    if (!readIslandsFile()) {
         tempHeader();
         htmlError();
-    } else {
+    }
+    else {
         $HislandList = getIslandList($HcurrentID);
         tempHeader();
-        out("<DIV ID='RecentlyLog'>\n");
+        out("<div id='RecentlyLog'>\n");
 
         $HcurrentNumber = $HidToNumber{$HcurrentID};
-        my($island) = $Hislands[$HcurrentNumber];
+        my ($island) = $Hislands[$HcurrentNumber];
         $HcurrentName = islandName($island);
         # 最近の出来事
-        if($HMode == 99) {
-            if($HcurrentID == 0) {
+        if ($HMode == 99) {
+            if ($HcurrentID == 0) {
                 logFilePrintAll();
-            } else {
+            }
+            else {
                 tempIslandHeader($HcurrentID, $HcurrentName);
                 # パスワード
-                if(checkPassword($island, $HinputPassword) && ($HcurrentID eq $defaultID)) {
+                if (checkPassword($island, $HinputPassword) && ($HcurrentID eq $defaultID)) {
                     logPrintLocal(1);
-                } else {
+                }
+                else {
                     # password違う
                     logPrintLocal(0);
                 }
             }
-        } else {
-            if($HcurrentID == 0) {
+        }
+        else {
+            if ($HcurrentID == 0) {
                 logFilePrint($HMode, $HcurrentID, 0);
-            } else {
+            }
+            else {
                 tempIslandHeader($HcurrentID, $HcurrentName);
                 # パスワード
-                if(checkPassword($island, $HinputPassword) && ($HcurrentID eq $defaultID)) {
+                if (checkPassword($island, $HinputPassword) && ($HcurrentID eq $defaultID)) {
                     logFilePrint($HMode, $HcurrentID, 1);
-                } else {
+                }
+                else {
                     # password間違い
                     logFilePrint($HMode, $HcurrentID, 0);
                 }
             }
         }
-        out("</DIV>\n");
+        out("</div>\n");
     }
 }
 tempFooter();
@@ -160,49 +168,47 @@ sub cgiInput {
     $line = <>;
     $line =~ tr/+/ /;
     $line =~ s/%([a-fA-F0-9]{2})/pack('H2', $1)/eg;
-#    jcode::convert(\$line, 'euc');
+#   jcode::convert(\$line, 'euc');
     $line =~ s/[\x00-\x1f\,]//g;
 
     # GETのやつも受け取る
     $getLine = $ENV{'QUERY_STRING'};
 
-    if($line =~ /ID=([0-9]*)/){
+    if ($line =~ /ID=([0-9]*)/) {
         $HcurrentID = $1;
     }
-    if($line =~ /PASSWORD=([^\&]*)/) {
+    if ($line =~ /PASSWORD=([^\&]*)/) {
         $HinputPassword = $1;
     }
-    if($getLine =~ /ID=([0-9]*)/){
+    if ($getLine =~ /ID=([0-9]*)/) {
         $HcurrentID = $1;
     }
-    if($getLine =~ /PASSWORD=([^\&]*)/) {
+    if ($getLine =~ /PASSWORD=([^\&]*)/) {
         $HinputPassword = $1;
     }
-    if($getLine =~ /Event=([0-9]*)/){
+    if ($getLine =~ /Event=([0-9]*)/) {
         $HMode = $1;
-    } else {
+    }
+    else {
         $HMode = 0;
     }
 }
 #cookie入力
 sub cookieInput {
-    my($cookie);
-    my $HthisFile = "$HbaseDir/hako-main.cgi";
-    my $HHistoryFile = "$HbaseDir/history.cgi";
+    my ($cookie) = $ENV{'HTTP_COOKIE'};
+    my ($HthisFile) = "$HbaseDir/hako-main.cgi";
+    my ($HHistoryFile) = "$HbaseDir/history.cgi";
 
-#    $cookie = jcode::euc($ENV{'HTTP_COOKIE'});
-    $cookie = $ENV{'HTTP_COOKIE'};
-
-    if($cookie =~ /${HthisFile}OWNISLANDID=\(([^\)]*)\)/) {
+    if ($cookie =~ /${HthisFile}OWNISLANDID=\(([^\)]*)\)/) {
         $defaultID = $1;
     }
-    if($cookie =~ /${HthisFile}OWNISLANDPASSWORD=\(([^\)]*)\)/) {
+    if ($cookie =~ /${HthisFile}OWNISLANDPASSWORD=\(([^\)]*)\)/) {
         $HdefaultPassword = $1;
     }
-    if($cookie =~ /${HthisFile}SKIN=\(([^\)]*)\)/) {
+    if ($cookie =~ /${HthisFile}SKIN=\(([^\)]*)\)/) {
         $HskinName = $1;
     }
-    if($cookie =~ /${HHistoryFile}ID=\(([^\)]*)\)/) {
+    if ($cookie =~ /${HHistoryFile}ID=\(([^\)]*)\)/) {
         $HcurrentID = $1;
     }
 
@@ -219,51 +225,51 @@ sub tempHeader {
     } else {
         $baseSKIN = "${efileDir}/$HcssFile";
     }
-    if($ENV{'HTTP_ACCEPT_ENCODING'}=~/gzip/ && $Hgzip == 1){
+    if ($ENV{'HTTP_ACCEPT_ENCODING'}=~/gzip/ && $Hgzip == 1) {
         print qq{Content-type: text/html; charset=EUC-JP\n};
         print qq{Content-encoding: gzip\n\n};
         open(STDOUT,"| $HpathGzip/gzip -1 -c");
         print " " x 2048 if($ENV{HTTP_USER_AGENT}=~/MSIE/);
         print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">\n\n};
-    }else{
+    }
+    else {
         print qq{Content-type: text/html; charset=EUC-JP\n\n};
         print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">\n\n};
     }
 
     out(<<END);
-<HTML>
-<HEAD>
-<META http-equiv="Content-Type" content="text/html;charset=EUC-JP">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#99FF99">
-<link rel="shortcut icon" href="./img/fav.ico">
-<TITLE>
-$title
-</TITLE>
-<link rel="stylesheet" type="text/css" href="${baseSKIN}">
-</HEAD>
-$body<DIV ID='BodySpecialForHistory'  width='100%'>
-<DIV ID='LinkHead'>
-<HR></DIV>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=EUC-JP">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#99FF99">
+  <link rel="shortcut icon" href="./img/fav.ico">
+  <title>$title</title>
+  <link rel="stylesheet" type="text/css" href="${baseSKIN}">
+</head>
+$body<div id='BodySpecialForHistory' width='100%'>
+<div id='LinkHead'>
+  <hr>
+</div>
 END
 # <A HREF="$bye">[戻る]</A><br>
     out(<<END);
-<span class="big"><A HREF=href=\"#\" onclick=\"window.close()\">[閉じる]</A></span><br>
+<span class="big"><a href=href=\"#\" onclick=\"window.close()\">[閉じる]</a></span><br>
 END
     logDekigoto();
     out(<<END);
-<HR>
-<FORM name="recentForm" action="${HbaseDir}/history.cgi" method="POST" style="margin  : 2px 0px;">
-<B>[最近の出来事]</B><br>
-<!-- <A HREF="history.cgi?Event=99">【ALL】</A> -->
+<hr>
+<form name="recentForm" action="${HbaseDir}/history.cgi" method="post" style="margin  : 2px 0px;">
+<b>[最近の出来事]</b><br>
+<!-- <A href="history.cgi?Event=99">【ALL】</A> -->
 END
     my ($i, $turn);
     out("<span class='HistoryTurnList'>");
-    for($i = 0;$i < $HtopLogTurn;$i++) {
+    for ($i = 0;$i < $HtopLogTurn;$i++) {
         $turn = $HislandTurn - $i;
         last unless($turn > 0);
         out("<A HREF='history.cgi?Event=${i}'>");
-        if($i == 0) {
+        if ($i == 0) {
             out("[ターン${turn}(現在)]<br>");
         } else {
             out("[${turn}]");
@@ -274,11 +280,11 @@ END
     out('</span>');
 
     out(<<END);
-<br>
-<SELECT NAME="ID">$HislandList</SELECT>
-<INPUT type="hidden" name="PASSWORD" value="$HinputPassword">
-<INPUT type="submit" value="を見る">
-</FORM>
+  <br>
+  <select name="ID">$HislandList</select>
+  <input type="hidden" name="PASSWORD" value="$HinputPassword">
+  <input type="submit" value="を見る">
+</form>
 END
 
 }
@@ -286,13 +292,13 @@ END
 # フッタ
 sub tempFooter {
     out(<<END);
-<HR>
-<DIV class='LinkFoot' align='center'>
-<small>ホームページ(<A HREF="$Htoppage">■</A>)</small>
+<hr>
+<div class='LinkFoot' align='center'>
+<small>ホームページ(<a href="$Htoppage">■</a>)</small>
 END
 
 ##### 追加 親方20020307
-    if(USE_PERFORMANCE) {
+    if (USE_PERFORMANCE) {
         my ($uti, $sti, $cuti, $csti) = times();
         $uti += $cuti;
         $sti += $csti;
@@ -305,32 +311,31 @@ END
     #       close(POUT);
 
         out(<<END);
-<DIV align="right">
-<SMALL>CPU($cpu) : user($uti) system($sti)/t:$timea</SMALL>
-</DIV>
+<div align="right">
+  <small>CPU($cpu) : user($uti) system($sti)/t:$timea</small>
+</div>
 END
     }
 #####
     out(<<END);
-</DIV>
-</DIV></BODY>
-</HTML>
+</div>
+</div></body>
+</html>
 END
 }
 # html化リフレッシュ
 sub tempRefresh {
     my($delay, $str) = @_;
 
-
     unless($Hgzip == 1) {
         print qq{Content-type: text/html; charset=EUC-JP\n\n};
         print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">\n\n};
         out(<<END);
-<HTML><HEAD>
-<TITLE>HTML化</TITLE>
-<meta HTTP-EQUIV='refresh' CONTENT='$delay; URL="${htmlDir}/hakolog.html"'>
-</HEAD><BODY><DIV ID='BodySpecial'>
-<H2>$str</H2>
+<html><head>
+<title>HTML化</title>
+<meta http-equiv='refresh' content='$delay; url="${htmlDir}/hakolog.html"'>
+</head><body><div id='BodySpecial'>
+<h2>$str</h2>
 END
     } else {
         open(IN, "<${HhtmlDir}/hakolog.html") || die $!;
@@ -350,21 +355,23 @@ END
 
 # 島データのプルダウンメニュー用
 sub getIslandList {
-    my($select) = @_;
-    my($list, $name, $id, $s, $i);
+    my ($select) = @_;
+    my ($list, $name, $id, $s, $i);
 
     #島リストのメニュー
     $list = '';
+    my ($predel);
     foreach $i (0..$islandNumber) {
         $name = islandName($Hislands[$i]);
         $name =~ s/<[^<]*>//g;
+        $predel = ($Hislands[$i]->{'predelete'}) ? '[預]' : '';
         $id = $Hislands[$i]->{'id'};
         if($id eq $select) {
-            $s = 'SELECTED';
+            $s = 'selected';
         } else {
             $s = '';
         }
-        $list .= "<OPTION VALUE=\"$id\" $s>${name}\n";
+        $list .= "<option value=\"$id\" $s>${predel}${name}\n";
     }
     return $list;
 }
