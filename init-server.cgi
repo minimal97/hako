@@ -41,7 +41,7 @@ $efileDir = "${HbaseDir}/${HcssDir}";
 $HefileDir = '.';
 
 # CSSファイルの名前
-$HcssFile = 'style.css?v=1.2.2';
+our $HcssFile = 'style.css?v=1.2.6';
 
 # パスワードファイル名
 # マスタパスワードと特殊パスワードは暗号化されてパスワードファイルに記憶されています。
