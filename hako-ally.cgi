@@ -382,7 +382,7 @@ sub deleteAllyMain {
 # 実際の削除
 sub DeleteAlly{
 
-
+    # 未作成
 }
 
 
@@ -561,8 +561,8 @@ sub newAllyTop {
 
     foreach (0..$#HallyMark) {
         my ($s) = '';
-        $s = ' SELECTED' if($HallyMark[$_] eq $defaultMark);
-        $markList .= "<OPTION VALUE=\"$HallyMark[$_]\"$s>$HallyMark[$_]\n"
+        $s = ' selected' if($HallyMark[$_] eq $defaultMark);
+        $markList .= "<option value=\"$HallyMark[$_]\"$s>$HallyMark[$_]\n"
     }
 
     foreach $i (1..6) {
@@ -573,12 +573,12 @@ sub newAllyTop {
         }
         foreach (0..9,A..F) {
             my ($s) = '';
-            $s = ' SELECTED' if($_ eq $allycolor[$i]);
-            $colorList[$i] .= "<OPTION VALUE=\"$_\"$s>$_\n"
+            $s = ' selected' if($_ eq $allycolor[$i]);
+            $colorList[$i] .= "<option value=\"$_\"$s>$_\n"
         }
     }
 
-    my $max = 201;
+    my ($max) = 201;
 
     if ($HallyNumber) {
         $jsAllyList = "ally = [";
@@ -614,83 +614,83 @@ sub newAllyTop {
         $jsAllyMarkList .= "];\n";
         $jsAllyColorList .= "];\n";
     }
-    my $str1 = $adminMode ? '(メンテナンス)' : $HallyJoinComUse ? '' : '・加盟・脱退';
-    my $str2 = $adminMode ? '' : 'onChange=colorPack() onClick=colorPack()';
-    my $makeCost = $HcostMakeAlly ? "${HcostMakeAlly}${HunitMoney}" : '無料';
-    my $keepCost = $HcostKeepAlly ? "${HcostKeepAlly}${HunitMoney}" : '無料';
-    my $joinCost = $HcomCost[$HcomAlly] ? "${$HcomCost[$HcomAlly]}${HunitMoney}" : '無料';
-    my $joinStr = $HallyJoinComUse ? '' : "加盟・脱退の際の費用は、${HtagMoney_}$joinCost${H_tagMoney}です。<BR>";
-    my $str3 = $adminMode ? "特殊パスワードは？（必須）<BR>
-<INPUT TYPE=\"password\" NAME=\"OLDPASS\" VALUE=\"$HdefaultPassword\" SIZE='32' MAXLENGTH='32' class='f'><BR>同盟" : "<span class='attention'>(注意)</span><BR>
-同盟の結成・変更の費用は、${HtagMoney_}${makeCost}${H_tagMoney}です。<BR>
-また、毎ターン必要とされる維持費は${HtagMoney_}$keepCost${H_tagMoney}です。<BR>
-（維持費は同盟に所属する${AfterName}で均等に負担することになります）<BR>
+    my ($str1) = $adminMode ? '(メンテナンス)' : $HallyJoinComUse ? '' : '・加盟・脱退';
+    my ($str2) = $adminMode ? '' : 'onChange=colorPack() onClick=colorPack()';
+    my ($makeCost) = $HcostMakeAlly ? "${HcostMakeAlly}${HunitMoney}" : '無料';
+    my ($keepCost) = $HcostKeepAlly ? "${HcostKeepAlly}${HunitMoney}" : '無料';
+    my ($joinCost) = $HcomCost[$HcomAlly] ? "${$HcomCost[$HcomAlly]}${HunitMoney}" : '無料';
+    my ($joinStr) = $HallyJoinComUse ? '' : "加盟・脱退の際の費用は、${HtagMoney_}$joinCost${H_tagMoney}です。<br>";
+    my ($str3) = $adminMode ? "特殊パスワードは？（必須）<br>
+<input type=\"password\" name=\"OLDPASS\" value=\"$HdefaultPassword\" size='32' maxlength='32' class='f'><br>同盟" : "<span class='attention'>(注意)</span><br>
+同盟の結成・変更の費用は、${HtagMoney_}${makeCost}${H_tagMoney}です。<br>
+また、毎ターン必要とされる維持費は${HtagMoney_}$keepCost${H_tagMoney}です。<br>
+（維持費は同盟に所属する${AfterName}で均等に負担することになります）<br>
 $joinStr
-</P>
-あなたの島は？（必須）a<BR>
-<SELECT NAME=\"ISLANDID\" $str2>
+</p>
+あなたの島は？（必須）a<br>
+<select name=\"ISLANDID\" $str2>
 $HislandList
-</SELECT><BR>あなた";
+</select><br>あなた";
 
     out(<<END);
-<DIV align='center'>$HtempBack</DIV><BR>
-<DIV ID='changeInfo'>
-<H1>同盟の結成・変更・解散${str1}</H1>
-<table border=0 width="50%"><tr><td class="M"><P>
-<FORM name="AcForm" action="$HthisFile" method="POST">
-$str3のパスワードは？（必須）<BR>
-<INPUT TYPE="text" NAME="PASSWORD" SIZE="32" VALUE="$HdefaultPassword" MAXLENGTH="32" class="f">
+<div align='center'>$HtempBack</div><br>
+<div id='changeInfo'>
+<h1>同盟の結成・変更・解散${str1}</h1>
+<table border=0 width="50%"><tr><td class="M"><p>
+<form name="AcForm" action="$HthisFile" method="POST">
+$str3のパスワードは？（必須）<br>
+<input type="text" name="PASSWORD" size="32" value="$HdefaultPassword" maxlength="32" class="f">
 END
 
     if ($HallyNumber) {
         my $str4 = $adminMode ? '・結成・変更' : $HallyJoinComUse ? '' : '・加盟・脱退';
         my $str5 = ($adminMode || $HallyJoinComUse) ? '' : '<INPUT TYPE="submit" VALUE="加盟・脱退" NAME="JoinAllyButton">';
         out(<<END);
-<BR>
-<BR><B><FONT SIZE=4>［解散${str4}］</FONT></B>
-<BR>どの同盟ですか？<BR>
-<SELECT NAME="ALLYNUMBER" onChange=allyPack() onClick=allyPack()>
+<br>
+<br><b><font size='4'>［解散${str4}］</font></b>
+<br>どの同盟ですか？<br>
+<select name="ALLYNUMBER" onChange=allyPack() onClick=allyPack()>
 $allyList
-</SELECT>
-<BR>
-<INPUT TYPE="submit" VALUE="解散" NAME="DeleteAllyButton">
+</select>
+<br>
+<input type="submit" value="解散" name="DeleteAllyButton">
 $str5
-<BR>
+<br>
 END
     }
 
-    my $str7 = $adminMode ? "盟主島の変更(上のメニューで同盟を選択)<BR> or 同盟の新規作成(上のメニューは無効)<BR><SELECT NAME=\"ALLYID\"><OPTION VALUE=\"$max\">新規作成\n$HislandList</SELECT><BR>" : '<BR><B><FONT SIZE=4>［結成・変更］</FONT></B><BR>';
+    my $str7 = $adminMode ? "盟主島の変更(上のメニューで同盟を選択)<br> or 同盟の新規作成(上のメニューは無効)<br><SELECT NAME=\"ALLYID\"><OPTION VALUE=\"$max\">新規作成\n$HislandList</SELECT><br>" : '<br><B><FONT SIZE=4>［結成・変更］</FONT></B><br>';
     out(<<END);
-<BR>
+<br>
 $str7
-同盟の名前（変更）<small>(全角${HlengthAllyName}字まで)</small><BR>
-<INPUT TYPE="text" NAME="ALLYNAME" VALUE="$allyname" SIZE="32" MAXLENGTH="32"><BR>
-マーク（変更）<BR>
-<SELECT NAME="MARK" onChange=colorPack() onClick=colorPack()>
+同盟の名前（変更）<small>(全角${HlengthAllyName}字まで)</small><br>
+<input type="text" name="ALLYNAME" value="$allyname" size="32" maxlength="32"><br>
+マーク（変更）<br>
+<select name="MARK" onChange=colorPack() onClick=colorPack()>
 $markList
-</SELECT>
+</select>
 <ilayer name="PARENT_CTBL" width="100%" height="100%">
    <layer name="CTBL" width="200"></layer>
    <span id="CTBL"></span>
 </ilayer>
-<BR>
-マークの色コード（変更）<BR><TABLE BORDER="0"><TR>
-<TD align='center'>RED</TD>
-<TD align='center'>GREEN</TD>
-<TD align='center'>BLUE</TD>
-</TR><TR>
-<TD><SELECT NAME="COLOR1" onChange="colorPack()" onClick="colorPack()">
-$colorList[1]</SELECT><SELECT NAME="COLOR2" onChange="colorPack()" onClick="colorPack()">
-$colorList[2]</SELECT></TD>
-<TD><SELECT NAME="COLOR3" onChange="colorPack()" onClick="colorPack()">
-$colorList[3]</SELECT><SELECT NAME="COLOR4" onChange="colorPack()" onClick="colorPack()">
-$colorList[4]</SELECT></TD>
-<TD><SELECT NAME="COLOR5" onChange="colorPack()" onClick="colorPack()">
-$colorList[5]</SELECT><SELECT NAME="COLOR6" onChange=colorPack() onClick=colorPack()>
-$colorList[6]</SELECT></TD>
-</TR></TABLE>
-<INPUT TYPE="submit" VALUE="結成(変更)" NAME="NewAllyButton">
-<SCRIPT language="JavaScript">
+<br>
+マークの色コード（変更）<br><table border="0"><tr>
+<td align='center'>RED</td>
+<td align='center'>GREEN</td>
+<td align='center'>BLUE</td>
+</tr><tr>
+<td><select name="COLOR1" onChange="colorPack()" onClick="colorPack()">
+$colorList[1]</select><select name="COLOR2" onChange="colorPack()" onClick="colorPack()">
+$colorList[2]</select></td>
+<td><select name="COLOR3" onChange="colorPack()" onClick="colorPack()">
+$colorList[3]</select><select name="COLOR4" onChange="colorPack()" onClick="colorPack()">
+$colorList[4]</select></td>
+<td><select name="COLOR5" onChange="colorPack()" onClick="colorPack()">
+$colorList[5]</select><select name="COLOR6" onChange=colorPack() onClick=colorPack()>
+$colorList[6]</select></td>
+</tr></table>
+<input type="submit" value="結成(変更)" name="NewAllyButton">
+<script language="JavaScript">
 <!--
 END
     if (!$adminMode) {
@@ -730,16 +730,16 @@ function allyPack() {
 $jsAllyList
 $jsAllyMarkList
 $jsAllyColorList
-	document.AcForm.ALLYNAME.value = ally[document.AcForm.ALLYNUMBER.value];
-	document.AcForm.MARK.value     = allyMark[document.AcForm.ALLYNUMBER.value];
-	document.AcForm.COLOR1.value   = allyColor[document.AcForm.ALLYNUMBER.value][0];
-	document.AcForm.COLOR2.value   = allyColor[document.AcForm.ALLYNUMBER.value][1];
-	document.AcForm.COLOR3.value   = allyColor[document.AcForm.ALLYNUMBER.value][2];
-	document.AcForm.COLOR4.value   = allyColor[document.AcForm.ALLYNUMBER.value][3];
-	document.AcForm.COLOR5.value   = allyColor[document.AcForm.ALLYNUMBER.value][4];
-	document.AcForm.COLOR6.value   = allyColor[document.AcForm.ALLYNUMBER.value][5];
-	colorPack();
-	return true;
+  document.AcForm.ALLYNAME.value = ally[document.AcForm.ALLYNUMBER.value];
+  document.AcForm.MARK.value     = allyMark[document.AcForm.ALLYNUMBER.value];
+  document.AcForm.COLOR1.value   = allyColor[document.AcForm.ALLYNUMBER.value][0];
+  document.AcForm.COLOR2.value   = allyColor[document.AcForm.ALLYNUMBER.value][1];
+  document.AcForm.COLOR3.value   = allyColor[document.AcForm.ALLYNUMBER.value][2];
+  document.AcForm.COLOR4.value   = allyColor[document.AcForm.ALLYNUMBER.value][3];
+  document.AcForm.COLOR5.value   = allyColor[document.AcForm.ALLYNUMBER.value][4];
+  document.AcForm.COLOR6.value   = allyColor[document.AcForm.ALLYNUMBER.value][5];
+  colorPack();
+  return true;
 }
 END
     } else {
@@ -756,8 +756,8 @@ $jsIslandList
 	mark = document.AcForm.MARK.value;
 
 	str = "#" + a + b + c + d + e + f;
-//	document.AcForm.AcColorValue.value = str;
-	str = '表示サンプル：『<B><span class="number"><FONT color="' + str +'">' + mark + '</FONT></B>'
+// document.AcForm.AcColorValue.value = str;
+	str = '表示サンプル：『<b><span class="number"><font color="' + str +'">' + mark + '</font></b>'
 	  + 'さんぷる${AfterName}</span>』';
 	
 	if(document.getElementById){
@@ -796,9 +796,9 @@ END
     out(<<END);
 colorPack();
 //-->
-</SCRIPT>
-</FORM>
-</td></tr></table></DIV>
+</script>
+</form>
+</td></tr></table></div>
 END
 }
 
@@ -847,25 +847,25 @@ sub tempAllyPactPage {
     $allyMessage =~ s/&quot;/\"/g; #"
 
     out(<<END);
-<DIV align='center'>$HtempBack</DIV><BR>
+<DIV align='center'>$HtempBack</DIV><br>
 <DIV ID='changeInfo'>
-<H1>コメント変更（$ally->{'name'}）</H1>
+<h1>コメント変更（$ally->{'name'}）</H1>
 <table border="0" width="50%"><tr><td class="M">
-<FORM action="$HthisFile" method="POST">
-<B>盟主パスワードは？</B><BR>
+<form action="$HthisFile" method="POST">
+<B>盟主パスワードは？</B><br>
 <INPUT TYPE="password" NAME="Allypact" VALUE="$HdefaultPassword" SIZE=32 MAXLENGTH=32 class=f>
 <INPUT TYPE="hidden"  NAME="ISLANDID" VALUE="$ally->{'id'}">
-<INPUT TYPE="submit" VALUE="送信" NAME="AllypactButton"><BR>
-<B>コメント</B><small>(全角${HlengthAllyComment}字まで：トップページの「各同盟の状況」欄に表示されます)</small><BR>
-<INPUT TYPE="text" NAME="ALLYCOMMENT"  VALUE="$ally->{'comment'}" SIZE="100" MAXLENGTH="50"><BR>
-<BR>
-<B>メッセージ・盟約など</B>(「同盟の情報」欄の上に表示されます)<BR>
-タイトル<small>(全角${HlengthAllyTitle}字まで)</small><BR>
-<INPUT TYPE="text" NAME="ALLYTITLE"  VALUE="$ally->{'title'}" SIZE="100" MAXLENGTH="50"><BR>
-メッセージ<small>(全角${HlengthAllyMessage}字まで)</small><BR>
+<INPUT TYPE="submit" VALUE="送信" NAME="AllypactButton"><br>
+<B>コメント</B><small>(全角${HlengthAllyComment}字まで：トップページの「各同盟の状況」欄に表示されます)</small><br>
+<INPUT TYPE="text" NAME="ALLYCOMMENT"  VALUE="$ally->{'comment'}" SIZE="100" MAXLENGTH="50"><br>
+<br>
+<B>メッセージ・盟約など</B>(「同盟の情報」欄の上に表示されます)<br>
+タイトル<small>(全角${HlengthAllyTitle}字まで)</small><br>
+<INPUT TYPE="text" NAME="ALLYTITLE"  VALUE="$ally->{'title'}" SIZE="100" MAXLENGTH="50"><br>
+メッセージ<small>(全角${HlengthAllyMessage}字まで)</small><br>
 <TEXTAREA COLS="50" ROWS="16" NAME="ALLYMESSAGE" WRAP="soft">$allyMessage</TEXTAREA>
-<BR>
-「タイトル」を空欄にすると『盟主からのメッセージ』というタイトルになります。<BR>
+<br>
+「タイトル」を空欄にすると『盟主からのメッセージ』というタイトルになります。<br>
 「メッセージ」を空欄にすると「同盟の情報」欄には何も表示されなくなります。
 </FORM>
 </td></tr></table>
@@ -950,13 +950,13 @@ sub tempAmitySetupPage() {
     unlock();
 
     out(<<END);
-<DIV align='center'>$HtempBack</DIV><BR>
+<DIV align='center'>$HtempBack</DIV><br>
 <DIV ID='campInfo'>
-<H1>同盟(陣営)所属設定</H1>
-<FORM action="$HthisFile" method="POST">
+<h1>同盟(陣営)所属設定</H1>
+<form action="$HthisFile" method="POST">
 <INPUT TYPE="hidden" VALUE="$HdefaultPassword" NAME="ASetup">
 <TABLE BORDER><TR>
-<TH $HbgTitleCell align="center" rowspan="2">${HtagTH_}設定${H_tagTH}<BR><INPUT TYPE="submit" VALUE="変更" NAME="AmityChangeButton"></TD>
+<TH $HbgTitleCell align="center" rowspan="2">${HtagTH_}設定${H_tagTH}<br><INPUT TYPE="submit" VALUE="変更" NAME="AmityChangeButton"></TD>
 END
 
     foreach (0..$islandNumber) {
@@ -971,25 +971,25 @@ END
            } @idx;
 
     my $aStr = ($HarmisticeTurn) ? '陣営' : '同盟';
-    out("<TH $HbgTitleCell align='center' colspan='$HallyNumber'>${HtagTH_}${aStr}${H_tagTH}</TH>") if($HallyNumber);
-    out("</TR><TR>\n");
+    out("<th $HbgTitleCell align='center' colspan='$HallyNumber'>${HtagTH_}${aStr}${H_tagTH}</th>") if ($HallyNumber);
+    out("</tr><tr>\n");
     my ($number, $island, $name, $ally);
 
     foreach (0..($HallyNumber - 1)) {
         $ally = $Hally[$_];
-        $name = "<FONT COLOR=\"$ally->{'color'}\"><B>$ally->{'mark'}</B></FONT>$ally->{'name'}";
+        $name = "<font color=\"$ally->{'color'}\"><b>$ally->{'mark'}</b></font>$ally->{'name'}";
         out(<<END);
 <TD class='T'>$name</TD>
 END
     }
-    out("</TR>\n");
+    out("</tr>\n");
 
     foreach (0..$islandNumber) {
         $island = $Hislands[$idx[$_]];
         $name = islandName($island);
         my($id, $amity, $aId);
         $id = $island->{'id'};
-        out("<TR><TH $HbgTitleCell>$name</TH>");
+        out("<tr><th $HbgTitleCell>$name</th>");
 
         for ($i = 0; $i < $HallyNumber; $i++) {
             $ally  = $Hally[$i];
@@ -1004,15 +1004,15 @@ END
             }
 
             if ($flag) {
-                out("<TH><input type='checkbox' name='ally' value='$id-$aId'></TH>");
+                out("<th><input type='checkbox' name='ally' value='$id-$aId'></th>");
             } else {
-                out("<TH><input type='checkbox' name='ally' value='$id-$aId' CHECKED></TH>");
+                out("<th><input type='checkbox' name='ally' value='$id-$aId' checked></th>");
             }
         }
-        out("</TR>\n");
+        out("</tr>\n");
     }
     out(<<END);
-</TABLE><INPUT TYPE="hidden" VALUE="dummy" NAME="AmityChange"></FORM></DIV>
+</table><input type="hidden" value="dummy" name="AmityChange"></form></div>
 END
 }
 
