@@ -772,6 +772,17 @@ our $HRocketBroken_SpaceDebri = 100;
 our $HSpaceDebri_meteo = 1000;
 our $HSpaceDebri_evapo = 3;
 
+
+
+#----------------------------------------------------------------------
+# »ÔÌ±¤ÎÍ×µá
+#----------------------------------------------------------------------
+our $HCivReq_None = 0;
+our $HCivReq_TaxDown = 1;
+
+our $HCivReq_FailTurn = (12*8);
+
+#----------------------------------------------------------------------
 # ÈÖ¹æ, Ì¾Á°, ²èÁü
 sub SetMonumentTable {
     my ($no, $name, $image) = @_;
