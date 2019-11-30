@@ -38,13 +38,34 @@ sub rankIslandMain {
     my ($hcturn) = int($HislandTurn/100) * 100;
 
     my @bAfterName = (
-                   "$HunitPop", "0$HunitPop規模", "0$HunitPop規模", "0$HunitPop規模","$HunitTree",
-                        '万羽', '万頭'      , '万頭'          , "$HunitMonster"   , "$HunitMonster",
-                        'pts.', "$HunitPop" , "$HunitMoney"   , 'ヶ所'            , "",
-                        'pts.', "$HunitPop" , "種類/$tuniヶ所", 'pts.'            , '回'           ,
-            "％($rstwint勝$rstloset敗$rstdrowt分)", "($ktstwint勝$ktstloset敗$ktstdrowt分)", "($kstwin勝$kstlose敗$kstdrow分)",'pts' , "匹" , "0$HunitPop規模");
+                        "$HunitPop",      "0$HunitPop規模",
+                        "0$HunitPop規模", "0$HunitPop規模",
+                        "$HunitTree",     '万羽',
+                        '万頭'      ,     '万頭',
+                        "$HunitMonster",  "$HunitMonster",
+                        'pts.',           "$HunitPop" ,
+                        "$HunitMoney",    'ヶ所' ,
+                        '',               'pts.',
+                        "$HunitPop" ,     "種類/$tuniヶ所",
+                        'pts.' ,          '回'  ,
+                        "％($rstwint勝$rstloset敗$rstdrowt分)", "($ktstwint勝$ktstloset敗$ktstdrowt分)",
+                        "($kstwin勝$kstlose敗$kstdrow分)",'pts' ,
+                        "匹" ,            "0$HunitPop規模",
+                        "$HunitArea");
 
-    my @bBeforeName = ('', '', '', '', '', '', '', '', '','', '前ターン＋', '前ターン＋', '前ターン＋', '', 'Lv', '合計', '', '', '合計', '', '', '勝点', '勝点' , '' , '');
+    my @bBeforeName = ( '' ,          '',
+                        '' ,          '',
+                        '' ,          '',
+                        '' ,          '',
+                        '' ,          '',
+                        '前ターン＋', '前ターン＋',
+                        '前ターン＋', '',
+                        'Lv',         '合計',
+                        '',           '',
+                        '合計',       '',
+                        '',           '勝点',
+                        '勝点' ,      '' ,
+                        '');
 
     my @islands;
     {
@@ -69,8 +90,8 @@ sub rankIslandMain {
 <div id='Ranking'  style='display=inline-block;'>
   <h1>各部門別NO.1</h1>
   <div width="100%"  style='display=inline-block;'>
-    <span class='Nret'>目指せ<B>ALL NO.1</B></span>
-    <span class='Nret'>！！クリックすると、<B>観光</B>することができます。</span>
+    <span class='Nret'>目指せ<b>ALL NO.1</b></span>
+    <span class='Nret'>！！クリックすると、<b>観光</b>することができます。</span>
   </div>
 END
     my ($tag);
