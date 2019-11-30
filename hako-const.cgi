@@ -732,6 +732,19 @@ our $HYakushoWorkExist = 0x01;
 our $HYakushoWorkYotei = 0x02;
 our $HYakushoWorkSeiti = 0x04;
 
+#----------------------------------------
+# Âç³Ø
+#----------------------------------------
+our $HCollegeFarm = 0;
+our $HCollegeTech = 1;
+our $HCollegeAll = 2;
+our $HCollegeArmy = 3;
+our $HCollegeMeteorology = 5;
+our $HCollegeInora = 4;
+our $HCollegeInoraNoOut = 96;
+our $HCollegeTetra = 98;
+our $HCollegeTetraNoOut = 97;
+our $HCollegePetOut = 99;
 #----------------------------------------------------------------------
 # Åç effect
 #----------------------------------------------------------------------
