@@ -7617,8 +7617,8 @@ sub doEachHex {
             #
             # ----------------------------------------- #
 
-            if($mKind == 35) { # ひめいのら
-                my($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
+            if ($mKind == $Mons_hime_inora) { # ひめいのら
+                my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
                 $mon += 1;
 
                 if (   ($mon != 3)
@@ -7739,9 +7739,9 @@ sub doEachHex {
                     }
 
                     # 周囲の地形を巻き込む
-                    if(($special == 15) && (random(100) < 50)) { # 50%
+                    if (($special == 15) && (random(100) < 50)) { # 50%
 
-                        my($sx, $sy, $tx, $ty, $sKind, $sLv, $tKind, $tLv, $tLv2);
+                        my ($sx, $sy, $tx, $ty, $sKind, $sLv, $tKind, $tLv, $tLv2);
                         for ($i = 1; $i < 7; $i++) {
                             $sx = $x + $ax[$i];
                             $sy = $y + $ay[$i];
@@ -7751,14 +7751,14 @@ sub doEachHex {
                             $sx-- if(!($sy % 2) && ($y % 2));
                             $tx-- if(!($ty % 2) && ($by % 2));
 
-                            if(($sx < 0) || ($sx > $islandSize) || ($sy < 0) || ($sy > $islandSize)) {
+                            if (($sx < 0) || ($sx > $islandSize) || ($sy < 0) || ($sy > $islandSize)) {
                                 $sKind = $HlandSea;
-                                $sLv    = 0;
+                                $sLv   = 0;
                             } else {
                                 $sKind = $land->[$sx][$sy];
-                                $sLv    = $landValue->[$sx][$sy];
+                                $sLv   = $landValue->[$sx][$sy];
                             }
-                            if(($tx < 0) || ($tx > $islandSize) || ($ty < 0) || ($ty > $islandSize)) {
+                            if (($tx < 0) || ($tx > $islandSize) || ($ty < 0) || ($ty > $islandSize)) {
                                 $tKind = $HlandSea;
                                 $tLv   = 0;
                                 $tLv2  = 0;
@@ -7768,13 +7768,13 @@ sub doEachHex {
                                 $tLv2  = $tLandValue2->[$tx][$ty];
                             }
 
-                            if(($sx >= 0) && ($sx < $HislandSize) && ($sy >= 0) && ($sy < $HislandSize)) {
+                            if (($sx >= 0) && ($sx < $HislandSize) && ($sy >= 0) && ($sy < $HislandSize)) {
                                 # 範囲内の場合
                                 $land->[$sx][$sy]      = $tKind;
                                 $landValue->[$sx][$sy] = $tLv;
                                 logMonsWarpLand($id, $name, landName($tKind, $tLv, $tLv2), "($sx, $sy)");
                             }
-                            if(($tx >= 0) && ($tx < $HislandSize) && ($ty >= 0) && ($ty < $HislandSize)) {
+                            if (($tx >= 0) && ($tx < $HislandSize) && ($ty >= 0) && ($ty < $HislandSize)) {
                                 # 範囲内の場合
                                 $tLand->[$tx][$ty]      = $sKind;
                                 $tLandValue->[$tx][$ty] = $sLv;
@@ -7783,8 +7783,9 @@ sub doEachHex {
                         }
                     }
                     next;
+                }
+                else {
 
-                } else {
                     # ワープしない
                 }
             }
@@ -7802,7 +7803,7 @@ sub doEachHex {
 
             if ($special == 13) {
                 # 仲間を呼ぶ怪獣
-                if(random(100) < 50) { # 50%
+                if (random(100) < 50) { # 50%
 
                     # 種類を決める
                     my ($nLv, $nKind,$lv2);
@@ -7815,7 +7816,7 @@ sub doEachHex {
                     $nLv = ($nKind << $Mons_Kind_Shift) + $HmonsterBHP[$nKind] + random($HmonsterDHP[$nKind]);
 
                     # どこに現れるか決める
-                    my($bx, $by, $i);
+                    my ($bx, $by, $i);
                     my ($check);
                     my ($tar_land);
                     foreach $i (0..$pointNumber) {
@@ -7826,23 +7827,27 @@ sub doEachHex {
                             if ($land->[$bx][$by] == $HlandSea) {
                                 $check = 1;
                             }
-                        }else{
+                        }
+                        else {
                             if (   ($land->[$bx][$by] == $HlandTown)
                                 || ($land->[$bx][$by] == $HlandWaste)
                                 || ($land->[$bx][$by] == $HlandPlains) ){
                                 $check = 1;
                             }
                         }
-                        if($check) {
+
+                        if ($check) {
                             # 地形名
-                            my($lName) = landName($land->[$bx][$by], $landValue->[$bx][$by],$landValue2->[$bx][$by]);
+                            my ($lName) = landName($land->[$bx][$by], $landValue->[$bx][$by],$landValue2->[$bx][$by]);
 
                             # そのヘックスを怪獣に
                             $land->[$bx][$by] = $HlandMonster;      #移動
                             $landValue->[$bx][$by] = $nLv;
+                            $landValue2->[$bx][$by] = 0;
+                            $landValue3->[$bx][$by] = 0;
 
                             # 怪獣情報
-                            my($nName) = (monsterSpec($nLv))[1];
+                            my ($nName) = (monsterSpec($nLv))[1];
 
                             # メッセージ
                             logMonsCome($id, $name, $nName, "($bx, $by)", $lName);
@@ -7884,7 +7889,7 @@ sub doEachHex {
                 }
 
             } elsif($mKind == $Mons_f20) { # 人造怪獣f02
-                my($tx, $ty, $tL, $tLv, $tLv2);
+                my ($tx, $ty, $tL, $tLv, $tLv2);
                 # 発射
                 $tx = random($HislandSize);
                 $ty = random($HislandSize);
@@ -7925,7 +7930,8 @@ sub doEachHex {
                         $landValue2->[$tx][$ty] = 0;
                         $landValue3->[$tx][$ty] = 0;
 
-                    }else{
+                    }
+                    else {
 
                         $land->[$tx][$ty] = $HlandWaste;
                         $landValue->[$tx][$ty] = 1;
@@ -7933,11 +7939,12 @@ sub doEachHex {
                         $landValue3->[$tx][$ty] = 0;
                     }
 
-                } elsif(random(1000) < 400) {
+                }
+                elsif (random(1000) < 400) {
 
                     logMekaAttack($id, $name, $mName, $this_pos, landName($tL, $tLv,$tLv2), "($tx, $ty)", "${HtagDisaster_}多弾頭ミサイル${H_tagDisaster}");
-                    my($ssx, $ssy, $i, $ssL, $ssLv, $ssLv2);
-                    for($i = 0; $i < 7; $i++) {
+                    my ($ssx, $ssy, $i, $ssL, $ssLv, $ssLv2);
+                    for ($i = 0; $i < 7; $i++) {
                         $ssx = $tx + $ax[$i];
                         $ssy = $ty + $ay[$i];
 
@@ -7952,7 +7959,7 @@ sub doEachHex {
                         $ssLv2 = $landValue2->[$ssx][$ssy];
 
                         # 範囲による分岐
-                        if($i < 1) {
+                        if ($i < 1) {
                             # 中心
                             if (   ($ssL == $HlandSea)
                                 || ($ssL == $HlandSeacity)
@@ -7965,17 +7972,19 @@ sub doEachHex {
                             }
                             logDamageAny($id, $name, landName($ssL, $ssLv,$ssLv2), "($ssx, $ssy)", "吹き飛び水没しました。");
                             SetSeaShallowLand($island,  $ssx , $ssy);
-
-                        } else {
+                        }
+                        else {
                             # 1ヘックス
-                            if(NoDamage_by_Bomb1HEX($sL) ) {
+                            if (NoDamage_by_Bomb1HEX($sL) ) {
                                 # ダメージのない地形
                                 next;
-                            } elsif($sL == $HlandMonster) {
-                                my($tKind, $tName, $tHp) = monsterSpec($ssLv);
+                            }
+                            elsif ($sL == $HlandMonster) {
+                                my ($tKind, $tName, $tHp) = monsterSpec($ssLv);
                                 logDamageAny($id, $name, landName($ssL, $ssLv,$ssLv2), "($ssx, $ssy)", "消し飛びました。");
                                 MonsterDead($island , $ssx , $ssy , $tKind , 0);
-                            } else {
+                            }
+                            else {
                                 logDamageAny($id, $name, landName($ssL, $ssLv,$ssLv2), "($ssx, $ssy)", "一瞬にして<B>荒地</B>と化しました。");
                                 SetWasteLand_Normal($island,  $ssx , $ssy);
                             }
@@ -7998,22 +8007,22 @@ sub doEachHex {
 
             } elsif($mKind == $Mons_Uriel) { # 天使ウリエル
 
-                my($i, $sx, $sy, $monsno);
+                my ($i, $sx, $sy, $monsno);
                 $monsno = $island->{'monsterlive'};
-                if($monsno > 0) {
+                if ($monsno > 0) {
                     my($monsArray, $monspnt);
                     $monsArray = $island->{'monspnt'};
-                    for($i = 0; $i < $monsno; $i++){
+                    for ($i = 0; $i < $monsno; $i++){
                         $monspnt = $monsArray->[$i];
                         ($sx, $sy) = ($monspnt->{x}, $monspnt->{y});
                         if ($land->[$sx][$sy] == $HlandMonster) {
                             # 島に別の怪獣がいる場合、その怪獣を攻撃する
 
                             # 対象となる怪獣の各要素取り出し
-                            my($tKind, $tName, $tHp) = monsterSpec($landValue->[$sx][$sy]);
-                            my($tlv) = $landValue->[$sx][$sy];
+                            my ($tKind, $tName, $tHp) = monsterSpec($landValue->[$sx][$sy]);
+                            my ($tlv) = $landValue->[$sx][$sy];
 
-                            if(isMonsterCuring($tKind)) {
+                            if (isMonsterCuring($tKind)) {
                                 # 対象が硬化中なら効果なし
                                 next;
                             }
@@ -8033,7 +8042,7 @@ sub doEachHex {
                                         # 報奨金
                                         AddMonsterReward($island , $tKind);
                                     }
-                                } elsif($tKind != $Mons_Uriel) { # 天使ウリエル
+                                } elsif ($tKind != $Mons_Uriel) { # 天使ウリエル
                                     logItiAttack($id, $name, $mName, $this_pos, $tName, "($sx, $sy)");
 
                                     # 対象の怪獣が倒れて荒地になる
@@ -8089,14 +8098,14 @@ sub doEachHex {
                             next;
                         }
                         if (random(1000) < 600) {
-                            if(($tKind == 28) || ($tKind == 30)) {
+                            if (($tKind == $Mons_Mascot_inora) || ($tKind == $Mons_SuperTetra)) {
                                 logIceAttack($id, $name, $mName, $this_pos, $tName, "($sx, $sy)");
                                 my ($dmge) = random(4);
                                 $tHp -= $dmge;
                                 $tlv -= $dmge;
                                 $landValue->[$sx][$sy] = $tlv;
 
-                                if($tHp < 1){
+                                if ($tHp < 1){
                                     # 対象の怪獣が倒れて氷河になる
                                     $land->[$sx][$sy] = $HlandIce;
                                     $landValue->[$sx][$sy] = 0;
@@ -8106,7 +8115,8 @@ sub doEachHex {
                                     # 報奨金
                                     AddMonsterReward($island,$tKind);
                                 }
-                            } elsif($tKind != $Mons_Ice_scorpion) {
+                            }
+                            elsif($tKind != $Mons_Ice_scorpion) {
                                 logIceAttack($id, $name, $mName, $this_pos, $tName, "($sx, $sy)");
 
                                 # 対象の怪獣が倒れて氷河になる
@@ -8163,31 +8173,37 @@ sub doEachHex {
 
                         next if($sL == $HlandHugeMonster);
 
-                        if(($sL == $HlandSea) && ($sLv == 0)){
+                        if( ($sL == $HlandSea) && ($sLv == 0)){
                             # 海ポチャ
                             logMeteo($id, $name, $sName, "($sx, $sy)", "し");
-                        } elsif(($sL == $HlandMountain) || ($sL == $HlandGold) || ($sL == $HlandShrine) || ($sL == $HlandOnsen)){
+                        }
+                        elsif(($sL == $HlandMountain) || ($sL == $HlandGold) || ($sL == $HlandShrine) || ($sL == $HlandOnsen)){
                             # 山破壊
                             logMeteo($id, $name, $sName, "($sx, $sy)", "、<B>$sName</B>は消し飛び");
                             $land->[$sx][$sy] = $HlandWaste;
                             $landValue->[$sx][$sy] = 0;
                             $landValue2->[$sx][$sy] = 0;
                             next;
-                        } elsif(($sL == $HlandSbase) ||
-                                ($sL == $HlandSeacity) ||
-                                ($sL == $HlandSeatown) ||
-                                ($sL == $HlandUmishuto) ||
-                                ($sL == $HlandFrocity) ||
-                                ($sL == $HlandFune) ||
-                                ($sL == $HlandUmiamu)) {
+                        }
+                        elsif (   ($sL == $HlandSbase)
+                               || ($sL == $HlandSeacity)
+                               || ($sL == $HlandSeatown)
+                               || ($sL == $HlandUmishuto)
+                               || ($sL == $HlandFrocity)
+                               || ($sL == $HlandFune)
+                               || ($sL == $HlandUmiamu)) {
+
                             logMeteo($id, $name, $sName, "($sx, $sy)", "、<B>$sName</B>は崩壊し");
-                        } elsif($sL == $HlandMonster) {
+                        }
+                        elsif($sL == $HlandMonster) {
                             $island->{'monsterlive'} -= 1;
                             logMeteoMonster($id, $name, $sName, "($sx, $sy)");
-                        } elsif(($sL == $HlandSea) || ($sL == $HlandIce)) {
+                        }
+                        elsif(($sL == $HlandSea) || ($sL == $HlandIce)) {
                             # 浅瀬
                             logMeteo($id, $name, $sName, "($sx, $sy)", "、海底がえぐられ");
-                        } else {
+                        }
+                        else {
                             logMeteo($id, $name, $sName, "($sx, $sy)", "、一帯が水没し");
                         }
                         $land->[$sx][$sy] = $HlandSea;
