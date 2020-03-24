@@ -11,6 +11,8 @@ use strict "refs";
 #use strict "subs";
 use Time::HiRes;
 
+require './server_config.pm';
+
 BEGIN {
     # Perl 5.004 以上が必要
     require 5.004;
@@ -53,7 +55,7 @@ $bye = './hako-main.cgi';
 #メインルーチン-------------------------------------------------------
 cookieInput();
 cgiInput();
-unless(($ENV{HTTP_REFERER}  =~ /${HbaseDir}/) || $HcurrentID) {
+unless(($ENV{HTTP_REFERER}  =~ /$server_config::HbaseDir/) || $HcurrentID) {
     if ($HskinName ne '' ) {
         $baseSKIN = $HskinName;
     }
@@ -72,7 +74,7 @@ unless(($ENV{HTTP_REFERER}  =~ /${HbaseDir}/) || $HcurrentID) {
   </head>
 $body
   <h1>不正なアクセスです</h1>
-${HbaseDir} / $ENV{HTTP_REFERER} / $HcurrentID
+$server_config::HbaseDir / $ENV{HTTP_REFERER} / $HcurrentID
   </body>
 </html>
 END
@@ -195,9 +197,10 @@ sub cgiInput {
 }
 #cookie入力
 sub cookieInput {
+
     my ($cookie) = $ENV{'HTTP_COOKIE'};
-    my ($HthisFile) = "$HbaseDir/hako-main.cgi";
-    my ($HHistoryFile) = "$HbaseDir/history.cgi";
+    my ($HthisFile) = "$server_config::HbaseDir/hako-main.cgi";
+    my ($HHistoryFile) = "$server_config::HbaseDir/history.cgi";
 
     if ($cookie =~ /${HthisFile}OWNISLANDID=\(([^\)]*)\)/) {
         $defaultID = $1;
@@ -211,8 +214,6 @@ sub cookieInput {
     if ($cookie =~ /${HHistoryFile}ID=\(([^\)]*)\)/) {
         $HcurrentID = $1;
     }
-
-
 }
 
 #---------------------------------------------------------------------
@@ -259,7 +260,7 @@ END
     logDekigoto();
     out(<<END);
 <hr>
-<form name="recentForm" action="${HbaseDir}/history.cgi" method="post" style="margin  : 2px 0px;">
+<form name="recentForm" action="$server_config::HbaseDir/history.cgi" method="post" style="margin  : 2px 0px;">
 <b>[最近の出来事]</b><br>
 <!-- <A href="history.cgi?Event=99">【ALL】</A> -->
 END
@@ -294,7 +295,7 @@ sub tempFooter {
     out(<<END);
 <hr>
 <div class='LinkFoot' align='center'>
-<small>ホームページ(<a href="$Htoppage">■</a>)</small>
+  <small>ホームページ(<a href="$Htoppage">■</a>)</small>
 END
 
 ##### 追加 親方20020307
@@ -331,13 +332,16 @@ sub tempRefresh {
         print qq{Content-type: text/html; charset=EUC-JP\n\n};
         print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">\n\n};
         out(<<END);
-<html><head>
-<title>HTML化</title>
-<meta http-equiv='refresh' content='$delay; url="${htmlDir}/hakolog.html"'>
-</head><body><div id='BodySpecial'>
+<html>
+<head>
+  <title>HTML化</title>
+  <meta http-equiv='refresh' content='$delay; url="${htmlDir}/hakolog.html"'>
+</head>
+<body><div id='BodySpecial'>
 <h2>$str</h2>
 END
-    } else {
+    }
+    else {
         open(IN, "<${HhtmlDir}/hakolog.html") || die $!;
         @buffer = <IN>;
         close(IN);
@@ -356,6 +360,7 @@ END
 # 島データのプルダウンメニュー用
 sub getIslandList {
     my ($select) = @_;
+
     my ($list, $name, $id, $s, $i);
 
     #島リストのメニュー
@@ -385,13 +390,13 @@ my($id, $name) = @_;
 
     if(checkPassword($Hislands[$HidToNumber{$id}]->{'password'}, $HinputPassword) && ($HcurrentID eq $defaultID)) {
         out(<<END);
-<HR>
-<FONT COLOR=\"#FF0000\"><B>[${name}の近況]</B></FONT>
+<hr>
+<font color=\"#FF0000\"><b>[${name}の近況]</b></font>
 END
     } else {
         out(<<END);
-<HR>
-<B>[${name}の近況]</B>　
+<hr>
+<b>[${name}の近況]</b>　
 END
     }
 
@@ -424,7 +429,7 @@ END
 #---------------------------------------------------------------------
 sub logDekigoto {
     out(<<END);
-<H1>最近の出来事</H1>
+<h1>最近の出来事</h1>
 END
 }
 
@@ -433,7 +438,7 @@ END
 #    ログファイル全て表示
 #---------------------------------------------------------------------
 sub logFilePrintAll {
-    my($i);
+    my ($i);
     for($i = 0; $i < $HtopLogTurn; $i++) {
         logFilePrint($i, 0, 0);
     }
@@ -444,8 +449,8 @@ sub logFilePrintAll {
 # 個別ログ表示
 #---------------------------------------------------------------------
 sub logPrintLocal {
-    my($mode) = @_;
-    my($i);
+    my ($mode) = @_;
+    my ($i);
     for($i = 0; $i < $HtopLogTurn; $i++) {
         logFilePrint($i, $HcurrentID, $mode);
     }
@@ -456,28 +461,28 @@ sub logPrintLocal {
 #    ファイル番号指定でログ表示 #ＲＡ用
 #---------------------------------------------------------------------
 sub logFilePrint {
-    my($fileNumber, $id, $mode) = @_;
-    my($set_turn) = 0;
+    my ($fileNumber, $id, $mode) = @_;
+    my ($set_turn) = 0;
     open(LIN, "${HdirName}/hakojima.log$_[0]");
-    my($line, $m, $turn, $id1, $id2, $message);
+    my ($line, $m, $turn, $id1, $id2, $message);
 
-    while($line = <LIN>) {
+    while ($line = <LIN>) {
         $line =~ /^([0-9]*),([0-9]*),([0-9]*),([0-9]*),(.*)$/;
         ($m, $turn, $id1, $id2, $message) = ($1, $2, $3, $4, $5);
 
         # 機密関係
-        if($m == 1) {
-            if(($mode == 0) || ($id1 != $id)) {
+        if ($m == 1) {
+            if (($mode == 0) || ($id1 != $id)) {
                 # 機密表示権利なし
                 next;
             }
-            $m = '<B>(機密)</B>:';
+            $m = '<b>(機密)</b>:';
         } else {
             $m = '';
         }
 
         # 表示的確か
-        if($id != 0) {
+        if ($id != 0) {
             if(($id != $id1) &&
                ($id != $id2)) {
                 next;
@@ -486,15 +491,15 @@ sub logFilePrint {
 
         if(!$set_turn){
             if(!$Hseason) {
-                out("<B>=====[<span class=number><FONT SIZE=4> ターン$turn </FONT></span>]=====</B><br>\n");
+                out("<b>=====[<span class='number'><font size='4'> ターン$turn </font></span>]=====</b><br>\n");
             } else {
                 # 季節の表示
-                my @seasonName = ('<span class=winter>冬</span>','<span class=spring>春</span>','<span class=summer>夏</span>','<span class=autumn>秋</span>');
-                my $month = ($turn % 12) + 1;
-                my $year  = ($turn / 12) + 1;
-                my $calender = sprintf('<span class=month><FONT SIZE=2><small>%s</small> %d年 %d月 </FONT></span>' , $Halmanac, $year, $month);
+                my @seasonName = ('<span class="winter">冬</span>','<span class="spring">春</span>','<span class="summer">夏</span>','<span class="autumn">秋</span>');
+                my ($month) = ($turn % 12) + 1;
+                my ($year)  = ($turn / 12) + 1;
+                my ($calender) = sprintf('<span class=month><FONT SIZE=2><small>%s</small> %d年 %d月 </FONT></span>' , $Halmanac, $year, $month);
                 $calender .= "<span class='season'>$seasonName[int(($month - 1) / 3)]</span>";
-                out("<B>=====[<span class=number><FONT SIZE=4> <small>ターン$turn</small> </FONT></span>]=====$calender</B><br>\n");
+                out("<b>=====[<span class='number'><font size='4'> <small>ターン$turn</small> </font></span>]=====$calender</b><br>\n");
             }
             $set_turn++;
         }
@@ -509,46 +514,45 @@ sub logFilePrint {
 # ＨＴＭＬ生成
 #----------------------------------------------------------------------
 sub logPrintHtml {
-    my($sec, $min, $hour, $date, $mon, $year, $day, $yday, $dummy) = gmtime(time + $Hjst);
+    my ($sec, $min, $hour, $date, $mon, $year, $day, $yday, $dummy) = gmtime(time + $Hjst);
     $mon++;
-    my($sss) = "${mon}月${date}日 ${hour}時${min}分${sec}秒";
+    my ($sss) = "${mon}月${date}日 ${hour}時${min}分${sec}秒";
 
     $html1=<<_HEADER_;
-<HTML><HEAD>
-<TITLE>
-最近の出来事
-</TITLE>
-<BASE HREF="$htmlDir/">
-<link rel="stylesheet" type="text/css" href="${efileDir}/$HcssFile">
-</HEAD>
-<BODY $htmlBody><DIV ID='BodySpecial'>
-<DIV ID='RecentlyLog'>
-<H1>最近の出来事</H1>
-<FORM>
+<html><head>
+  <title>最近の出来事</title>
+  <base href="$htmlDir/">
+  <link rel="stylesheet" type="text/css" href="${efileDir}/$HcssFile">
+</head>
+<body $htmlBody><DIV ID='BodySpecial'>
+  <div id='RecentlyLog'>
+    <h1>最近の出来事</h1>
+    <form>
 最新更新日：$sss・・
-<INPUT TYPE="button" VALUE=" 再読込み" onClick="location.reload()">
-</FORM>
-<hr>
+      <input type="button" value=" 再読込み" onClick="location.reload()">
+    </form>
+    <hr>
 _HEADER_
 
 $html3=<<_FOOTER_;
-</DIV><HR></DIV></BODY></HTML>
+</div><hr></div></body></html>
 _FOOTER_
-    my($i);
-    my($id);
-    my($mode);
-    for($i = 0; $i < $HhtmlLogTurn; $i++) {
+    my ($i);
+    my ($id);
+    my ($mode);
+    my ($set_turn) = 0;
+    my ($line, $m, $turn, $id1, $id2, $message);
+    for ($i = 0; $i < $HhtmlLogTurn; $i++) {
         $id =0;
         $mode = 0;
-        my($set_turn) = 0;
+        $set_turn = 0;
         open(LIN, "${HdirName}/hakojima.log$i");
-        my($line, $m, $turn, $id1, $id2, $message);
         while($line = <LIN>) {
             $line =~ /^([0-9]*),([0-9]*),([0-9]*),([0-9]*),(.*)$/;
             ($m, $turn, $id1, $id2, $message) = ($1, $2, $3, $4, $5);
 
             # 機密関係
-            if($m) {
+            if ($m) {
                 next if(!$mode || ($id1 != $id)); # 機密表示権利なし
                 $m = '<B>(機密)</B>';
             } else {
@@ -556,22 +560,22 @@ _FOOTER_
             }
 
             # 表示的確か
-            if($id) {
+            if ($id) {
                 next if(($id != $id1) && ($id != $id2));
             }
 
             # 表示
-            if(!$set_turn){
+            if (!$set_turn) {
                 if(!$Hseason) {
-                    $html2 .= "<B>=====[<span class=number><FONT SIZE=4> ターン$turn </FONT></span>]================================================</B><BR>\n";
+                    $html2 .= "<B>=====[<span class='number'><font size='4'> ターン$turn </font></span>]================================================</B><BR>\n";
                 } else {
                     # 季節の表示
                     my @seasonName = ('<span class=winter>冬</span>','<span class=spring>春</span>','<span class=summer>夏</span>','<span class=autumn>秋</span>');
                     my $month = ($turn % 12) + 1;
                     my $year  = ($turn / 12) + 1;
-                    my $calender = sprintf('<span class=month><FONT SIZE=2><small>%s</small> %d年 %d月 </FONT></span>' , $Halmanac, $year, $month);
+                    my $calender = sprintf('<span class=month><font size=2><small>%s</small> %d年 %d月 </FONT></span>' , $Halmanac, $year, $month);
                     $calender .= "<span class='season'>$seasonName[int(($month - 1) / 3)]</span>";
-                    $html2 .= "<B>=====[<span class=number><FONT SIZE=4> <small>ターン$turn</small> </FONT></span>]=============================$calender</B><BR>\n";
+                    $html2 .= "<B>=====[<span class=number><font size=4> <small>ターン$turn</small> </FONT></span>]=============================$calender</B><BR>\n";
                 }
                 $set_turn++;
             }

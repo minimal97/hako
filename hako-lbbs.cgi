@@ -186,7 +186,7 @@ sub localBbsMain {
 		# 削除モード
 		if (   ($HlbbsMode == 3 || $HlbbsMode == 7)
             && ($HcommandPlanNumber == LBBS_MAX)) {
-			foreach (0..($HlbbsMax - 1)) {
+			foreach (0..(LBBS_MAX - 1)) {
 				$lbbs->[$_] = '0<<0>>';
 			}
 		}
@@ -265,7 +265,7 @@ sub slideBackLbbsMessage {
 
     my ($i);
     splice(@$lbbs, $number, 1);
-    $lbbs->[$HlbbsMax - 1] = '0<<0>>';
+    $lbbs->[LBBS_MAX - 1] = '0<<0>>';
 }
 
 
@@ -313,7 +313,7 @@ END
         out("極秘通信は<b>$HlbbsMoneySecret$HunitMoney</b>です。") if ($HlbbsMoneySecret > 0);
         out('</div>');
     }
-    my $col = ' colspan=2' if(!$HlbbsAnon);
+    my ($col) = 'colspan="2"' if(!INIT_LBBS_ANONYMOUS);
 
     # out("<B>※</B>${AfterName}を持っている方は名前を変更しても所有者名が使われます。");
 
@@ -342,7 +342,7 @@ END
 <td>
 <select name="ISLANDID2">$HislandList</SELECT>
 END
-    out(<<END) if ($HlbbsAnon);
+    out(<<END) if (INIT_LBBS_ANONYMOUS);
 <INPUT type="radio" name="LBBSTYPE" value="ANON">観光客
 END
 
@@ -353,7 +353,7 @@ END
 <INPUT type="submit" value="極秘確認" name="LbbsButtonCK$HcurrentID">
 </DIV></TD>
 END
-    if (!$HlbbsAnon) {
+    if (!INIT_LBBS_ANONYMOUS) {
         out(<<END);
 <TD align="right">
 番号
@@ -362,7 +362,7 @@ END
         {
             # 発言番号
             my ($j, $i);
-            for($i = 0; $i < $HlbbsMax; $i++) {
+            for ($i = 0; $i < LBBS_MAX; $i++) {
                 $j = $i + 1;
                 out("<OPTION value=$i>$j\n");
             }
@@ -412,11 +412,11 @@ END
     {
         # 発言番号
         my ($j, $i);
-    	for($i = 0; $i < $HlbbsMax; $i++) {
+        for ($i = 0; $i < LBBS_MAX; $i++) {
             $j = $i + 1;
             out("<OPTION VALUE=$i>$j\n");
         }
-    	out("<OPTION VALUE=$HlbbsMax>全\n");
+        out("<OPTION VALUE=".LBBS_MAX.">全\n");
     }
     out(<<END);
       </select>
@@ -446,7 +446,7 @@ END
     my ($sNo);
     my ($sName, $sID);
 
-    for ($i = 0; $i < $HlbbsMax; $i++) {
+    for ($i = 0; $i < LBBS_MAX; $i++) {
         $line = $lbbs->[$i];
         if ($line =~ /([0-9]*)\<(.*)\<([0-9]*)\>(.*)\>(.*)$/) {
             $j = $i + 1;

@@ -53,10 +53,10 @@ sub SetMountain_Normal {
 # ---------------------------------------------------------------------
 sub SetMonument_Normal {
     my ($island , $x , $y , $val) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandMonument;
     $landValue->[$x][$y] = $val;
@@ -206,6 +206,24 @@ sub SetRottenSea {
     $landValue2->[$x][$y] = 0;
     $landValue3->[$x][$y] = 0;
 }
+
+
+# ---------------------------------------------------------------------
+# ήɹ
+# ---------------------------------------------------------------------
+sub SetIce_Normal {
+    my ($island , $x , $y) = @_;
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
+
+    $land->[$x][$y] = $HlandIce;
+    $landValue->[$x][$y] = 0;
+    $landValue2->[$x][$y] = 0;
+    $landValue3->[$x][$y] = 0;
+}
+
 
 
 # ---------------------------------------------------------------------

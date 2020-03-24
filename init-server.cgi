@@ -6,28 +6,28 @@
 # うらにわ -uRAniwa-: http://snow.prohosting.com/awinokah/
 #----------------------------------------------------------------------
 
+require './server_config.pm';
 #----------------------------------------
 # サーバー
 #----------------------------------------
 # このファイルを置くディレクトリ(最後にスラッシュ(/)は付けない。)
-$HbaseDir = 'http://' . "$ENV{'SERVER_NAME'}" . '/hakora';
+$HbaseDir = $server_config::HbaseDir;
 
 # 画像ファイルを置くディレクトリ(最後にスラッシュ(/)は付けない。)
-$HimageDir = "${HbaseDir}/hakorenas";
-
-
-# 画像ファイル　こっちは 最後にスラッシュ必要
-$HStatImgDir = "${HbaseDir}/img/";
+$HimageDir = "$server_config::HbaseDir";
 
 # 画像ファイル　こっちは 最後にスラッシュ必要
-$HSatelliteImgDir = "${HbaseDir}/img/satellite/";
+$HStatImgDir = "$server_config::HbaseDir/img/";
+
+# 画像ファイル　こっちは 最後にスラッシュ必要
+$HSatelliteImgDir = "$server_config::HbaseDir/img/satellite/";
 
 # 画像ファイル　こっちは 最後にスラッシュ必要
 $HMapImgDir = './img/land/';
 
 # 箱庭スキンの設定へのリンクをトップページに表示するか
 # $HcssSetting = 0;
-use constant SERVER_CSS_SETTING    => 0;
+# use constant SERVER_CSS_SETTING    => 0;
 
 # 設定用CSSフォルダ
 $HcssDir = 'css'; # フォルダ名のみ(データフォルダと同様の扱いになります)
@@ -50,11 +50,11 @@ $HpasswordFile = 'passwd.cgi';
 # GMT に対する JST の時差（サーバの時刻が狂っている時だけ調整してください）
 $Hjst = 32400; # 9時間
 
-# 管理者名
+# 管理者名 バトルフィールドの名前など
 $HadminName = '管理者の名前';
 
 # 管理者のメールアドレス
-$Hemail = '管理者@どこか.どこか.どこか';
+# $Hemail = '管理者@どこか.どこか.どこか';
 
 # 掲示板アドレス
 #$Hbbs = 'http://サーバー/掲示板.cgi';
@@ -62,22 +62,17 @@ $Hemail = '管理者@どこか.どこか.どこか';
 $Hbbs = "${HbaseDir}/hako-yy-bbs.cgi";
 
 # ホームページのアドレス
-$Htoppage = 'http://サーバー/ホームページ.html';
-
-## 画像のローカル設定の説明ページ
-$imageExp = "${HbaseDir}/e.html";
-# ローカル画像圧縮ファイル(ダウンロードしてもらう)
-$localImg = "${HbaseDir}/navyimg.lzh";
+$Htoppage = 'http://www.geocities.jp/minimal97/index.html';
 
 # 「詳しい変更点」のページ
-$helpHenko = "${HbaseDir}/henko_new.html";
+# $helpHenko = "${HbaseDir}/henko_new.html";
 
 #----------------------------------------
 # データ
 #----------------------------------------
 # ディレクトリのパーミッション
 # 通常は0755でよいが、0777、0705、0704等でないとできないサーバーもあるらしい
-$HdirMode = 0755;
+$HdirMode = 0777;
 
 # データディレクトリの名前
 # ここで設定した名前のディレクトリ以下にデータが格納されます。
@@ -100,8 +95,8 @@ $HsubDataold = 'island';
 # 2 システムコール(可能ならば最も望ましい)
 # 3 シンボリックリンク
 # 4 通常ファイル(あまりお勧めでない)
-$HlockMode = 1;
-use constant SERVER_LOCK_MODE    => 1;
+# $HlockMode = 1;
+# use constant SERVER_LOCK_MODE    => 1;
 
 # (注)
 # 4を選択する場合には、'key-free'という、パーミション666の空のファイルを、
@@ -115,7 +110,7 @@ use constant SERVER_LOCK_MODE    => 1;
 # また、バージョンアップの際の設定は、以前のものと同じ設定にしてください。
 
 # オーナーデータをどこに保存するか (0: howner.dat  1: $HmainData)
-$HnewGameO = 1;
+# $HnewGameO = 1;
 
 # 怪獣出現データをどこに保存するか (0: monslive.dat  1: $HmainData)
 $HnewGame = 1;

@@ -1219,15 +1219,15 @@ sub logUnemployedReturn { #1
 
 # 人口減少
 sub logPopDecrease { #5
-	my($id, $name, $lName, $tName, $str, $point) = @_;
-	logOut("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>が${HtagDisaster_}${str}${H_tagDisaster}による人口減少で<B>$tName</B>になりました。",$id);
+    my ($id, $name, $lName, $tName, $str, $point) = @_;
+    logOut("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>が${HtagDisaster_}${str}${H_tagDisaster}による人口減少で<B>$tName</B>になりました。",$id);
 }
 
 # 新しい町ができた
 sub logPlains2Town {
     my ($island, $lName, $point) = @_;
 
-    my $id = $island->{'id'};
+    my ($id) = $island->{'id'};
     #require './hako-io.cgi';
     my ($name) = islandName($island);
 
@@ -1236,77 +1236,77 @@ sub logPlains2Town {
 
 # 島役所が予定地
 sub logYakusho_Plains2 {
-    my($id, $name, $lName, $point) = @_;
+    my ($id, $name, $lName, $point) = @_;
     logOut("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>を島役所が<B>予定地</B>にしました。",$id);
 }
 
 # 島役所がちならし
 sub logYakusho_Prepare {
-    my($id, $name, $lName, $point) = @_;
+    my ($id, $name, $lName, $point) = @_;
     logOut("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>を島役所が<B>平地</B>にしました。",$id);
 }
 
 # スパイダーマン
 sub logSpiderMan {
-    my($id, $name, $lName, $point) = @_;
+    my ($id, $name, $lName, $point) = @_;
     logOut("${HtagName_}${name}$point${H_tagName}の<B>${lName}</B>に<B>スパイダーマン男</B>が現れ、ビルの屋上で身柄を確保される事件がありました。",$id);
 }
 
 # 怪獣の拒否による失敗
 sub logBokuFail2 {
-    my($id, $name, $comName, $kind, $point) = @_;
+    my ($id, $name, $comName, $kind, $point) = @_;
     logOut("${HtagName_}${name}${H_tagName}で予定されていた${HtagComName_}$comName${H_tagComName}は、予定地${HtagName_}$point${H_tagName}の<b>$kind</b>が嫌々をしたため中止されました。",$id);
 }
 
 # 釣り
 sub logFishing {
-    my($id, $name, $lName, $point) = @_;
+    my ($id, $name, $lName, $point) = @_;
     logOut("${HtagName_}${name}$point${H_tagName}の<B>${lName}</B>では、釣り名人が大物を釣り上げたニュースで持ちきりです。",$id);
 }
 
 # 引っ越し失敗
 sub logHikkosi_miss {
-    my($id, $name) = @_;
-    my($comName);
+    my ($id, $name) = @_;
+    my ($comName);
     $comName = $HcomName[$HcomBoku2];
     logOut("${HtagName_}${name}${H_tagName}で予定されていた<B>${comName}</B>は、目的地が適さないため、失敗しました。",$id);
 }
 
 # カンストフード
 sub logFoodsute {
-    my($id, $name, $fd , $money) = @_;
+    my ($id, $name, $fd , $money) = @_;
     #○○島の持ちきれなくなった食料Xトンは、Y億円に換金されました。
     logSecret("${HtagName_}${name}${H_tagName}の持ちきれなくなった食料${HtagFood_}${fd}${HunitFood}${H_tagFood}は${HtagMoney_}${money}${HunitMoney}${H_tagMoney}に換金されました。",$id);
 }
 
 # フード
 sub logGiveFoodUpdate {
-    my($id, $sta, $update ) = @_;
+    my ($id, $sta, $update ) = @_;
     #○○島の持ちきれなくなった食料Xトンは、Y億円に換金されました。
     logOut("<b>$sta</b>が、$updateにアップした！",$id);
 }
 
 # アイテムを捨てる
 sub logItemThrow {
-    my($id, $name, $iName) = @_;
+    my ($id, $name, $iName) = @_;
     logSecret("${HtagName_}${name}${H_tagName}は<B>${iName}</B>を捨てました。",$id);
 }
 
 # アイテムおく。
 sub logItemPuton {
-    my($id, $name,$point, $iName ) = @_;
+    my ($id, $name,$point, $iName ) = @_;
     logOut("${HtagName_}${name}$point${H_tagName}に<B>${iName}</B>を置きました。",$id);
 }
 
 # アイテムがない
 sub logItemisNoting {
-    my($id, $name) = @_;
+    my ($id, $name) = @_;
     logOut("${HtagName_}${name}${H_tagName}は持ってないアイテムを使おうとしました。",$id);
 }
 
 # アイテムがおけない
 sub logItemDeny {
-    my($id, $name, $point) = @_;
+    my ($id, $name, $point) = @_;
     logOut("${HtagName_}${name}$point${H_tagName}がアイテムを置くのに適さないため、失敗しました。",$id);
 }
 
@@ -1321,33 +1321,33 @@ sub logSkateDown {
 
 # 焼き溶岩
 sub logLavaAttack {
-  my($id, $name, $mName, $point, $tName, $tPoint) = @_;
-  logOut("${HtagName_}${name}$point${H_tagName}の<B>$mName</B>の呼び起こした${HtagDisaster_}溶岩${H_tagDisaster}は${HtagName_}$tPoint${H_tagName}の<B>$tName</B>を焼きました。",$id, $tId);
+    my ($id, $name, $mName, $point, $tName, $tPoint) = @_;
+    logOut("${HtagName_}${name}$point${H_tagName}の<B>$mName</B>の呼び起こした${HtagDisaster_}溶岩${H_tagDisaster}は${HtagName_}$tPoint${H_tagName}の<B>$tName</B>を焼きました。",$id, $tId);
 }
 
 # 召喚
 sub logNige {
-my($id, $name, $lName, $mName, $point) = @_;
-logOut("${HtagName_}${name}$point${H_tagName}の<B>動物園</B>から<B>$mName</B>が${HtagDisaster_}脱走${H_tagDisaster}しました。",$id);
+    my ($id, $name, $lName, $mName, $point) = @_;
+    logOut("${HtagName_}${name}$point${H_tagName}の<B>動物園</B>から<B>$mName</B>が${HtagDisaster_}脱走${H_tagDisaster}しました。",$id);
 }
 
 # 怪獣仕入れ
 sub logSiire {
-    my($id, $name, $lName, $mName, $point) = @_;
+    my ($id, $name, $lName, $mName, $point) = @_;
     logOut("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>は<B>$mName</B>を入荷し話題をよんでいます。",$id);
 END
 }
 
 # 油田からの収入
 sub logOilMoney2 {
-    my($id, $name, $lName, $point, $str, $str2) = @_;
-    logOut("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>から、<B>$str</B>の収益が上がりました。(食料<B>$str2</B>消費)",$id);
+    my ($id, $name, $lName, $point, $str, $str2) = @_;
+    logOut("${HtagName_}${name}$point${H_tagName}の<B>$lName</B>から、${HtagMoney_}$str${H_tagMoney}の収益が上がりました。(食料${HtagFood_}$str2${H_tagFood}消費)",$id);
 END
 }
 
 # 召喚
 sub logNige2 {
-    my($id, $name, $lName, $mName, $point) = @_;
+    my ($id, $name, $lName, $mName, $point) = @_;
     logOut("${HtagName_}${name}$point${H_tagName}の<B>動物園</B>から<B>$mName</B>を${HtagDisaster_}脱走${H_tagDisaster}させました。",$id);
 }
 

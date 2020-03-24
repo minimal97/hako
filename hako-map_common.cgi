@@ -93,10 +93,10 @@ sub islandInfo {
     my ($pts) = $island->{'pts'};
     my ($rena, $renae);
     my ($unemployed);
-    my ($happy);
+    my ($civreq);
 
     $rena = $island->{'rena'};
-    $happy = $island->{'gomi'};
+    $civreq = ($island->{'civreq'}) ? $island->{'civreq'} : "¤Ê¤·";
     $renae = (int($rena / 10 ));
     $unemployed = ($island->{'pop'} - ($farm + $factory + $HTfactor + $mountain) * 10) / $island->{'pop'} * 100 if($island->{'pop'});
     $unemployed = '<span class="' . ($unemployed < 0 ? 'unemploy1' : 'unemploy2') . '">' . sprintf("%.2f%%", $unemployed) . '</span>' if($island->{'pop'});
@@ -223,7 +223,7 @@ sub islandInfo {
 
 
     out(<<END);
-<div id='islandInfo'>
+<div id='islandInfo' align="center">
 <table border>
 $bStr
 <tr>
@@ -242,7 +242,7 @@ $mStr1
 $uStr1
 <th $HbgTitleCell>${HtagTH_}·³»ö<br>µ»½Ñ${H_tagTH}</th>
 $msStr1
-<th $HbgTitleCell>${HtagTH_}¥´¥ß(²¾)${H_tagTH}</th>
+<th $HbgTitleCell>${HtagTH_}Í×Ë¾/¿ôÃÍ${H_tagTH}</th>
 </TR>
 <TR>
 $rStr2
@@ -260,7 +260,7 @@ $mStr2
 $uStr2
 <TD $HbgInfoCell align=right>Lv${renae}</td>
 $msStr2
-<TD $HbgInfoCell align=right>${happy}</td>
+<TD $HbgInfoCell align=right>$CivReqDisp[$civreq]</td>
 </TR>
 <TR>
 <TD $HbgCommentCell COLSPAN=${col_num} align=left>${HtagtTH_}info¡§<font size="-1">$prize$house$monslive$Farmcpc$bumons$me_sat</font>${H_tagtTH}
@@ -435,13 +435,13 @@ sub landString2 {
 
 #----------------------------------------------------------------------
 sub Forest_Img_Gen {
-    my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 
     my ($Forest_Img) = 'land6.png';
     $mon += 1;
 
-    if (   ($mon == 10)
-        || ($mon == 11) ) {
+    if (   (%main::Hday{'month'} == 10)
+        || (%main::Hday{'month'} == 11)
+        || (%main::Hday{'month'} == 12) ) {
         $Forest_Img = 'land6_aut.png';
     }
 
@@ -598,7 +598,7 @@ sub Town_LandString {
 
 #----------------------------------------------------------------------
 sub Waste_LandString {
-    my($island,$x,$y,$land_data ,$mode, $shrturn, $boxmode) = @_;
+    my ($island,$x,$y,$land_data ,$mode, $shrturn, $boxmode) = @_;
     my ($image, $alt, $naviTitle, $naviText) = ('','','','');
 
     my ($kind , $lv , $lv2 , $lv3);

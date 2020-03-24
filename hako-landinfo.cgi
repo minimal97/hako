@@ -117,13 +117,18 @@ sub ScoreBoard_Prize {
     }
     my ($alt1) = $alt;
     # $alt1 =~ s/$rt/ /g;
-    $prize .= "<IMG SRC=\"./img/prize/prize0.gif\"  alt='' TITLE=\"$alt\" onMouseOver='status=\"$alt1\"; return 1;' class='landinfoIcon'> " if ($alt ne '');
+    $prize .= "<img src=\"./img/prize/prize0.svg\"  alt='' title=\"$alt\" onMouseOver='status=\"$alt1\"; return 1;' class='landinfoIcon'> " if ($alt ne '');
 
     # 名前に賞の文字を追加
     my ($f) = 1;
     for ($i = 1; $i < 10; $i++) {
         if ($flags & $f) {
-            $prize .= "<IMG SRC=\"./img/prize/prize${i}.gif\" alt=''  TITLE=\"${Hprize[$i]}\" ";
+            if ($i == 10) {
+                $prize .= "<img src=\"./img/prize/prize10.svg\" alt='' title=\"${Hprize[$i]}\" ";
+            }
+            else {
+                $prize .= "<img src=\"./img/prize/prize${i}.gif\" alt='' title=\"${Hprize[$i]}\" ";
+            }
             $prize .= "class='landinfoIcon'> ";
         }
         $f = $f << 1;

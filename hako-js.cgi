@@ -10,8 +10,8 @@
 #----------------------------------------------------------------------
 sub makeJS {
     my($mode) = @_;
-    my($src);
 
+    my($src);
     my($mons_name);
 
     $mons_name = 'monsnm = [';
@@ -348,20 +348,19 @@ function plchg( selnm ) {
         }else if(cmd == $HcomFune){ // ¬§¡•
             d = 1;
             if(( (suu != 77) && (suu >= $HfuneNumber)) || (suu == 0)) { suu = 1; }
-
-            if(suu == 1){ arg = '<B>$HfuneName[1]</B>'; }
-            else if(suu == 2){ arg = '<B>$HfuneName[2]</B>'; }
-            else if(suu == 3){ arg = '<B>$HfuneName[3]</B>'; }
-            else if(suu == 4){ arg = '<B>$HfuneName[4]</B>'; }
-            else if(suu == 5){ arg = '<B>$HfuneName[5]</B>'; }
-            else if(suu == 6){ arg = '<B>$HfuneName[6]</B>'; }
-            else if(suu == 7){ arg = '<B>$HfuneName[7]</B>'; }
-            else if(suu == 8){ arg = '<B>$HfuneName[8]</B>'; }
-            else if(suu == 9){ arg = '<B>$HfuneName[9]</B>'; }
-            else if(suu == 10){ arg = '<B>$HfuneName[10]</B>'; }
-            else if(suu == 11){ arg = '<B>$HfuneName[11]</B>'; }
-            else if(suu == 12){ arg = '<B>$HfuneName[12]</B>'; }
-            else if(suu == 77){ arg = '<B>≥§æÂ≈‘ª‘</B>'; }
+            if(suu == 1){ arg = '<B>$HfuneName[1]</B><img src="${HMapImgDir}$HfuneImage[1]" width=16 height=16 alt="">'; }
+            else if(suu == 2){ arg = '<B>$HfuneName[2]</B><img src="${HMapImgDir}$HfuneImage[2]" width=16 height=16 alt="">'; }
+            else if(suu == 3){ arg = '<B>$HfuneName[3]</B><img src="${HMapImgDir}$HfuneImage[3]" width=16 height=16 alt="">'; }
+            else if(suu == 4){ arg = '<B>$HfuneName[4]</B><img src="${HMapImgDir}$HfuneImage[4]" width=16 height=16 alt="">'; }
+            else if(suu == 5){ arg = '<B>$HfuneName[5]</B><img src="${HMapImgDir}$HfuneImage[5]" width=16 height=16 alt="">'; }
+            else if(suu == 6){ arg = '<B>$HfuneName[6]</B><img src="${HMapImgDir}$HfuneImage[6]" width=16 height=16 alt="">'; }
+            else if(suu == 7){ arg = '<B>$HfuneName[7]</B><img src="${HMapImgDir}$HfuneImage[7]" width=16 height=16 alt="">'; }
+            else if(suu == 8){ arg = '<B>$HfuneName[8]</B><img src="${HMapImgDir}$HfuneImage[8]" width=16 height=16 alt="">'; }
+            else if(suu == 9){ arg = '<B>$HfuneName[9]</B><img src="${HMapImgDir}$HfuneImage[9]" width=16 height=16 alt="">'; }
+            else if(suu == 10){ arg = '<B>$HfuneName[10]</B><img src="${HMapImgDir}$HfuneImage[10]" width=16 height=16 alt="">'; }
+            else if(suu == 11){ arg = '<B>$HfuneName[11]</B><img src="${HMapImgDir}$HfuneImage[11]" width=16 height=16 alt="">'; }
+            else if(suu == 12){ arg = '<B>$HfuneName[12]</B><img src="${HMapImgDir}$HfuneImage[12]" width=16 height=16 alt="">'; }
+            else if(suu == 77){ arg = '<B>≥§æÂ≈‘ª‘</B><img src="${HMapImgDir}land39.gif" width="16" height="16" alt="">'; }
             strn2 = point + '§«' + kind +'('+arg+')';
         }else if(cmd == $HcomEisei || // øÕπ©±“¿±»ØºÕ°¢•·•Û•∆°¢«À≤ı
                  cmd == $HcomEiseimente ||
@@ -598,12 +597,12 @@ var miniTargetmap;
 function jump(theForm, j_mode) {
     var sIndex = theForm.TARGETID.selectedIndex;
     var url = theForm.TARGETID.options[sIndex].value;
-    if (url != "" ) {
+    if (url != "") {
         window.self.name = "trap";
         if ( (miniTargetmap == null)||(miniTargetmap.closed) ) {
-            miniTargetmap = window.open("$HthisFile?IslandMap=" +url+"&JAVAMODE="+j_mode, "minitar", "menubar=1,toolbar=0,location=0,directories=no,status=1,scrollbars=1,resizable=1,width=700,height=630");
+            miniTargetmap = window.open("$HthisFile?IslandMap=" +url+"&JAVAMODE="+j_mode+ "&FROM_ISLAND=$HcurrentID", "minitar", "menubar=1,toolbar=0,location=0,directories=no,status=1,scrollbars=1,resizable=1,width=700,height=630");
         }else{
-            miniTargetmap.location.href = "$HthisFile?IslandMap=" +url+"&JAVAMODE="+j_mode;
+            miniTargetmap.location.href = "$HthisFile?IslandMap=" + url + "&JAVAMODE=" + j_mode + "&FROM_ISLAND=$HcurrentID";
             miniTargetmap.focus();
         }
     }
