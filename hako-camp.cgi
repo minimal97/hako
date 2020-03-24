@@ -57,19 +57,19 @@ sub tempPrintCampHead {
     out(<<END);
 <DIV align='center'>
 $HtempBack<BR><BR>
-${HtagBig_}${HtagName_}「<FONT COLOR="$HcurrentCamp->{'color'}"><B>$HcurrentCamp->{'mark'}</B></FONT>$HcurrentCamp->{'name'}」${H_tagName} 作戦本部${H_tagBig}<BR>
+<h1>${HtagName_}「<FONT COLOR="$HcurrentCamp->{'color'}"><B>$HcurrentCamp->{'mark'}</B></FONT>$HcurrentCamp->{'name'}」${H_tagName} 作戦本部</h1><BR>
 陣営パスワード：『<B>$HcurrentCamp->{'Takayan'}</B>』<BR><BR>
 END
 
     out(<<END) if($HallyBbs);
-<A STYlE="text-decoration:none" HREF="JavaScript:void(0)" onClick="document.allyForm.action='${HbaseDir}/${HallyBbsScript}';document.allyForm.submit();return false;">
-${HtagBig_}<small>${HtagName_}<FONT COLOR="$HcurrentCamp->{'color'}"><B>$HcurrentCamp->{'mark'}</B></FONT>$HcurrentCamp->{'name'}${H_tagName}作戦会議室へ</A></small>${H_tagBig}
-<FORM name="allyForm" action="" method="POST" target="_blank">
-<INPUT type="hidden" name="ally" value="$HcurrentCampID">
-<INPUT type="hidden" name="cpass" value="$HcurrentCamp->{'password'}">
-<INPUT type="hidden" name="jpass" value="$HcampPassward">
-<INPUT type="hidden" name="id" value="$HcurrentID">
-</FORM>
+<A style="text-decoration:none" HREF="JavaScript:void(0)" onClick="document.allyForm.action='${HbaseDir}/${HallyBbsScript}';document.allyForm.submit();return false;">
+<h1><small>${HtagName_}<FONT COLOR="$HcurrentCamp->{'color'}"><B>$HcurrentCamp->{'mark'}</B></FONT>$HcurrentCamp->{'name'}${H_tagName}作戦会議室へ</A></small></h1>
+<form name="allyForm" action="" method="POST" target="_blank">
+<input type="hidden" name="ally" value="$HcurrentCampID">
+<input type="hidden" name="cpass" value="$HcurrentCamp->{'password'}">
+<input type="hidden" name="jpass" value="$HcampPassward">
+<input type="hidden" name="id" value="$HcurrentID">
+</form>
 END
     out("$Hislands[$HidToNumber{$HcurrentID}]->{'ally_turn'}");
     out('</DIV>');
