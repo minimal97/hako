@@ -23,47 +23,44 @@ require './init-server.cgi';
 #----------------------------------------------------------------------
 
 # デバッグモード(1だと、「ターンを進める」ボタンが使用できる)
-our $Hdebug = 1;
-use constant DEBUG_MODE    => 1;
+our $Hdebug = 0;
+use constant DEBUG_MODE    => 0;
+
 
 # メインスクリプト
 our $HthisFile = "${HbaseDir}/hako-main.cgi";
 
 # 箱庭メンテナンス・スクリプト
-our $HmenteFile = "${HbaseDir}/hako-mente.cgi";
+our $HmenteFile = "${HbaseDir}/hako-mnt.cgi";
 
 # アクセス解析スクリプト
-our $HaxesFile = "${HbaseDir}/analyzer.cgi";
+# our $HaxesFile = "${HbaseDir}/analyzer.cgi";
 
 # ゲームのタイトル文字
-our $HtitleTag = '箱庭'; # ウィンドウのタイトル
-our $Htitle    = '箱庭'; # トップ画面のタイトル
+our $HtitleTag = 'minimal の箱庭'; # ウィンドウのタイトル
+our $Htitle    = 'minimal の箱庭'; # トップ画面のタイトル
 
 # 観光者通信一覧表（管理用）
-our $HlbbsFile = "${HbaseDir}/lbbslist.cgi";
+our $HlbbsFile = "${HbaseDir}/mntlbbs.cgi";
 our $jumpTug = "<meta HTTP-EQUIV='refresh' CONTENT='0; URL=\"${HlbbsFile}\"'></body></html>\n\n";
 #$jumpTug = "Location: $HlbbsFile\n\n";
 
 # ヘッダのリンク(利用規約により、箱庭諸島スクリプト配布元へのリンクは消してはいけません)
-our $Hheader =<<"_H_E_A_D_E_R_";
-<div class="HeadFootLink">
-<small>[<A TITLE="現在は配布していません" HREF="http://www.bekkoame.ne.jp/~tokuoka/hakoniwa.html" target="_blank">箱庭諸島スクリプト配布元</A>]
-<span class='Nret'>[<A HREF="$Htoppage">トップページ</A>]</span>
-<span class='Nret'>[<A HREF="../frm/">miniverse</A>]</span>
-<span class='Nret'>[<A TITLE="ソースコードを公開していただけました" HREF="http://uhyohyohyo.sakura.ne.jp/" target="_blank">多趣旨の国</A>]</span>
-<span class='Nret'>[<A TITLE="使うかもしれん" HREF="http://www.propel.ne.jp/~yysky/gallery/" target="_blank">箱庭諸島の素材屋さん</A>]</span>
-</small>
-</div>
-_H_E_A_D_E_R_
+#our $Hheader =<<"_H_E_A_D_E_R_";
+#<div class="HeadFootLink">
+#<small>[<A TITLE="現在は配布していません" HREF="http://www.bekkoame.ne.jp/~tokuoka/hakoniwa.html" target="_blank">箱庭諸島スクリプト配布元</A>]
+#<span class='Nret'>[<A HREF="$Htoppage">トップページ</A>]</span>
+#<span class='Nret'>[<A HREF="../frm/">miniverse</A>]</span>
+#<span class='Nret'>[<A TITLE="ソースコードを公開していただけました" HREF="http://uhyohyohyo.sakura.ne.jp/" target="_blank">多趣旨の国</A>]</span>
+#<span class='Nret'>[<A TITLE="使うかもしれん" HREF="http://www.propel.ne.jp/~yysky/gallery/" target="_blank">箱庭諸島の素材屋さん</A>]</span>
+#</small>
+#</div>
+#_H_E_A_D_E_R_
 
 # フッタのリンク
 our $Hfooter =<<"_F_O_O_T_E_R_";
-管理者:$HadminName
+管理者:minimal97
 _F_O_O_T_E_R_
-
-# 新しい島を探せるのは管理人だけ？
-# （管理人だけの場合は $HjoinGiveupTurn を小さくしてください）
-our $HadminJoinOnly = 0;
 
 # ヘッダのコメント(負荷を考えると直接hako-top.cgiをいじった方が吉)
 # lbbslist.cgiでコメントアウトしている「&tempNews if($mode);」と連動し、lbbslist.cgiでnews.cgiを書き換えることが可能。
@@ -128,6 +125,9 @@ our $HviewPass = '0123';
 
 # 名前の後ろにつくヤツ（初めは”島”）
 our $AfterName = '島';
+
+# 宇宙の名称
+our $SpaceName = '宇宙';
 
 # gzipを使用して圧縮伝送する？ 0 : 未使用  1 : 使用
 our $Hgzip = 0;
@@ -208,10 +208,10 @@ our $HallyJoinComUse = 0;
 our $HallyDisDown = 0; # 設定する場合、通常時に対する倍率を設定。(例)0.5なら半減。2なら倍増(^^;;;
 
 # 同盟データの名前
-our $HallyData = 'adata.cgi';
+our $HallyData = 'ally.dat';
 
 # 同盟データの名前
-our $HallychatDataName = "chatlog";
+our $HallychatDataName = "allychat";
 our $HallychatData = "${HdirName}/${HallychatDataName}";
 
 # 同盟掲示板としてＢＢＳを使用する 1:する 0:しない
@@ -240,15 +240,19 @@ our $HcostKeepAlly =  100; # 同盟の維持費(加盟している島で均等に負担)
 
 # 同盟のマーク
 our @HallyMark = (
-	'Б','Г','Д','Ж','Й',
-	'Ф','Ц','Ш','Э','Ю',
-	'Я','б','Θ','Σ','Ψ',
-	'Ω','ゑ','ゐ','¶','‡',
-	'†','♪','♭','♯','‰',
-	'Å','∽','∇','∂','∀',
-	'⇔','∨','〒','£','¢',
-	'＠','★','♂','♀','＄',
-	'￥','℃','仝','〆',
+    '□','■','≫','◆','★',
+    'Б','ψ','Д','Ж','Й',
+    'Ф','Ц','Ш','Э','Ю',
+    '卩','乂','▼','＾','ヴ','Ю',
+    'Я','Ξ','Θ','Σ','Ψ',
+    'λ','∴','ゞ','##','宇',
+    '.!il','bd','丗','}{','彡',
+    'Ω','ゑ','ゐ','¶','‡',
+    '†','♪','♭','♯','‰',
+    'Å','∽','∇','∂','∀',
+    '⇔','∨','〒','£','¢',
+    '＠','<>','♂','♀','＄',
+    '￥','℃','仝','〆','∬'
 );
 
 # 重要投稿メッセージ欄のタイトル「〜からのメッセージ」「〜モード」
@@ -327,7 +331,7 @@ our $HpassError = 0;
 our $HtopAxes = 1;
 # 1or2にした場合、以下を設定
 # ログファイル名
-our $HaxesLogfile = './axes.log';
+our $HaxesLogfile = './access.log';
 # 最大記録件数
 our $HaxesMax = 1000;
 # ホスト取得方法(0:gethostbyaddr関数を使わない、1:gethostbyaddr関数を使う)

@@ -1,5 +1,6 @@
 # すべての定数をここにまとめる！
 require './init-server.cgi';
+require './init-game.cgi';
 #----------------------------------------
 # 怪獣
 #----------------------------------------
@@ -20,41 +21,41 @@ $HdisMonsBorder5 = 20000; # 人口基準4(怪獣レベル4)
 # 種類
 # $HmonsterNumber  = 31;
 
-$Mons_MechaInora = 0;       #
-$Mons_Inora = 1;            #
-$Mons_Kamemusi = 2;         #
-$Mons_Kuribo = 3;           #
-$Mons_KatuGin = 4;          #
-$Mons_Teresa = 5;           #
-$Mons_Met = 6;              #
-$Mons_KingInora = 7;        #
-$Mons_Omu = 8;              #
-$Mons_MetaHamu = 9;         #
-$Mons_Barimoa = 10;         #
-$Mons_Slime = 11;           #
-$Mons_HaneHamu = 12;        #
-$Mons_Mikael = 13;          # ミカエル
-$Mons_SlimeLegend = 14;     # スライムレジェンド
-$Mons_Raygira = 15;         # レイジラ
-$Mons_Queen_inora = 16;     # クイーンいのら
-$Mons_f20 = 17;             # f20
-$Mons_Uriel = 18;           # ウリエル
-$Mons_Alfr = 19 ;           # アールヴ
-$Mons_Ethereal = 20;        # イセリア
-$Mons_Satan = 21;           # サタン
-$Mons_Ice_scorpion = 22;    # アイススコーピオン
-$Mons_Totten = 23;          # トッテン
-$Mons_Wario = 24;           # ワリオ
-$Mons_Unbaba = 27;          # ウンババ
-$Mons_Mascot_inora = 28;    # マスコットいのら
-$Mons_Tetra = 29;           # テトラ
-$Mons_SuperTetra = 30;      # 超神獣テトラ
-$Mons_Pirates = 32;         # 海賊船
-$Mons_Volgenom = 33;        # ヴォルゲロム
-$Mons_Retro_inora = 34;     # レトロいのら
-$Mons_hime_inora = 35;      # ひめいのら
-$Mons_Kisinhei   = 36;      # きしんへい
-$Mons_EnderInora = 37;      # エンダーいのら
+our $Mons_MechaInora = 0;       #
+our $Mons_Inora = 1;            #
+our $Mons_Kamemusi = 2;         #
+our $Mons_Kuribo = 3;           #
+our $Mons_KatuGin = 4;          #
+our $Mons_Teresa = 5;           #
+our $Mons_Met = 6;              #
+our $Mons_KingInora = 7;        #
+our $Mons_Omu = 8;              #
+our $Mons_MetaHamu = 9;         #
+our $Mons_Barimoa = 10;         #
+our $Mons_Slime = 11;           #
+our $Mons_HaneHamu = 12;        #
+our $Mons_Mikael = 13;          # ミカエル
+our $Mons_SlimeLegend = 14;     # スライムレジェンド
+our $Mons_Raygira = 15;         # レイジラ
+our $Mons_Queen_inora = 16;     # クイーンいのら
+our $Mons_f20 = 17;             # f20
+our $Mons_Uriel = 18;           # ウリエル
+our $Mons_Alfr = 19 ;           # アールヴ
+our $Mons_Ethereal = 20;        # イセリア
+our $Mons_Satan = 21;           # サタン
+our $Mons_Ice_scorpion = 22;    # アイススコーピオン
+our $Mons_Totten = 23;          # トッテン
+our $Mons_Wario = 24;           # ワリオ
+our $Mons_Unbaba = 27;          # ウンババ
+our $Mons_Mascot_inora = 28;    # マスコットいのら
+our $Mons_Tetra = 29;           # テトラ
+our $Mons_SuperTetra = 30;      # 超神獣テトラ
+our $Mons_Pirates = 32;         # 海賊船
+our $Mons_Volgenom = 33;        # ヴォルゲロム
+our $Mons_Retro_inora = 34;     # レトロいのら
+our $Mons_hime_inora = 35;      # ひめいのら
+our $Mons_Kisinhei   = 36;      # きしんへい
+our $Mons_EnderInora = 37;      # エンダーいのら
 
 $HmonsterDefence = 100; # 怪獣がミサイルを叩き落す確率 random(1000) < 無効
 
@@ -711,6 +712,14 @@ $HProduct_unitName{'nazoniku'}  = '00トン';
 $HProduct_unitName{'tamago'}  = '00トン';
 
 
+
+
+our @CivReqkind = ('none' , 'tax' , 'food', 'food');
+our @CivReqDisp = ('なし' , '税金' , 'コメ', '野菜');
+our @CivReqDispUnit = ('なし' , '%' , $HunitFood, $HunitFood);
+our $CivReqNum = $#CivReqkind + 1;
+
+
 #----------------------------------------------------------------------
 
 our $HStadiumResult = ('練習中',       '予選第１戦待ち', '予選第２戦待ち', '予選第３戦待ち', '予選第４戦待ち',
@@ -745,6 +754,8 @@ our $HCollegeInoraNoOut = 96;
 our $HCollegeTetra = 98;
 our $HCollegeTetraNoOut = 97;
 our $HCollegePetOut = 99;
+
+
 #----------------------------------------------------------------------
 # 島 effect
 #----------------------------------------------------------------------
