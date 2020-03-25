@@ -46,6 +46,8 @@ our $Mons_Satan = 21;           # サタン
 our $Mons_Ice_scorpion = 22;    # アイススコーピオン
 our $Mons_Totten = 23;          # トッテン
 our $Mons_Wario = 24;           # ワリオ
+our $Mons_WarpInora = 25        # ワープいのら
+our $Mons_WarpKing = 26;        # ワープキング
 our $Mons_Unbaba = 27;          # ウンババ
 our $Mons_Mascot_inora = 28;    # マスコットいのら
 our $Mons_Tetra = 29;           # テトラ
@@ -98,19 +100,19 @@ our @HmonsterZooMoney;  # 動物園の価値
 
     #               番号,               名前,                画像,           画像2,         最低,  体力の, str  特殊, 経験値, 死体の  動物園  動物園
     #                                                                                       体力   幅         , 能力          値段    可      価値 *150億
-    SetMonsterTable($Mons_MechaInora,   '人造メカいのら',   'monster7.gif', '',             2,       0,    1,     0,    5,      0,       100, 1);
+    SetMonsterTable($Mons_MechaInora,   '人造メカいのら',    'monster7.gif', '',             2,       0,    1,     0,    5,      0,       100, 1);
     SetMonsterTable($Mons_Inora,        '怪獣いのら',       'monster0.gif', '',             1,       2,    2,     0,    5,      400,     100, 1);
     SetMonsterTable($Mons_Kamemusi,     '怪獣カメムシ',     'monster5.gif', 'monster4.gif', 1,       2,    3,     3,    7,      500,     100, 1);
-    SetMonsterTable($Mons_Kuribo,       'クリボー',         'monster1.gif', '',             1,       2,    4,     0,    5,      1000,    100, 1);
-    SetMonsterTable($Mons_KatuGin,     'カツ＝ギンサヨナラ','katugin.png',  '',             2,       2,    5,     1,    15,     800,     100, 1);
-    SetMonsterTable($Mons_Pirates,      '海賊船',           'mship01.gif',  '',             3,       1,    1,     0,    20,     1500,    0,   0);
+    SetMonsterTable($Mons_Kuribo,       'クリボー',        'monster1.gif', '',             1,       2,    4,     0,    5,      1000,    100, 1);
+    SetMonsterTable($Mons_KatuGin,      'カツ＝ギンサヨナラ', 'katugin.png',  '',             2,       2,    5,     1,    15,     800,     100, 1);
+    SetMonsterTable($Mons_Pirates,      '海賊船',          'mship01.gif',  '',             3,       1,    1,     0,    20,     1500,    0,   0);
 
     SetMonsterTable($Mons_Teresa,       'テレサ',           'monster8.gif', '',             1,       0,    6,     2,    12,     300,     100, 1);
     SetMonsterTable($Mons_Met,          'メット',           'met.png',      'met_kouka.png',4,       2,    7,     4,    20,     1500,    100, 1);
-    SetMonsterTable($Mons_KingInora,    '怪獣キングいのら', 'monster3.gif', '',             7,       2,    8,     0,    30,     5555,    100, 1);
+    SetMonsterTable($Mons_KingInora,    '怪獣キングいのら',   'monster3.gif', '',             7,       2,    8,     0,    30,     5555,    100, 1);
     SetMonsterTable($Mons_Omu,          '古獣王蟲',         'monster18.gif','',             6,       0,    9,     1,    45,     2500,    0,   0);
-    SetMonsterTable(26,                'ワープいのらキング','ghostking.gif','',             8,       4,   10,     14,   30,     10000,   25,  1);
-    SetMonsterTable(27,                 'ビッグウンババ',   'monster27.png','',             7,       2,    8,     2,    30,     0,       0,   0);
+    SetMonsterTable($Mons_WarpKing,     'ワープいのらキング', 'ghostking.gif','',             8,       4,   10,     14,   30,     10000,   25,  1);
+    SetMonsterTable($Mons_Unbaba,       'ビッグウンババ',    'monster27.png','',             7,       2,    8,     2,    30,     0,       0,   0);
 
     SetMonsterTable($Mons_MetaHamu,     '硬獣めたはむ',     'monster25.gif','monster25.gif',5,       2,   10,     8,    40,     3500,    100, 1);
     SetMonsterTable($Mons_Barimoa,      '怪獣バリモア',     'monster13.gif','',             7,       2,   11,     5,    35,     3000,    100, 1);
@@ -120,16 +122,16 @@ our @HmonsterZooMoney;  # 動物園の価値
     SetMonsterTable($Mons_EnderInora,   'エンダーいのら',   'ghostking.gif','',             8,       4,   10,     14,   30,     15000,   10,  1);
 
     SetMonsterTable($Mons_Mikael,       '天使ミカエル',     'monster17.gif','',             10,      0,   14,     0,    99,     99999,   100, 1);
-    SetMonsterTable($Mons_SlimeLegend, 'スライムレジェンド','monster19.gif','monster20.gif',5,       0,   15,     8,    70,     27000,   60,  1);
+    SetMonsterTable($Mons_SlimeLegend,  'スライムレジェンド','monster19.gif','monster20.gif',5,       0,   15,     8,    70,     27000,   60,  1);
     SetMonsterTable($Mons_Raygira,      '魔獣レイジラ',     'monster22.gif','monster4.gif', 9,       0,   16,     8,    55,     10000,   100, 1);
-    SetMonsterTable($Mons_Queen_inora, '魔獣クイーンいのら','monster21.gif','',             9,       0,   17,     5,    60,     12000,   100, 1);
-    SetMonsterTable($Mons_f20,          '人造怪獣f02',      'f02.gif',      '',             8,       0,   18,     2,    85,     48000,   10,  1);
+    SetMonsterTable($Mons_Queen_inora,  '魔獣クイーンいのら','monster21.gif','',             9,       0,   17,     5,    60,     12000,   100, 1);
+    SetMonsterTable($Mons_f20,          '人造怪獣f02',     'f02.gif',      '',             8,       0,   18,     2,    85,     48000,   10,  1);
     SetMonsterTable($Mons_Uriel,        '天使ウリエル',     'monster23.gif','',             9,       0,   19,     0,    90,     80000,   5,   1);
     SetMonsterTable($Mons_Alfr,         '魔術師アールヴ',   'monster24.gif','',             2,       0,   20,     1,    95,     95000,   10,  2);
     SetMonsterTable($Mons_Ethereal,     '堕天使イセリア',   'monster26.gif','',             7,       0,   21,     7,    0,      85000,   20,  1);
-    SetMonsterTable($Mons_Satan,        '魔王サタン',       'monster27.gif','',             10,      0,   22,     0,    80,     0,       2,   2);
-    SetMonsterTable($Mons_Ice_scorpion,'アイススコーピオン','monster29.gif','',             9,       0,   23,     2,    40,     4000,    10,  2);
-    SetMonsterTable(25,                 'ワープいのら',     'monsterghost.gif','',          6,       2,    8,     16,   20,     1500,    50,  1);
+    SetMonsterTable($Mons_Satan,        '魔王サタン',      'monster27.gif','',             10,      0,   22,     0,    80,     0,       2,   2);
+    SetMonsterTable($Mons_Ice_scorpion, 'アイススコーピオン','monster29.gif','',             9,       0,   23,     2,    40,     4000,    10,  2);
+    SetMonsterTable($Mons_WarpInora,    'ワープいのら',     'monsterghost.gif','',          6,       2,    8,     16,   20,     1500,    50,  1);
     SetMonsterTable($Mons_Volgenom,     'ヴォルゲロム',     'kaeru.gif',    '',             7,       0,   23,     18,   40,     4000,    20,  2);
     SetMonsterTable($Mons_Retro_inora,  'レトロいのら',     'retro.gif',   '',              6,       4,   22,     19,   55,     37564,   30,  1);
 
@@ -138,10 +140,10 @@ our @HmonsterZooMoney;  # 動物園の価値
     SetMonsterTable($Mons_Wario,        'ワリオ',           'wario.png',    '',             32,      32,  25,     1,    120,    200000,  0,   0);
 
     SetMonsterTable($Mons_Kisinhei,     'きしんへい',       'kisinhei.png','kisinhei_curing.png', 8, 2,   36,     2,    90,     100000,  0,   0);
-    SetMonsterTable(35,                 'ひめいのら',       'queen.gif',    '',             65530,   0,   35,     20,   0,      0,       0,   0);
+    SetMonsterTable($Mons_hime_inora,   'ひめいのら',       'queen.gif',    '',             65530,   0,   35,     20,   0,      0,       0,   0);
 
-    SetMonsterTable(28,                 'マスコットいのら', 'monster30.gif','',             0,       0,   28,     0,    0,      1,       0,   0);
-    SetMonsterTable(29,                 '神獣テトラ',       'monster10.gif','',             5,       0,   29,     6,    7,      2000,    0,   0);
+    SetMonsterTable($Mons_Mascot_inora, 'マスコットいのら', 'monster30.gif','',             0,       0,   28,     0,    0,      1,       0,   0);
+    SetMonsterTable($Mons_Tetra,        '神獣テトラ',       'monster10.gif','',             5,       0,   29,     6,    7,      2000,    0,   0);
     SetMonsterTable($Mons_SuperTetra,   '超神獣テトラ',     'monster28.gif','',             11,      0,   30,     0,    99,     200000,  0,   0);
 
     SetMonsterTable(37,                 '番兵',             'monster28.gif','',             32,      0,   99,     0,    0,      2,       0,   0);
