@@ -38,7 +38,7 @@ use Time::Local;
 # ――――――――――――――――――――――――――――――
 # 設定項目は以上
 # ――――――――――――――――――――――――――――――
-my $title   = 'Hakoniwa R.A. メンテナンスツール';
+my ($title)   = 'Hakoniwa R.A. メンテナンスツール';
 
 # 大きい文字
 my ($HtagBig_) = '<span class="big">';
@@ -137,8 +137,8 @@ sub myrmtree {
     my($dn) = @_;
 
     opendir(DIN, "$dn/");
-    my($fileName);
-    while($fileName = readdir(DIN)) {
+    my ($fileName);
+    while ($fileName = readdir(DIN)) {
         unlink("$dn/$fileName");
     }
     closedir(DIN);
@@ -169,7 +169,8 @@ sub currentMode {
 sub deleteMode {
     if ($deleteID eq '') {
         myrmtree "${HdirName}";
-    } else {
+    }
+    else {
         myrmtree "${HdirName}.bak$deleteID";
     }
     unlink "hakojimalockflock";
