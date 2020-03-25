@@ -90,7 +90,6 @@ function newdevelope(){
 // -->
 </script>
 END
-
 }
 
 
@@ -106,8 +105,8 @@ sub tempNewsspace {
     </div>
   </div>
 END
-
 }
+
 
 #----------------------------------------------------------------------
 sub Login_space {
@@ -150,9 +149,8 @@ sub Login_space {
 </div>
 
 END
-
-
 }
+
 
 #----------------------------------------------------------------------
 sub PrintTopBlock {
@@ -230,7 +228,6 @@ END
 
         $HlastTurnS = '　（ゲームは終了しました）';
     }
-
         out(<<END);
     <h2>
       <small>
@@ -952,7 +949,6 @@ END
 </table>
 END
     }
-
     out(<<END);
 <hr>
 <table border><tr>
@@ -991,7 +987,8 @@ END
             $name = "${HtagNumber_}${name}${H_tagNumber}";
         } elsif(!($island->{'absent'})) {
             $name = "${HtagName_}${name}${H_tagName}";
-        } else {
+        }
+        else {
             $name = "${HtagName2_}${name}($island->{'absent'})${H_tagName2}";
         }
         $name = '<span class="attention">【管理人あずかり】</span><BR>' . $name if ($island->{'predelete'});
@@ -999,7 +996,8 @@ END
         $mStr2 = '';
         if (INIT_HIDE_MONEY_MODE == 1) {
             $mStr2 = "<td $HbgInfoCell align=right>$island->{'money'}$HunitMoney</td>";
-        } elsif((INIT_HIDE_MONEY_MODE == 2) || (INIT_HIDE_MONEY_MODE == 3)) {
+        }
+        elsif ((INIT_HIDE_MONEY_MODE == 2) || (INIT_HIDE_MONEY_MODE == 3)) {
             my ($mTmp) = aboutMoney($island->{'money'});
             $mStr2 = "<td $HbgInfoCell align=right>$mTmp</td>";
         }
@@ -1011,7 +1009,7 @@ END
             if (INIT_HIDE_MISSILE_MODE == 2) {
                 my($mTmp) = aboutMissile($island->{'missiles'});
                 $msStr2 = "<td $HbgInfoCell align=right>${mTmp}</td>";
-            } elsif(INIT_USE_ARM_SUPPLY) {
+            } elsif (INIT_USE_ARM_SUPPLY) {
                 $msStr2 .= "($island->{'army'}個)</td>";
             } else {
                 $msStr2 .= '</td>';
@@ -1061,6 +1059,7 @@ $l_comment
 END
     }
 }
+
 
 #----------------------------------------------------------------------
 # 同盟の状況
@@ -1114,13 +1113,16 @@ END
 
         $row = 2;
         if (defined $owner) {
+
             $owner = islandName($Hislands[$owner]);
-        } else {
+        }
+        else {
             $row = 1;
         }
         if ($num == -1) {
             $name = "<A style=\"text-decoration:none\" href=\"$HthisFile?AmiOfAlly=$ally->{'id'}\">$ally->{'name'}</A>";
-        } else {
+        }
+        else {
             $name = $ally->{'name'};
         }
         $comment = $ally->{'comment'};
@@ -1144,7 +1146,6 @@ END
 
 END
     }
-
     out("  </tbody>\n</TABLE>");
     out('</DIV>') if ($num == -1);
 }
