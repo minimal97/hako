@@ -37,10 +37,10 @@ require('./hako-turn_food.cgi');
 # ---------------------------------------------------------------------
 sub SetMountain_Normal {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandMountain;
     $landValue->[$x][$y] = 0;
@@ -70,10 +70,10 @@ sub SetMonument_Normal {
 # ---------------------------------------------------------------------
 sub SetYoganLand {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandYougan;
     $landValue->[$x][$y] = random(3) + 2;
@@ -87,10 +87,10 @@ sub SetYoganLand {
 # ---------------------------------------------------------------------
 sub SetWasteLand_Normal {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandWaste;
     $landValue->[$x][$y] = 0;
@@ -104,10 +104,10 @@ sub SetWasteLand_Normal {
 # ---------------------------------------------------------------------
 sub SetWasteLand_Normal_val {
     my ($island , $x , $y , $val) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandWaste;
     $landValue->[$x][$y] = $val;
@@ -162,10 +162,10 @@ sub SetMonsterLand_Normal {
 # ---------------------------------------------------------------------
 sub SetSeaLand_Normal {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandSea;
     $landValue->[$x][$y] = 0;
@@ -179,10 +179,10 @@ sub SetSeaLand_Normal {
 # ---------------------------------------------------------------------
 sub SetSeaShallowLand {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandSea;
     $landValue->[$x][$y] = 1;
@@ -196,10 +196,10 @@ sub SetSeaShallowLand {
 # ---------------------------------------------------------------------
 sub SetRottenSea {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandRottenSea;
     $landValue->[$x][$y] = 0;
@@ -231,10 +231,10 @@ sub SetIce_Normal {
 # ---------------------------------------------------------------------
 sub SetPlains_Normal {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandPlains;
     $landValue->[$x][$y] = 0;
@@ -243,6 +243,8 @@ sub SetPlains_Normal {
 }
 
 
+# ---------------------------------------------------------------------
+# ペットが攻撃しないモンスター
 # ---------------------------------------------------------------------
 sub isNoAttackMonster {
     my ($mKind) = @_;
@@ -253,11 +255,12 @@ sub isNoAttackMonster {
 
         return 1;
     }
-
     return 0;
 }
 
 
+# ---------------------------------------------------------------------
+# 怪獣の攻撃
 # ---------------------------------------------------------------------
 sub CityAttack {
     my ($island , $x , $y) = @_;
@@ -285,16 +288,17 @@ sub CityAttack {
 
     $count = 0;
 
-    for($i = 1; $i < 7; $i++) {
+    for ($i = 1; $i < 7; $i++) {
         $sx = $x + $ax[$i];
         $sy = $y + $ay[$i];
 
         # 行による位置調整
-        $sx-- if(!($sy % 2) && ($y % 2));
+        $sx-- if (!($sy % 2) && ($y % 2));
 
-        if(($sx < 0) || ($sx > $islandSize) || ($sy < 0) || ($sy > $islandSize)) {
+        if (($sx < 0) || ($sx > $islandSize) || ($sy < 0) || ($sy > $islandSize)) {
             # 範囲外の場合
-        } else {
+        }
+        else {
 
             # 範囲内の場合
             if ($land->[$sx][$sy] == $HlandMonster) {
@@ -323,16 +327,21 @@ sub CityAttack {
 
         if (   ($landKind == $HlandSeacity)
             || ($landKind == $HlandUmishuto) ) {
+
             logMonsAttacksSecret($id, $name, $lName, $this_pos);
-        }else{
+        }
+        else {
+
             logMonsAttacks($id, $name, $lName, $this_pos);
         }
     }
-
     return $count;
 }
 
 
+# ---------------------------------------------------------------------
+# 怪獣の攻撃イベント
+# 特殊な攻撃を含める場合
 # ---------------------------------------------------------------------
 sub MonsterAttackHook {
     my ($island , $x , $y , $mKind , $damage , $bx , $by) = @_;
@@ -345,14 +354,15 @@ sub MonsterAttackHook {
     if ($mKind == $Mons_Kisinhei) {
 
         $landValue3->[$x][$y] += $damage;
-
-    }else{
-
     }
-
+    else{
+        # なにもしない
+    }
 }
 
 
+# ---------------------------------------------------------------------
+# 
 # ---------------------------------------------------------------------
 sub Town_Deserted {
     my ($island , $x , $y) = @_;
@@ -371,7 +381,6 @@ sub Town_Deserted {
             return (1);
         }
     }
-
     return (0);
 }
 
