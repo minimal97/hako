@@ -3919,13 +3919,13 @@ sub doCommand {
                     $fuhatu++;
                     # 軍事物資を減らす
                     $island->{'army'}-- if($HuseArmSupply);
-                    last if(!$level || !$arg || ($island->{'money'} < $cost));
+                    last if (!$level || !$arg || ($island->{'money'} < $cost));
                 }
 
                 if ($kind != $HcomMissileST) {
                     $island->{'ext'}[1] += $cost; # 貢献度
                     $island->{'ext'}[6]++; # 発射したミサイルの数
-                    if($HallyNumber) {
+                    if ($HallyNumber) {
                         foreach (@{$island->{'allyId'}}) {
                             $Hally[$HidToAllyNumber{$_}]->{'ext'}[0]++ if ( ($tIsland->{'BF_Flag'} == 0 ) );
                         }
@@ -3946,7 +3946,8 @@ sub doCommand {
                     if ($allyflag) {
                         # 味方に撃たれた場合貢献度マイナス(受けたミサイルの数はカウントしない)
                         $tIsland->{'ext'}[1] -= $cost; # 貢献度
-                    } else {
+                    }
+                    else {
                         # 敵に撃たれた場合貢献度プラス
                         $tIsland->{'ext'}[1] += $cost; # 貢献度
                         $tIsland->{'ext'}[5]++; # 受けたミサイルの数
@@ -8173,16 +8174,14 @@ sub doEachHex {
 
                         next if($sL == $HlandHugeMonster);
 
-                        if( ($sL == $HlandSea) && ($sLv == 0)){
+                        if ( ($sL == $HlandSea) && ($sLv == 0)){
                             # 海ポチャ
                             logMeteo($id, $name, $sName, "($sx, $sy)", "し");
                         }
-                        elsif(($sL == $HlandMountain) || ($sL == $HlandGold) || ($sL == $HlandShrine) || ($sL == $HlandOnsen)){
+                        elsif (($sL == $HlandMountain) || ($sL == $HlandGold) || ($sL == $HlandShrine) || ($sL == $HlandOnsen)){
                             # 山破壊
                             logMeteo($id, $name, $sName, "($sx, $sy)", "、<B>$sName</B>は消し飛び");
-                            $land->[$sx][$sy] = $HlandWaste;
-                            $landValue->[$sx][$sy] = 0;
-                            $landValue2->[$sx][$sy] = 0;
+                            SetWasteLand_Normal($island,$sx,$sy);
                             next;
                         }
                         elsif (   ($sL == $HlandSbase)
@@ -8195,20 +8194,18 @@ sub doEachHex {
 
                             logMeteo($id, $name, $sName, "($sx, $sy)", "、<B>$sName</B>は崩壊し");
                         }
-                        elsif($sL == $HlandMonster) {
+                        elsif ($sL == $HlandMonster) {
                             $island->{'monsterlive'} -= 1;
                             logMeteoMonster($id, $name, $sName, "($sx, $sy)");
                         }
-                        elsif(($sL == $HlandSea) || ($sL == $HlandIce)) {
+                        elsif (($sL == $HlandSea) || ($sL == $HlandIce)) {
                             # 浅瀬
                             logMeteo($id, $name, $sName, "($sx, $sy)", "、海底がえぐられ");
                         }
                         else {
                             logMeteo($id, $name, $sName, "($sx, $sy)", "、一帯が水没し");
                         }
-                        $land->[$sx][$sy] = $HlandSea;
-                        $landValue->[$sx][$sy] = 0;
-                        $landValue2->[$sx][$sy] = 0;
+                        SetSeaLand_Normal($island,$sx,$sy);
                     }
                 }
 
@@ -8259,12 +8256,12 @@ sub doEachHex {
                             # 1/4で壊滅
                             if (!random(4)) {
                                 logDamageAny($id, $name, landName($sL, $sLv, $sLv2), "($sx, $sy)", "${HtagDisaster_}地震${H_tagDisaster}により壊滅しました。");
-                                $land->[$sx][$sy] = $HlandWaste;
-                                $landValue->[$sx][$sy] = 0;
-                                $landValue2->[$sx][$sy] = 0;
                                 if ($sL == $HlandOnsen) {
                                     # 温泉は山に戻る
-                                    $land->[$sx][$sy] = $HlandMountain;
+                                    SetMountain_Normal($island,$sx,$sy);
+                                }
+                                else {
+                                    SetWasteLand_Normal($island,$sx,$sy);
                                 }
                             }
                         }
@@ -10848,9 +10845,9 @@ sub doIslandProcess {
     }
 
     # 地震判定
-    if(   ($HpunishInfo{$id}->{punish} == 1)
-       || (   (!$HnoDisFlag) 
-           && (random(1000) < int(($island->{'prepare2'} + 1) * $HdisEarthquake[0] * $disdown - $island->{'eis2'}/15)) )
+    if (   ($HpunishInfo{$id}->{punish} == 1)
+        || (   (!$HnoDisFlag) 
+            && (random(1000) < int(($island->{'prepare2'} + 1) * $HdisEarthquake[0] * $disdown - $island->{'eis2'}/15)) )
                                                                                                                         ) {
         # 地震発生
         logEarthquake($id, $name);
@@ -10866,20 +10863,20 @@ sub doIslandProcess {
             $lv2 = $landValue2->[$x][$y];
 
             if (
-                ($landKind == $HlandHaribote) ||
-                (($landKind == $HlandFoodim) && ($lv < 480)) || 
-                ($landKind == $HlandTrain) ||
-                ($landKind == $HlandPark) ||
-                ($landKind == $HlandOnsen) ||
-                ($landKind == $HlandStation) ||
-                ($landKind == $HlandKatorikun) ||
-                ($landKind == $HlandSeki) ||
-                ($landKind == $HlandRocket) ||
-                ($landKind == $HlandDefence) ||
-                ($landKind == $HlandFactory)
+                 ($landKind == $HlandHaribote) ||
+                 (($landKind == $HlandFoodim) && ($lv < 480)) || 
+                 ($landKind == $HlandTrain) ||
+                 ($landKind == $HlandPark) ||
+                 ($landKind == $HlandOnsen) ||
+                 ($landKind == $HlandStation) ||
+                 ($landKind == $HlandKatorikun) ||
+                 ($landKind == $HlandSeki) ||
+                 ($landKind == $HlandRocket) ||
+                 ($landKind == $HlandDefence) ||
+                 ($landKind == $HlandFactory)
                                                 ) {
                 # 1/4で壊滅
-                if(!random(4+$island->{'co5'}*5)) {
+                if (!random(4+$island->{'co5'}*5)) {
                     logDamageAny($id, $name, landName($landKind, $lv,$lv2), "($x, $y)", "${HtagDisaster_}地震${H_tagDisaster}により壊滅しました。");
                     SetWasteLand_Normal($island , $x , $y);
 
@@ -10943,11 +10940,11 @@ sub doIslandProcess {
                 || (($landKind == $HlandInoraLand) && ($lv >= 10))
                                                                     ) {
                 # 1/4で壊滅
-                if(!random(3+$island->{'co5'}*5)) {
+                if (!random(3+$island->{'co5'}*5)) {
                     logDamageAny($id, $name, landName($landKind, $lv,$lv2), "($x, $y)", "${HtagDisaster_}地震${H_tagDisaster}により被害を受けました。");
                     $landValue->[$x][$y] -= random(100)+50;
                 }
-                if($landValue->[$x][$y] <= 0) {
+                if ($landValue->[$x][$y] <= 0) {
                     # 平地に戻す
                     SetWasteLand_Normal($island , $x , $y);
                     logDamageAny($id, $name, landName($landKind, $lv,$lv2), "($x, $y)", "${HtagDisaster_}地震${H_tagDisaster}により壊滅しました。");
@@ -10960,12 +10957,12 @@ sub doIslandProcess {
                 || ($landKind == $HlandFarmcow)
                                                     ) {
 
-                if(!random(6)) {
+                if (!random(6)) {
                     logDamageAny($id, $name, landName($landKind, $lv,$lv2), "($x, $y)", "${HtagDisaster_}地震${H_tagDisaster}により被害を受けました。");
                     $landValue->[$x][$y] -= random(400)+50;
                 }
 
-                if($landValue->[$x][$y] <= 0) {
+                if ($landValue->[$x][$y] <= 0) {
                     # 平地に戻す
                     SetWasteLand_Normal($island , $x , $y);
                     logDamageAny($id, $name, landName($landKind, $lv,$lv2), "($x, $y)", "${HtagDisaster_}地震${H_tagDisaster}により壊滅しました。");
@@ -10976,7 +10973,7 @@ sub doIslandProcess {
     }
 
     # 重税にきれる住民
-    if(random(100) < int(($island->{'eisei1'} - 10 - random(5)) * $disdown)) {
+    if (random(100) < int(($island->{'eisei1'} - 10 - random(5)) * $disdown)) {
         # 不足メッセージ
         logKire($id, $name);
 
