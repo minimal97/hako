@@ -8378,13 +8378,13 @@ sub doEachHex {
                     $sx = $Hrpx[$i];
                     $sy = $Hrpy[$i];
                     $tkind = $land->[$sx][$sy];
-                    if (($land->[$sx][$sy] == $HlandPlains) ||
-                        ($land->[$sx][$sy] == $HlandForest) ||
-                        ($land->[$sx][$sy] == $HlandNursery) ||
-                        ($land->[$sx][$sy] == $HlandFarmchi) ||
-                        ($land->[$sx][$sy] == $HlandFarmpic) ||
-                        ($land->[$sx][$sy] == $HlandFarmcow) ||
-                        ($land->[$sx][$sy] == $HlandRottenSea)) {
+                    if (   ($land->[$sx][$sy] == $HlandPlains)
+                        || ($land->[$sx][$sy] == $HlandForest)
+                        || ($land->[$sx][$sy] == $HlandNursery)
+                        || ($land->[$sx][$sy] == $HlandFarmchi)
+                        || ($land->[$sx][$sy] == $HlandFarmpic)
+                        || ($land->[$sx][$sy] == $HlandFarmcow)
+                        || ($land->[$sx][$sy] == $HlandRottenSea)) {
                         # 島にある平地、森、養殖場、養鶏場、養豚場、牧場、腐海を荒地か闇石か炎石にする
                         my ($tlv) = $landValue->[$sx][$sy];
                         my ($tlv2) = $landValue2->[$sx][$sy];
@@ -8418,11 +8418,12 @@ sub doEachHex {
             }
             elsif ($mKind == $Mons_SuperTetra) { # 超神獣テトラ
 
-                if ($island->{'monsterlive'} == $island->{'c28'}){
+                if ($island->{'monsterlive'} == $island->{'c28'}) {
                     # テトラちゃんだけ？
-                    if ($island->{'co99'} == 0){
+                    if ($island->{'co99'} == 0) {
                         logMstakeiede($id, $name, "出撃中の超神獣テトラ","($x, $y)",landName($landKind, $lv,$lv2));
-                    } else {
+                    }
+                    else {
                         my ($i,$sx,$sy);
                         foreach $i (0..$pointNumber) {
                             $sx = $Hrpx[$i];
@@ -8451,7 +8452,7 @@ sub doEachHex {
 
                     my ($monsArray, $monspnt);
                     $monsArray = $island->{'monspnt'};
-                    for ($i = 0; $i < $monsno; $i++){
+                    for ($i = 0; $i < $monsno; $i++) {
 
                         $monspnt = $monsArray->[$i];
                         ($sx, $sy) = ($monspnt->{x}, $monspnt->{y});
@@ -8468,7 +8469,8 @@ sub doEachHex {
                                 if (   ($tKind == $Mons_SuperTetra)
                                     || ($tKind == $Mons_hime_inora) ) {
 
-                                } else {
+                                }
+                                else {
                                     my ($mshp, $msap, $msdp, $mssp, $mswin, $msexe, $tet) = split(/,/, $island->{'eisei5'});
                                     my ($m_str) = $HmonsterSTR[$tKind];
 
@@ -8524,7 +8526,8 @@ sub doEachHex {
                                         AddMonsterReward($island , $mKind);
                                     }
                                 }
-                            } else {
+                            }
+                            else {
                                 last;
                             }
                         }
@@ -8533,21 +8536,27 @@ sub doEachHex {
 
             } elsif ($mKind == $Mons_Tetra) { #神獣テトラ
 
-                if($island->{'monsterlive'} == 1){
+                if ($island->{'monsterlive'} == 1){
                     # 今テトラちゃんだけ？
-                    if($island->{'co99'} == 0){
-                    } else {
+                    if ($island->{'co99'} == 0){
+
+                    }
+                    else {
+
                         my($i,$sx,$sy);
+                        # 帰る大学を探す
                         foreach $i (0..$pointNumber) {
                             $sx = $Hrpx[$i];
                             $sy = $Hrpy[$i];
                             $landKind = $land->[$sx][$sy];
                             $lv = $landValue->[$sx][$sy];
-                            $landName = landName($landKind, $lv,$landValue2->[$sx][$sy],$landValue3->[$sx][$sy]);
-                            if(($land->[$sx][$sy] == $HlandCollege) && ($lv == 99)){
+                            if (   ($landKind == $HlandCollege)
+                                && ($lv == 99) ) {
+
                                 $landValue->[$sx][$sy] = 98;
 
-                                # もといた場所
+                                # もといた場所を荒地に
+                                $landName = landName($landKind, $lv,$landValue2->[$sx][$sy],$landValue3->[$sx][$sy]);
                                 SetWasteLand_Normal($island , $x , $y);
                                 logMstakeokaeri($id, $name, "テトラ","($sx, $sy)",$landName);
                                 last;
@@ -8591,6 +8600,7 @@ sub doEachHex {
                     my ($monsArray, $monspnt);
                     $monsArray = $island->{'monspnt'};
                     for ($i = 0; $i < $monsno; $i++) {
+
                         $monspnt = $monsArray->[$i];
                         ($sx, $sy) = ($monspnt->{x}, $monspnt->{y});
                         if ($land->[$sx][$sy] == $HlandMonster){
