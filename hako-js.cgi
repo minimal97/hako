@@ -10,8 +10,8 @@
 #----------------------------------------------------------------------
 sub makeJS {
     my($mode) = @_;
-    my($src);
 
+    my($src);
     my($mons_name);
 
     $mons_name = 'monsnm = [';
@@ -597,12 +597,12 @@ var miniTargetmap;
 function jump(theForm, j_mode) {
     var sIndex = theForm.TARGETID.selectedIndex;
     var url = theForm.TARGETID.options[sIndex].value;
-    if (url != "" ) {
+    if (url != "") {
         window.self.name = "trap";
         if ( (miniTargetmap == null)||(miniTargetmap.closed) ) {
-            miniTargetmap = window.open("$HthisFile?IslandMap=" +url+"&JAVAMODE="+j_mode, "minitar", "menubar=1,toolbar=0,location=0,directories=no,status=1,scrollbars=1,resizable=1,width=700,height=630");
+            miniTargetmap = window.open("$HthisFile?IslandMap=" +url+"&JAVAMODE="+j_mode+ "&FROM_ISLAND=$HcurrentID", "minitar", "menubar=1,toolbar=0,location=0,directories=no,status=1,scrollbars=1,resizable=1,width=700,height=630");
         }else{
-            miniTargetmap.location.href = "$HthisFile?IslandMap=" +url+"&JAVAMODE="+j_mode;
+            miniTargetmap.location.href = "$HthisFile?IslandMap=" + url + "&JAVAMODE=" + j_mode + "&FROM_ISLAND=$HcurrentID";
             miniTargetmap.focus();
         }
     }
