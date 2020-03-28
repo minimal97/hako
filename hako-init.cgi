@@ -129,6 +129,9 @@ our $HviewPass = '0123';
 # 名前の後ろにつくヤツ（初めは”島”）
 our $AfterName = '島';
 
+# 宇宙の名称
+our $SpaceName = '宇宙';
+
 # gzipを使用して圧縮伝送する？ 0 : 未使用  1 : 使用
 our $Hgzip = 0;
 use constant USE_GZIP    => 0;
