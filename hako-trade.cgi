@@ -399,15 +399,14 @@ sub TradeDataUpdate {
     for ($i = 0 ; $i < (@lines) ; $i++) {
 
         $trade_data = TradeDataConv($lines[$i]);
-        if (   ($NewData->{'id'} == $trade_data->{'id'}) ) {
-
-            $lines[$i] = TradeDataToStr($NewData);
-            print $lines[$i];
-        }
-
         if ($lines[$i]  =~ /([0-9]+),([0-9]+),([0-9]+),([0-9]+),([0-9]+)*/ ) {
-            print OUT $lines[$i];
+            if (   ($NewData->{'id'} == $trade_data->{'id'}) ) {
+
+                $lines[$i] = TradeDataToStr($NewData);
+            }
         }
+
+        print OUT $lines[$i];
     }
     close(OUT);                 # ファイルを閉じる
 }
@@ -420,7 +419,7 @@ sub PrintNewTrade {
     if ($island->{'trade_active'} >= $island->{'trade_max'}) {
         out(<<END);
 <hr>
-<div>${HtagBig_}取引数が限界です。許可を外すか、削除が必要です。${H_tagBig}</div>
+<div>${HtagBig_}取引数が限界なので、新規の取引を作成できません。<br>許可を外すか、削除が必要です。${H_tagBig}</div>
 END
         return ;
     }
@@ -542,9 +541,12 @@ END
     my ($delete_btn);
 
     out('<table>');
+    my ($enable_cnt) = 0;
+
     for ($lp = 0 ; $lp < $num ; $lp++) {
 
         $trade_id = $trade_data[$lp]->{'id'};
+
         if ($trade_data[$lp]->{'check1'}) {
 
             $tra_ok1 = "許可";
@@ -553,7 +555,10 @@ END
         else {
 
             $tra_ok1 = "拒否";
-            $tra_btn1 = "<input type='submit' value='許可する' name='TRADE_CHG1=$trade_id'>";
+            $tra_btn1 = '';
+            if ($trade_active < $island->{'trade_max'}) {
+                $tra_btn1 = "<input type='submit' value='許可する' name='TRADE_CHG1=$trade_id'>";
+            }
         }
 
         if ($trade_data[$lp]->{'check2'}) {
@@ -564,13 +569,17 @@ END
         else {
 
             $tra_ok2 = "拒否";
-            $tra_btn2 = "<input type='submit' value='許可する' name='TRADE_CHG2=$trade_id'>";
+            $tra_btn2 = '';
+            if ($trade_active < $island->{'trade_max'}) {
+                $tra_btn2 = "<input type='submit' value='許可する' name='TRADE_CHG2=$trade_id'>";
+            }
         }
 
+
         $island1_id = $trade_data[$lp]->{'island1_id'};
+        $island2_id = $trade_data[$lp]->{'island2_id'};
         $island1_name = islandName($Hislands[$HidToNumber{$island1_id}]);
 
-        $island2_id = $trade_data[$lp]->{'island2_id'};
         $island2_name = islandName($Hislands[$HidToNumber{$island2_id}]);
 
         if (   ($island1_id != $HcurrentID)
@@ -600,7 +609,7 @@ END
 
         $delete_btn = '';
         if ($island1_id == $HcurrentID) {
-            $delete_btn = "<INPUT TYPE='submit' VALUE='削除' name='TRADE_DEL=$trade_id'>";
+            $delete_btn = "<input type='submit' value='削除' name='TRADE_DEL=$trade_id'>";
         }
 
         out(<<END);
@@ -729,17 +738,17 @@ sub TradeDataConv {
     my ($tradeID ,$island1 , $island2, $trade_obj , $trade_obj_num , $trade_objside , $trade_money , $trade_payside , $check1 , $check2 , $absent) = split(/,/, $data);
 
     return {
-        'id' => $tradeID,
-        'island1_id' => $island1+0,
-        'island2_id' => $island2+0,
-        'obj' => $trade_obj+0,
-        'obj_num' => $trade_obj_num+0,
-        'objside' => $trade_objside+0,
-        'money' => $trade_money+0,
-        'payside' => $trade_payside+0,
-        'check1' => $check1+0,
-        'check2' => $check2+0,
-        'absent' => $absent,
+        'id' => int($tradeID),
+        'island1_id' => int($island1),
+        'island2_id' => int($island2),
+        'obj' => int($trade_obj),
+        'obj_num' => int($trade_obj_num),
+        'objside' => int($trade_objside),
+        'money' => int($trade_money),
+        'payside' => int($trade_payside),
+        'check1' => int($check1),
+        'check2' => int($check2),
+        'absent' => int($absent),
     };
 
 }
