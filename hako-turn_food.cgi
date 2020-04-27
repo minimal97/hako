@@ -46,7 +46,6 @@ sub food_product_Random_consumption {
     $island->{'food'} -= $consumption;
     $island->{'food'} = ($island->{'food'} < 0) ? 0 : ($island->{'food'});
 
-
     my (@product_list) = ();
     my ($product_num) = 0;
     my ($product_sum) = 0;
@@ -115,10 +114,10 @@ sub food_product_Random_consumption {
 #
 sub food_product_overheadcut {
     my ($island) = @_;
+
     my (@product_list) = ();
     my ($product_num) = 0;
     my ($product_sum) = 0;
-
     my ($product);
     foreach $product (@HProduct_Food_hash_table) {
 
@@ -318,9 +317,11 @@ sub food_export {
 sub food_product_consumption {
     my ($island , $consumption) = @_;
 
-    if ($consumption == 0) {
+    if ($consumption <= 0) {
         return (0);
     }
+
+    my ($foodkind) = 0;                     # 食べ物の種類
 
     $island->{'food'} -= $consumption;
 
@@ -328,14 +329,18 @@ sub food_product_consumption {
     my ($over) = 0;
     my ($consumption_for_sio) = int($consumption * 0.04);
 
-    if (($island->{'sio'} >= $consumption_for_sio)) {
+    if ($island->{'sio'} <= 0) {
+        $foodkind++;                        # 食べ物の種類
+        if (($island->{'sio'} >= $consumption_for_sio)) {
 
-        $island->{'sio'} -= $consumption_for_sio;
-        $over = 0;
-    }else{
+            $island->{'sio'} -= $consumption_for_sio;
+            $over = 0;
+        }
+        else {
 
-        $over = $consumption_for_sio = $island->{'sio'};
-        $island->{'sio'} = 0;
+            $over = $consumption_for_sio = $island->{'sio'};
+            $island->{'sio'} = 0;
+        }
     }
 
     $consumption += $over - $consumption_for_sio;
@@ -345,8 +350,9 @@ sub food_product_consumption {
     foreach $product (@HProduct_Food_hash_table) {
 
         if ($product eq 'sio' ) {
-
-        }else{
+            # 除外
+        }
+        else {
             $product_wk{$product} = $island->{$product};
             $product_num += ($island->{$product}) ? 1 : 0;
         }
@@ -355,11 +361,12 @@ sub food_product_consumption {
     my ($ave);
     if ($product_num) {
         $ave = int($consumption / $product_num);
-    }else{
+    }
+    else {
         $ave = 0;
     }
-    my ($food_val) = 0;
 
+    my ($food_val) = 0;
     for my $key (sort {$product_wk{$a} <=> $product_wk{$b}} keys %product_wk) {
 
         $food_val = ($island->{$key}) ? ($island->{$key}) : 0 ;
@@ -378,6 +385,7 @@ sub food_product_consumption {
 
         $consumption -= $ave;
         $consumption += $over;
+        $foodkind++;                        # 食べ物の種類
         last if ($consumption <= 0);
 
         $product_num--;
@@ -398,7 +406,7 @@ sub food_product_consumption {
         }
     }
 
-    return (0);
+    return ($foodkind);
 }
 
 
@@ -443,13 +451,12 @@ sub food_product_hosei {
     if ($val < 0) {
         $hosei = -$hosei;
         $hosei = max($hosei , $val);
-    }else{
+    }
+    else {
         $hosei = min($hosei , $val);
-
     }
 
     my ($product_sum) = 0;
-
     my ($product);
     foreach $product (@HProduct_Food_hash_table) {
 
