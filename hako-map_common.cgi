@@ -435,13 +435,13 @@ sub landString2 {
 
 #----------------------------------------------------------------------
 sub Forest_Img_Gen {
-    my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 
     my ($Forest_Img) = 'land6.png';
     $mon += 1;
 
-    if (   ($mon == 10)
-        || ($mon == 11) ) {
+    if (   (%main::Hday{'month'} == 10)
+        || (%main::Hday{'month'} == 11)
+        || (%main::Hday{'month'} == 12) ) {
         $Forest_Img = 'land6_aut.png';
     }
 
