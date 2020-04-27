@@ -209,6 +209,24 @@ sub SetRottenSea {
 
 
 # ---------------------------------------------------------------------
+# 流氷
+# ---------------------------------------------------------------------
+sub SetIce_Normal {
+    my ($island , $x , $y) = @_;
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
+
+    $land->[$x][$y] = $HlandIce;
+    $landValue->[$x][$y] = 0;
+    $landValue2->[$x][$y] = 0;
+    $landValue3->[$x][$y] = 0;
+}
+
+
+
+# ---------------------------------------------------------------------
 # 通常の平地
 # ---------------------------------------------------------------------
 sub SetPlains_Normal {
