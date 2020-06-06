@@ -18,6 +18,7 @@ our ($HTrade_DeleteTurn) = 12;
 my ($TradeKindFood) = 2;
 my ($TradeKindMaterial) = 3;
 my ($TradeKindGomi) = 4;
+my ($TradeKindTEST) = 99;
 
 #----------------------------------------------------------------------
 
@@ -25,19 +26,19 @@ my ($TradeKindGomi) = 4;
 # open(IN, "<" , "${HdirName}/${HtradeFile}");
 our ($HtradeFile) = "tradelist.dat";
 
-    SetTradeObjList(  0,  1, "米",      "00トン",   "kome");
-    SetTradeObjList(  1,  2, "野菜",    "00トン",   "yasai");
-    SetTradeObjList(  2,  3, "くだもの","00トン",   "seafood");
-    SetTradeObjList(  3,  4, "魚介類",  "00トン",   "toriniku");
-    SetTradeObjList(  4,  5, "塩",      "00トン",   "sio");
-    SetTradeObjList(  5,  6, "鶏肉",    "00トン",   "toriniku");
-    SetTradeObjList(  6,  7, "豚肉",    "00トン",   "butaniku");
-    SetTradeObjList(  7,  8, "牛肉",    "00トン",   "gyuniku");
-    SetTradeObjList(  8,  9, "たまご",  "00トン",   "tamago");
-    SetTradeObjList(  9, 30, "木材",    "00トン",   "wood");
-    SetTradeObjList( 10, 50, "家具",    "00トン",   "furniture");
-    SetTradeObjList( 11, 70, "ゴミ",    "トン",     "gomi");
-    SetTradeObjList( 12,  0, "","","0");         # 最終
+    SetTradeObjList(  0,  1, "米",      "00トン",   "kome"      , $TradeKindFood);
+    SetTradeObjList(  1,  2, "野菜",    "00トン",   "yasai"     , $TradeKindFood);
+    SetTradeObjList(  2,  3, "くだもの","00トン",   "seafood"   , $TradeKindFood);
+    SetTradeObjList(  3,  4, "魚介類",  "00トン",   "toriniku"  , $TradeKindFood);
+    SetTradeObjList(  4,  5, "塩",      "00トン",   "sio"       , $TradeKindFood);
+    SetTradeObjList(  5,  6, "鶏肉",    "00トン",   "toriniku"  , $TradeKindFood);
+    SetTradeObjList(  6,  7, "豚肉",    "00トン",   "butaniku"  , $TradeKindFood);
+    SetTradeObjList(  7,  8, "牛肉",    "00トン",   "gyuniku"   , $TradeKindFood);
+    SetTradeObjList(  8,  9, "たまご",  "00トン",   "tamago"    , $TradeKindFood);
+    SetTradeObjList(  9, 30, "木材",    "00トン",   "wood"      , $TradeKindTEST);
+    SetTradeObjList( 10, 50, "家具",    "00トン",   "furniture" , $TradeKindTEST);
+    SetTradeObjList( 11, 70, "ゴミ",    "トン",     "gomi"      , $TradeKindTEST);
+    SetTradeObjList( 12,  0, "",        "",         "0"         , $TradeKindTEST);         # 最終
 
 
 #----------------------------------------------------------------------
@@ -47,6 +48,17 @@ sub TradeValtoId {
     my ($val) = @_;
 
     return $objectlistValtoId{$val};
+}
+
+#----------------------------------------------------------------------
+# 
+#----------------------------------------------------------------------
+sub GetTradeObjKind {
+    my ($val) = @_;
+
+    my ($id) = TradeValtoId($val);
+
+    return $objectlistKind[$id];
 }
 
 
@@ -78,13 +90,14 @@ sub GetTradeObjElement {
 # 
 #----------------------------------------------------------------------
 sub SetTradeObjList {
-    my ($no, $val, $name, $unit, $ele) = @_;
+    my ($no, $val, $name, $unit, $ele, $kind) = @_;
 
     $objectlistValtoId{$val} = $no;
     $objectlistVal[$no] = $val;
     $objectlistName[$no] = $name;
     $objectlistUnit[$no] = $unit;
     $objectlistElement[$no] = $ele;
+    $objectlistKind[$no] = $kind;
 }
 
 
