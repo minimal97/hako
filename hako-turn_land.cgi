@@ -53,10 +53,10 @@ sub SetMountain_Normal {
 # ---------------------------------------------------------------------
 sub SetMonument_Normal {
     my ($island , $x , $y , $val) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandMonument;
     $landValue->[$x][$y] = $val;
@@ -70,10 +70,10 @@ sub SetMonument_Normal {
 # ---------------------------------------------------------------------
 sub SetYoganLand {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandYougan;
     $landValue->[$x][$y] = random(3) + 2;
@@ -87,10 +87,10 @@ sub SetYoganLand {
 # ---------------------------------------------------------------------
 sub SetWasteLand_Normal {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandWaste;
     $landValue->[$x][$y] = 0;
@@ -104,10 +104,10 @@ sub SetWasteLand_Normal {
 # ---------------------------------------------------------------------
 sub SetWasteLand_Normal_val {
     my ($island , $x , $y , $val) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandWaste;
     $landValue->[$x][$y] = $val;
@@ -162,10 +162,10 @@ sub SetMonsterLand_Normal {
 # ---------------------------------------------------------------------
 sub SetSeaLand_Normal {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandSea;
     $landValue->[$x][$y] = 0;
@@ -179,10 +179,10 @@ sub SetSeaLand_Normal {
 # ---------------------------------------------------------------------
 sub SetSeaShallowLand {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandSea;
     $landValue->[$x][$y] = 1;
@@ -196,10 +196,10 @@ sub SetSeaShallowLand {
 # ---------------------------------------------------------------------
 sub SetRottenSea {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandRottenSea;
     $landValue->[$x][$y] = 0;
@@ -231,10 +231,10 @@ sub SetIce_Normal {
 # ---------------------------------------------------------------------
 sub SetPlains_Normal {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandPlains;
     $landValue->[$x][$y] = 0;
