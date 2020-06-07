@@ -223,7 +223,7 @@ sub islandInfo {
 
 
     out(<<END);
-<div id='islandInfo'>
+<div id='islandInfo' align="center">
 <table border>
 $bStr
 <tr>
@@ -243,20 +243,20 @@ $uStr1
 <th $HbgTitleCell>${HtagTH_}軍事<br>技術${H_tagTH}</th>
 $msStr1
 <th $HbgTitleCell>${HtagTH_}ゴミ(仮)${H_tagTH}</th>
-</TR>
-<TR>
+</tr>
+<tr>
 $rStr2
-<TD $HbgInfoCell align=center>$w_tag</td>
-<TD $HbgInfoCell align=center>$wn_tag</td>
-<TD $HbgInfoCell align=center>$island->{'temperature'}</td>
-<TD $HbgInfoCell align=right>$island->{'pop'}$HunitPop</td>
-<TD $HbgInfoCell align=right>$areatag</td>
+<td $HbgInfoCell align=center>$w_tag</td>
+<td $HbgInfoCell align=center>$wn_tag</td>
+<td $HbgInfoCell align=center>$island->{'temperature'}</td>
+<td $HbgInfoCell align=right>$island->{'pop'}$HunitPop</td>
+<td $HbgInfoCell align=right>$areatag</td>
 $mStr2
-<TD $HbgInfoCell align=right>$island->{'food'}$HunitFood</td>
-<TD $HbgInfoCell align=right>${farm}</td>
-<TD $HbgInfoCell align=right>${factory}</td>
-<TD $HbgInfoCell align=right>${HTfactor}</td>
-<TD $HbgInfoCell align=right>${mountain}</td>
+<td $HbgInfoCell align=right>$island->{'food'}$HunitFood</td>
+<td $HbgInfoCell align=right>${farm}</td>
+<td $HbgInfoCell align=right>${factory}</td>
+<td $HbgInfoCell align=right>${HTfactor}</td>
+<td $HbgInfoCell align=right>${mountain}</td>
 $uStr2
 <TD $HbgInfoCell align=right>Lv${renae}</td>
 $msStr2
@@ -296,13 +296,13 @@ END
 　[<A STYlE="text-decoration:none" HREF="JavaScript:void(0)" onClick="document.allyForm${aNo}.submit();return false;">作戦本部</A>]
 _CAMP_
             $campInfo .=<<_CAMP_ if($mode);
-<INPUT type=hidden name="camp" value="$allyId">
-<INPUT type=hidden name="ally" value="$allyId">
-<INPUT type=hidden name="cpass" value="$cpass">
-<INPUT type=hidden name="jpass" value="$jpass">
-<INPUT type=hidden name="PASSWORD" value="$HdefaultPassword">
-<INPUT type=hidden name="id" value="$island->{'id'}">
-</FORM>
+<input type="hidden" name="camp" value="$allyId">
+<input type="hidden" name="ally" value="$allyId">
+<input type="hidden" name="cpass" value="$cpass">
+<input type="hidden" name="jpass" value="$jpass">
+<input type="hidden" name="PASSWORD" value="$HdefaultPassword">
+<input type="hidden" name="id" value="$island->{'id'}">
+</form>
 </td>
 _CAMP_
 
@@ -371,9 +371,9 @@ END
     my ($id) = $island->{'id'};
     my ($shrturn) = $island->{'shrturn'};
 
-    for ( $ibox = 0 ; $ibox < $HItem_MAX ; $ibox++){
+    for ($ibox = 0 ; $ibox < $HItem_MAX ; $ibox++){
 
-        print( "<td id='itembox${ibox}' ${HbgInfoCell} align='center'>");
+        print("<td id='itembox${ibox}' ${HbgInfoCell} align='center'>");
         # 各地形を出力
         #landString($island, $land->[$ibox], $lv->[$ibox], $lv2->[$ibox], $ibox, 0, 1, "", $jsmode, 1);
         landString2($island, $ibox, 0,  1, "", $jsmode, 1);
@@ -598,7 +598,7 @@ sub Town_LandString {
 
 #----------------------------------------------------------------------
 sub Waste_LandString {
-    my($island,$x,$y,$land_data ,$mode, $shrturn, $boxmode) = @_;
+    my ($island,$x,$y,$land_data ,$mode, $shrturn, $boxmode) = @_;
     my ($image, $alt, $naviTitle, $naviText) = ('','','','');
 
     my ($kind , $lv , $lv2 , $lv3);
