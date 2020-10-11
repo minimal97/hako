@@ -58,6 +58,14 @@ use warnings;
     # オーナーデータをどこに保存するか (0: howner.dat  1: $HmainData)
     # $HnewGameO = 1;
 
+    # gzipを使用して圧縮伝送する？ 0 : 未使用  1 : 使用
+    our $Hgzip = 0;
+    use constant USE_GZIP    => 0;
+
+    # gzipのインストール先
+    our $HpathGzip = '/usr/bin';
+
+
 }
 
 # デフォルトの名前空間に戻る
