@@ -2,7 +2,6 @@
 # ＲＡ用に改造
 #---------------------------------------------------------------------
 #   究想の箱庭　最近の出来事と最近の天気の履歴を表示
-#
 #   作成日 : 2001/11/25 (ver0.10)
 #   作成者 : ラスティア <nayupon@mail.goo.ne.jp>
 #---------------------------------------------------------------------
@@ -42,13 +41,13 @@ require './hako-io.cgi';
 #    HTMLに関する設定
 #----------------------------
 # ブラウザのタイトルバーの名称
-$title = '最近の出来事';
+my ($title) = '最近の出来事';
 
 # 画面の色や背景の設定(HTML)
-$body = '<body bgcolor=#EEFFEE>';
+my ($body) = '<body bgcolor=#EEFFEE>';
 
 # 画面の「戻る」リンク先(URL)
-$bye = './hako-main.cgi';
+my ($bye) = './hako-main.cgi';
 
 #メインルーチン-------------------------------------------------------
 cookieInput();
@@ -158,11 +157,13 @@ exit(0);
 sub htmlError{
     out("<h2>エラーが発生しました</h2>\n");
 }
+
+
 #--------------------------------------------------------------------
 #    POST or GETで入力されたデータ取得
 #--------------------------------------------------------------------
 sub cgiInput {
-    my($line, $getLine);
+    my ($line, $getLine);
 
     # 入力を受け取って日本語コードをEUCに
     $line = <>;
@@ -193,6 +194,8 @@ sub cgiInput {
         $HMode = 0;
     }
 }
+
+
 #cookie入力
 sub cookieInput {
 
@@ -369,9 +372,10 @@ sub getIslandList {
         $name =~ s/<[^<]*>//g;
         $predel = ($Hislands[$i]->{'predelete'}) ? '[預]' : '';
         $id = $Hislands[$i]->{'id'};
-        if($id eq $select) {
+        if ($id eq $select) {
             $s = 'selected';
-        } else {
+        }
+        else {
             $s = '';
         }
         $list .= "<option value=\"$id\" $s>${predel}${name}\n";
@@ -384,14 +388,15 @@ sub getIslandList {
 #---------------------------------------------------------------------
 # ヘッダ
 sub tempIslandHeader {
-my($id, $name) = @_;
+    my ($id, $name) = @_;
 
     if(checkPassword($Hislands[$HidToNumber{$id}]->{'password'}, $HinputPassword) && ($HcurrentID eq $defaultID)) {
         out(<<END);
 <hr>
 <font color=\"#FF0000\"><b>[${name}の近況]</b></font>
 END
-    } else {
+    }
+    else {
         out(<<END);
 <hr>
 <b>[${name}の近況]</b>　
@@ -414,7 +419,8 @@ END
         }
         if($i == 0) {
             out("[ターン${turn}(現在)]<br>");
-        } else {
+        }
+        else {
             out("[${turn}]");
         }
         out("</A>");
@@ -437,7 +443,8 @@ END
 #---------------------------------------------------------------------
 sub logFilePrintAll {
     my ($i);
-    for($i = 0; $i < $HtopLogTurn; $i++) {
+
+    for ($i = 0; $i < $HtopLogTurn; $i++) {
         logFilePrint($i, 0, 0);
     }
 }
@@ -448,8 +455,10 @@ sub logFilePrintAll {
 #---------------------------------------------------------------------
 sub logPrintLocal {
     my ($mode) = @_;
+
     my ($i);
-    for($i = 0; $i < $HtopLogTurn; $i++) {
+
+    for ($i = 0; $i < $HtopLogTurn; $i++) {
         logFilePrint($i, $HcurrentID, $mode);
     }
 }
@@ -540,11 +549,13 @@ _FOOTER_
     my ($mode);
     my ($set_turn) = 0;
     my ($line, $m, $turn, $id1, $id2, $message);
+
     for ($i = 0; $i < $HhtmlLogTurn; $i++) {
         $id =0;
         $mode = 0;
         $set_turn = 0;
         open(LIN, "${HdirName}/hakojima.log$i");
+
         while($line = <LIN>) {
             $line =~ /^([0-9]*),([0-9]*),([0-9]*),([0-9]*),(.*)$/;
             ($m, $turn, $id1, $id2, $message) = ($1, $2, $3, $4, $5);
@@ -553,7 +564,8 @@ _FOOTER_
             if ($m) {
                 next if(!$mode || ($id1 != $id)); # 機密表示権利なし
                 $m = '<B>(機密)</B>';
-            } else {
+            }
+            else {
                 $m = '';
             }
 
