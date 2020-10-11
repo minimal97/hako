@@ -214,7 +214,6 @@ sub TradeFileRead {
 }
 
 
-
 #----------------------------------------------------------------------
 # 
 #----------------------------------------------------------------------
@@ -329,7 +328,10 @@ sub TradeMakeMain {
         print OUT $lines[$i];
     }
 
-    print OUT "$trade_next_id,$HcurrentID,$TradeTargetID,$TradeObject,$TradeObjectNum,$TradeObjSide,$TradeMoney,$TradePaySide,0,0,0\n";
+    # リスト value を idに変換
+    my ($obj_id) = $objectlistValtoId{$TradeObject};
+
+    print OUT "$trade_next_id,$HcurrentID,$TradeTargetID,$obj_id,$TradeObjectNum,$TradeObjSide,$TradeMoney,$TradePaySide,0,0,0\n";
     close(OUT);                 # ファイルを閉じる
 
 }
@@ -646,7 +648,6 @@ END
             }
         }
 
-
         $island1_id = $trade_data[$lp]->{'island1_id'};
         $island2_id = $trade_data[$lp]->{'island2_id'};
         $island1_name = islandName($Hislands[$HidToNumber{$island1_id}]);
@@ -674,6 +675,8 @@ END
         $trade_obj = $trade_data[$lp]->{'obj'};
         $trade_num = $trade_data[$lp]->{'obj_num'} + 0;
         $trade_objside = $trade_data[$lp]->{'objside'} + 0;
+
+        my ($obj_id) = $objectlistValtoId{$trade_obj};
 
         $tra_btn1 = ($island1_id == $HcurrentID) ? $tra_btn1 : '';
         $tra_btn2 = ($island2_id == $HcurrentID) ? $tra_btn2 : '';
