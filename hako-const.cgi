@@ -1,5 +1,6 @@
 # すべての定数をここにまとめる！
 require './init-server.cgi';
+require './init-game.cgi';
 #----------------------------------------
 # 怪獣
 #----------------------------------------
@@ -710,6 +711,11 @@ $HProduct_unitName{'gyuniku'}   = '00トン';
 $HProduct_unitName{'nazoniku'}  = '00トン';
 $HProduct_unitName{'tamago'}  = '00トン';
 
+our @CivReqkind = ('none' , 'tax' , 'food', 'food');
+our @CivReqDisp = ('なし' , '税金' , 'コメ', '野菜');
+our @CivReqDispUnit = ('なし' , '%' , $HunitFood, $HunitFood);
+our $CivReqNum = $#CivReqkind + 1;
+
 
 #----------------------------------------------------------------------
 
@@ -745,6 +751,8 @@ our $HCollegeInoraNoOut = 96;
 our $HCollegeTetra = 98;
 our $HCollegeTetraNoOut = 97;
 our $HCollegePetOut = 99;
+
+
 #----------------------------------------------------------------------
 # 島 effect
 #----------------------------------------------------------------------
