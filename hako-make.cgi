@@ -156,7 +156,8 @@ sub newIslandMain {
     if ($HeasyMode) {
         if (random(100) < 50) {
             $island->{'eis1'} = 200;
-        } else {
+        }
+        else {
             $island->{'eis2'} = 200;
         }
     }
@@ -193,7 +194,7 @@ sub newIslandMain {
     tempHeader();
     tempNewIslandHead($HcurrentName); # 発見しました!!
     foreach (0..$HcurrentNumber) {
-        if($Hislands[$_]->{'id'} == $island->{'id'}) {
+        if ($Hislands[$_]->{'id'} == $island->{'id'}) {
             $HcurrentNumber = $_;
             last;
         }
@@ -210,7 +211,7 @@ sub makeNewIsland {
 
     # 初期コマンドを生成
     my (@command, $i);
-    for($i = 0; $i < $HcommandMax; $i++) {
+    for ($i = 0; $i < $HcommandMax; $i++) {
         $command[$i] = {
             'kind' => $HcomDoNothing,
             'target' => 0,
@@ -998,123 +999,21 @@ $HislandList
 </SELECT>
 <BR>
 どんな名前に変えますか？(変更する場合のみ)<small>(全角${HlengthIslandName}字まで)</small><BR>
-<INPUT TYPE="text" NAME="ISLANDNAME" SIZE=32 MAXLENGTH=32>${AfterName}<BR>
+<input type="text" NAME="ISLANDNAME" SIZE=32 MAXLENGTH=32>${AfterName}<BR>
 あなたの名前を変えますか？(変更する場合のみ)<small>(全角${HlengthOwnerName}字まで)</small><BR>
-<INPUT TYPE="text" NAME="OWNERNAME" SIZE=32 MAXLENGTH=32><BR>
+<input type="text" NAME="OWNERNAME" SIZE=32 MAXLENGTH=32><BR>
 パスワードは？(必須)<BR>
-<INPUT TYPE="password" NAME="OLDPASS" SIZE=32 MAXLENGTH=32><BR>
+<input type="password" name="OLDPASS" size=32 maxlength=32><BR>
 新しいパスワードは？(変更する時のみ)<BR>
-<INPUT TYPE="password" NAME="PASSWORD" SIZE=32 MAXLENGTH=32><BR>
+<input type="password" name="PASSWORD" size=32 maxlength=32><BR>
 念のためパスワードをもう一回(変更する時のみ)<BR>
-<INPUT TYPE="password" NAME="PASSWORD2" SIZE=32 MAXLENGTH=32><BR>
-<INPUT TYPE="submit" VALUE="変更する" NAME="ChangeInfoButton">
-</FORM>
-</td></tr></table></DIV>
+<input type="password" name="PASSWORD2" size=32 maxlength=32><BR>
+<input type="submit" value="変更する" name="ChangeInfoButton">
+</form>
+</td></tr></table></div>
 END
 }
 
-#----------------------------------------------------------------------
-# 画像のローカル設定
-#----------------------------------------------------------------------
-# メイン
-sub localImgMain {
-
-    my ($Himfflag);
-    if (   ($HimgLine eq '')
-        || ($HimgLine eq $server_config::HimageDir) ) {
-        $Himfflag = '<span class=attention>未設定</span>';
-    }
-    else {
-        $Himfflag = $HimgLine;
-    }
-    # 開放
-    unlock();
-
-    out(<<END);
-<center>$HtempBack</center><br>
-<div id='localImage'>
-<h1>画像のローカル設定</h1>
-<table border width=50%><tr><td class='N'>
-　画像転送によるサーバーへの負荷を軽減するだけでなく、あなたのパソコンにある画像を呼び出すので、表示スピードが飛躍的にアップします。<br>
-　画像は<B><a href="$localImg">ここ</a></B>からダウンロードして、１つのフォルダに解凍し、下の設定で「land0.gif」を指定して下さい。<br>
-　詳しくは<B><a href="$server_config::imageExp">説明のページ</a></B>をご覧下さい。
-</td></tr></table>
-<table border=0 width=50%><tr><td class="M">
-現在の設定<b>[</b> ${Himfflag} <b>]</b>
-<form action=$HthisFile method="post">
-  <input type=file name="IMGLINE">
-  <input type="submit" value="設定" name="IMGSET">
-</form>
-
-<form action=$HthisFile method="post">
-Macユーザー用<BR>
-  <input type="text" name="IMGLINEMAC">
-  <input type="submit" value="設定" name="IMGSET"><br>
-  <font size=-1>Macの方は、こちらを使用して下さい。</font>
-</form>
-
-<form action=$HthisFile method="post">
-  <input type="hidden" name="IMGLINE" value="deletemodenow">
-  <input type="submit" VALUE="設定を解除する" name="IMGSET">
-</form>
-</td></tr></table>
-</div>
-END
-}
-
-#----------------------------------------------------------------------
-# 箱庭スキンの設定
-#----------------------------------------------------------------------
-# メイン
-sub hakoSkinMain {
-
-    my($Hskinflag);
-    if($HskinName eq '' || $HskinName eq "${efileDir}/$HcssFile"){
-        $Hskinflag = '<span class=attention>未設定</span>';
-    } else {
-        $Hskinflag = $HskinName;
-    }
-
-    opendir(DIN, "$HefileDir/$HcssDir/");
-    my($skinName, @skinlist);
-    while($skinName = readdir(DIN)) {
-        next if($skinName =~ /^\./);
-        push(@skinlist, $skinName);
-    }
-    closedir(DIN);
-
-    my $select_list = "<OPTION value='del' selected>デフォルト\n";
-    foreach (@skinlist) {
-        $select_list .= "<OPTION>$_\n";
-    }
-
-
-    # 開放
-    unlock();
-
-    out(<<END);
-<CENTER>$HtempBack</CENTER><BR>
-<DIV ID='hakoSkin'>
-<H1>箱庭スキンの設定</H1>
-<table border width=50%><tr><td class='N'>
-　箱庭スキンを変更して、お好きなインターフェイスに！<br>
-　気分転換にご利用くださいm(_ _)m
-</td></tr></table>
-<table border=0 width=50%><tr><td class="M">
-現在の設定<B>[</b> ${Hskinflag} <B>]</B>
-<form action=$HthisFile method=POST>
-<SELECT NAME="SKIN">$select_list</SELECT>
-<INPUT TYPE="submit" VALUE="設定" name=SKINSET>
-</form>
-
-<form action=$HthisFile method=POST>
-<INPUT TYPE=hidden NAME="SKIN" value="del">
-<INPUT TYPE="submit" VALUE="設定を解除する" name=SKINSET>
-</form>
-</td></tr></table>
-</DIV>
-END
-}
 
 #----------------------------------------------------------------------
 # 人口その他の値を算出（縮小版）

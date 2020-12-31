@@ -5,14 +5,11 @@
 #
 # 箱庭諸島のページ: http://www.bekkoame.ne.jp/~tokuoka/hakoniwa.html
 #----------------------------------------------------------------------
-#----------------------------------------------------------------------
 # Hakoniwa R.A. ver1.11
 # 初期設定用スクリプト(箱庭諸島 ver2.30)
 # 使用条件、使用方法等は、read-renas.txtファイルを参照
-#
 # KEI PAGE: http://www5b.biglobe.ne.jp/~k-e-i/
 #----------------------------------------------------------------------
-
 # jcode.plをrequire
 require './jcode.pl';
 require './init-server.cgi';

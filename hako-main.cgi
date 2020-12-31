@@ -2,7 +2,7 @@
 # ↑はサーバーに合わせて変更して下さい。
 # perl5用です。
 # Hakoniwa R.A. JS.(based on 020610model)
-my $versionInfo = "version4.49";        #ここもうメンテしてない。。。
+my ($versionInfo) = "version4.49";        #ここもうメンテしてない。。。
 #----------------------------------------------------------------------
 # 箱庭諸島 ver2.30
 # メインスクリプト(ver1.02)
@@ -444,13 +444,14 @@ SetCommandData($HcomLoad , '時の忘却'         , 100000);
 #----------------------------------------------------------------------
 
 # COOKIE
-our $defaultID = 0;       # 島の名前
-our $defaultTarget = '';   # ターゲットの名前
-my $access ='';
-our $rqID = -1;
-my $wiiU_javamode = 'java';
-my $wiiU_password = '';
-my $init_ID = 0;       #初期の表示用ID
+our ($defaultID) = 0;       # 島の名前
+our ($defaultTarget) = '';   # ターゲットの名前
+our ($rqID) = -1;
+
+my ($access) ='';
+my ($wiiU_javamode) = 'java';
+my ($wiiU_password) = '';
+my ($init_ID) = 0;       #初期の表示用ID
 
 # 島の座標数
 our $HpointNumber = $HislandSize * $HislandSize;
@@ -460,10 +461,10 @@ our $HtempBack;         # 「戻る」リンク
 
 # ゲーム用
 our $HmainMode;
-our $HjavaMode = '';
-our $HdefaultPassword = '';
+our ($HjavaMode) = '';
+our ($HdefaultPassword) = '';
 our $HdefaultY;
-our $HdefaultName = '';
+our ($HdefaultName) = '';
 our $HspeakerID;
 our $HallyPactMode;
 our $HcurrentCampID;
@@ -473,7 +474,7 @@ our @Hrpx , @Hrpy;
 our $HallyTitle;
 our $HallyMessage;
 
-our $HcurrentID = 0;
+our ($HcurrentID) = 0;
 
 our $HDayEvent;             # イベント日
 our $HDayEvent_Edge;        # イベント日 イベント完了フラグ
@@ -483,16 +484,16 @@ our $Hms2;                  # mapサイズ
 
 our $HislandTurn;           # ターン数
 
-our $HlbbsMode;
+our ($HlbbsMode) = 0;
 
 our $HsepTurnFlag;
 
-our $Htitle_sub = '';
+our ($Htitle_sub) = '';
 
-our $HimgLine = '';
-our $HjavaModeSet = 0;
-our $HskinName = '' ;
-our $HviewIslandNumber = 0;
+our ($HimgLine) = '';
+our ($HjavaModeSet) = 0;
+our ($HskinName) = '' ;
+our ($HviewIslandNumber) = 0;
 
 our $HcommandX, $HcommandY ,$HcommandArg;
 our $HcommandComary;
@@ -504,6 +505,8 @@ our @HrankingID;
 
 our $HplayNow;      # ターンを更新しました
 our $HnextTime;     # ターン更新時刻
+
+our ($Body) = '<body>';
 
 #----------------------------------------------------------------------
 # メイン
@@ -883,20 +886,11 @@ our $HnextTime;     # ターン更新時刻
         require('./hako-make.cgi');
         renameIslandMain();
 
-    } elsif($HmainMode eq 'localimg') {     # 画像のローカル設定
-        require('./hako-make.cgi');
-        localImgMain();
-
-    } elsif($HmainMode eq 'hakoskin') {     # 箱庭スキンの設定
-        require('./hako-make.cgi');
-        hakoSkinMain();
-
     } elsif($HmainMode eq 'bfield') {       # BattleField作成モード
         require('./hako-make.cgi');
         bfieldMain();
 
     } elsif($HmainMode eq 'present') {      # 管理人によるプレゼントモード
-
         require('./hako-make.cgi');
         presentMain();
 
@@ -1406,12 +1400,6 @@ sub cgiInput {
     } elsif($getLine =~ /Rename=([0-9]*)/) {
         $HmainMode = 'rename';
 
-    } elsif($getLine =~ /Skin=([0-9]*)/) {      #Skin 変更
-        $HmainMode = 'hakoskin';
-
-    } elsif($getLine =~ /Limg=([0-9]*)/) {
-        $HmainMode = 'localimg';
-
     } elsif($getLine =~ /Join=([0-9]*)/) {
         # 誰でも新しい島を探せる
         $HmainMode = ($HadminJoinOnly ? 'top' : 'join');
@@ -1619,9 +1607,6 @@ sub cookieInput {
     if($cookie =~ /${HthisFile}IMGLINE=\(([^\)]*)\)/) {
         $HimgLine = $1;
     }
-    if($cookie =~ /${HthisFile}SKIN=\(([^\)]*)\)/) {
-        $HskinName = $1;
-    }
 
     # wiiU 救済措置
     if($access eq 'WiiU'){
@@ -1686,9 +1671,6 @@ sub cookieOutput {
     }
     if ($HimgLine) {
         $cookie .= "Set-Cookie: ${HthisFile}IMGLINE=($HimgLine) $info";
-    }
-    if ($HskinName) {
-        $cookie .= "Set-Cookie: ${HthisFile}SKIN=($HskinName) $info";
     }
 
     out($cookie);
@@ -2465,7 +2447,7 @@ sub tempHeader {
     $Hms1 = 16;
     $Hms2 = $Hms1 << 1;     # 2倍
 
-    if ($Hgzip == 1 && $ENV{'HTTP_ACCEPT_ENCODING'}=~/gzip/ ) {
+    if ($server_config::HpathGzip == 1 && $ENV{'HTTP_ACCEPT_ENCODING'}=~/gzip/ ) {
         print qq{Content-type: text/html; charset=EUC-JP\n};
         print qq{Content-encoding: gzip\n\n};
         open(STDOUT,"| $HpathGzip/gzip -1 -c");
