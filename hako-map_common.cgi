@@ -93,10 +93,10 @@ sub islandInfo {
     my ($pts) = $island->{'pts'};
     my ($rena, $renae);
     my ($unemployed);
-    my ($happy);
+    my ($civreq);
 
     $rena = $island->{'rena'};
-    $happy = $island->{'gomi'};
+    $civreq = ($island->{'civreq'}) ? $island->{'civreq'} : "¤Ê¤·";
     $renae = (int($rena / 10 ));
     $unemployed = ($island->{'pop'} - ($farm + $factory + $HTfactor + $mountain) * 10) / $island->{'pop'} * 100 if($island->{'pop'});
     $unemployed = '<span class="' . ($unemployed < 0 ? 'unemploy1' : 'unemploy2') . '">' . sprintf("%.2f%%", $unemployed) . '</span>' if($island->{'pop'});
@@ -104,7 +104,7 @@ sub islandInfo {
     $factory = ($factory == 0) ? "ÊÝÍ­¤»¤º" : "${factory}0$HunitPop";
     $HTfactor = ($HTfactor == 0) ? "ÊÝÍ­¤»¤º" : "${HTfactor}0$HunitPop";
     $mountain = ($mountain == 0) ? "ÊÝÍ­¤»¤º" : "${mountain}0$HunitPop";
-    $pts = ($pts == 0) ? "0pts." : "${pts}pts.";
+    #$pts = ($pts == 0) ? "0pts." : "${pts}pts.";
 
     my ($col_num) = 12;
 
@@ -156,6 +156,7 @@ sub islandInfo {
                 $msStr2 = "<td $HbgInfoCell align='right'>${mTmp}</td>";
             }
             elsif (INIT_USE_ARM_SUPPLY) {
+
                 $msStr1 .= "(·³»öÊª»ñ)${H_tagTH}</th>";
                 $msStr2 .= "($island->{'army'}¸Ä)</td>";
             }
@@ -191,14 +192,10 @@ sub islandInfo {
     my($Farmcpc) = ScoreBoard_Farm($island);
 
     # ²È
-    my($house) = '';
-    my $tax = $island->{'eisei1'};
-    $pts = $island->{'pts'};
-    my $hlv;
-    foreach (0..9) {
-        $hlv = 9 - $_;
-        last if($pts > $HouseLevel[$hlv]);
-    }
+    my ($house) = '';
+    my ($hlv);
+    my ($tax) = $island->{'eisei1'};
+    $hlv = Calc_HouseLevel($island->{'pts'});
     my $onm = $island->{'onm'};
     my $n = ('¤Î¾®²°', '¤Î´Ê°×½»Âð', '¤Î½»Âð', '¤Î¹âµé½»Âð', '¤Î¹ëÅ¡', '¤ÎÂç¹ëÅ¡', '¤Î¹âµé¹ëÅ¡', '¤Î¾ë', '¤Îµð¾ë', '¤Î²«¶â¾ë')[$hlv];
     my $zeikin = int($island->{'pop'} * ($hlv + 1) * $tax / 100);
@@ -242,25 +239,25 @@ $mStr1
 $uStr1
 <th $HbgTitleCell>${HtagTH_}·³»ö<br>µ»½Ñ${H_tagTH}</th>
 $msStr1
-<th $HbgTitleCell>${HtagTH_}¥´¥ß(²¾)${H_tagTH}</th>
-</tr>
-<tr>
+<th $HbgTitleCell>${HtagTH_}Í×Ë¾/¿ôÃÍ${H_tagTH}</th>
+</TR>
+<TR>
 $rStr2
-<td $HbgInfoCell align=center>$w_tag</td>
-<td $HbgInfoCell align=center>$wn_tag</td>
-<td $HbgInfoCell align=center>$island->{'temperature'}</td>
-<td $HbgInfoCell align=right>$island->{'pop'}$HunitPop</td>
-<td $HbgInfoCell align=right>$areatag</td>
+<TD $HbgInfoCell align=center>$w_tag</td>
+<TD $HbgInfoCell align=center>$wn_tag</td>
+<TD $HbgInfoCell align=center>$island->{'temperature'}</td>
+<TD $HbgInfoCell align=right>$island->{'pop'}$HunitPop</td>
+<TD $HbgInfoCell align=right>$areatag</td>
 $mStr2
-<td $HbgInfoCell align=right>$island->{'food'}$HunitFood</td>
-<td $HbgInfoCell align=right>${farm}</td>
-<td $HbgInfoCell align=right>${factory}</td>
-<td $HbgInfoCell align=right>${HTfactor}</td>
-<td $HbgInfoCell align=right>${mountain}</td>
+<TD $HbgInfoCell align=right>$island->{'food'}$HunitFood</td>
+<TD $HbgInfoCell align=right>${farm}</td>
+<TD $HbgInfoCell align=right>${factory}</td>
+<TD $HbgInfoCell align=right>${HTfactor}</td>
+<TD $HbgInfoCell align=right>${mountain}</td>
 $uStr2
 <TD $HbgInfoCell align=right>Lv${renae}</td>
 $msStr2
-<TD $HbgInfoCell align=right>${happy}</td>
+<TD $HbgInfoCell align=right>$CivReqDisp[$civreq]</td>
 </TR>
 <TR>
 <TD $HbgCommentCell COLSPAN=${col_num} align=left>${HtagtTH_}info¡§<font size="-1">$prize$house$monslive$Farmcpc$bumons$me_sat</font>${H_tagtTH}
@@ -296,13 +293,13 @@ END
 ¡¡[<A STYlE="text-decoration:none" HREF="JavaScript:void(0)" onClick="document.allyForm${aNo}.submit();return false;">ºîÀïËÜÉô</A>]
 _CAMP_
             $campInfo .=<<_CAMP_ if($mode);
-<input type="hidden" name="camp" value="$allyId">
-<input type="hidden" name="ally" value="$allyId">
-<input type="hidden" name="cpass" value="$cpass">
-<input type="hidden" name="jpass" value="$jpass">
-<input type="hidden" name="PASSWORD" value="$HdefaultPassword">
-<input type="hidden" name="id" value="$island->{'id'}">
-</form>
+<INPUT type=hidden name="camp" value="$allyId">
+<INPUT type=hidden name="ally" value="$allyId">
+<INPUT type=hidden name="cpass" value="$cpass">
+<INPUT type=hidden name="jpass" value="$jpass">
+<INPUT type=hidden name="PASSWORD" value="$HdefaultPassword">
+<INPUT type=hidden name="id" value="$island->{'id'}">
+</FORM>
 </td>
 _CAMP_
 
@@ -371,9 +368,9 @@ END
     my ($id) = $island->{'id'};
     my ($shrturn) = $island->{'shrturn'};
 
-    for ($ibox = 0 ; $ibox < $HItem_MAX ; $ibox++){
+    for ( $ibox = 0 ; $ibox < $HItem_MAX ; $ibox++){
 
-        print("<td id='itembox${ibox}' ${HbgInfoCell} align='center'>");
+        print( "<td id='itembox${ibox}' ${HbgInfoCell} align='center'>");
         # ³ÆÃÏ·Á¤ò½ÐÎÏ
         #landString($island, $land->[$ibox], $lv->[$ibox], $lv2->[$ibox], $ibox, 0, 1, "", $jsmode, 1);
         landString2($island, $ibox, 0,  1, "", $jsmode, 1);
@@ -1703,10 +1700,9 @@ END
     my ($pts) = ($island->{'pts'}) ? $island->{'pts'} : 0;
 
     local ($hlv);
-    foreach (0..9) {
-        $hlv = 9 - $_;
-        last if($pts > $HouseLevel[$hlv]);
-    }
+
+    $hlv = Calc_HouseLevel($pts);
+
     local ($onm) = $island->{'onm'};
     local ($shutomessage) = $island->{'shutomessage'};
     local ($eis1) = $island->{'eis1'};
