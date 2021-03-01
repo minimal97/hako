@@ -1601,13 +1601,12 @@ END
 
     my ($mshp, $msap, $msdp, $mssp, $mswin, $msexe, $tet) = split(/,/, $island->{'eisei5'});
     my ($mspet , $petname);
-    my ($force) = $mshp+$msap+$msdp+$mssp;
     $mspet = "<img src=\"${HMapImgDir}monster30.gif\" TITLE=\"¥Þ¥¹¥³¥Ã¥È¤¤¤Î¤é(HP$mshp.AP$msap.DP$msdp.SP$mssp/$mswinÉ¤·âÇË/·Ð¸³ÃÍ$msexe)\" onMouseOver='status=\"¥Þ¥¹¥³¥Ã¥È¤¤¤Î¤é(HP$mshp.AP$msap.DP$msdp.SP$mssp/$mswinÉ¤·âÇË/·Ð¸³ÃÍ$msexe)\"; return true;' onMouseOut=\"status = '';\" WIDTH=32 HEIGHT=\"32\">" if($mshp);
     $mspet = "<img src=\"${HMapImgDir}tet.gif\" TITLE=\"Ä¶¿À½Ã¥Æ¥È¥é(HP$mshp.AP$msap.DP$msdp.SP$mssp/$mswinÉ¤·âÇË/·Ð¸³ÃÍ$msexe)\" onMouseOver='status=\"Ä¶¿À½Ã¥Æ¥È¥é(HP$mshp.AP$msap.DP$msdp.SP$mssp/$mswinÉ¤·âÇË/·Ð¸³ÃÍ$msexe)\"; return true;' onMouseOut=\"status = '';\" WIDTH=32 HEIGHT=\"32\">" if($tet);
 
     $petname = '¥Þ¥¹¥³¥Ã¥È¤¤¤Î¤é' if($mshp);
     $petname = 'Ä¶¿À½Ã¥Æ¥È¥é' if($tet);
-    $mspet = '' if(!$mshp && !$tet);
+    $mspet = '' if (!$mshp && !$tet);
 
     if ($mshp || $tet) {
 
