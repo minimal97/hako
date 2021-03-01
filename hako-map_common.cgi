@@ -725,7 +725,7 @@ sub landString {
     my ($map_style) = 'maptile';
     my ($shrturn) = $island->{'shrturn'};
     my ($id) = $island->{'id'};
-
+    my ($shutomessage) = $island->{'shutomessage'};
 
     #my ($land_data) = conv_island_struct($l, $lv, $lv2, $lv3);
 
@@ -1604,8 +1604,8 @@ END
     $mspet = "<img src=\"${HMapImgDir}monster30.gif\" TITLE=\"マスコットいのら(HP$mshp.AP$msap.DP$msdp.SP$mssp/$mswin匹撃破/経験値$msexe)\" onMouseOver='status=\"マスコットいのら(HP$mshp.AP$msap.DP$msdp.SP$mssp/$mswin匹撃破/経験値$msexe)\"; return true;' onMouseOut=\"status = '';\" WIDTH=32 HEIGHT=\"32\">" if($mshp);
     $mspet = "<img src=\"${HMapImgDir}tet.gif\" TITLE=\"超神獣テトラ(HP$mshp.AP$msap.DP$msdp.SP$mssp/$mswin匹撃破/経験値$msexe)\" onMouseOver='status=\"超神獣テトラ(HP$mshp.AP$msap.DP$msdp.SP$mssp/$mswin匹撃破/経験値$msexe)\"; return true;' onMouseOut=\"status = '';\" WIDTH=32 HEIGHT=\"32\">" if($tet);
 
-    $petname = 'マスコットいのら' if($mshp);
-    $petname = '超神獣テトラ' if($tet);
+    $petname = 'マスコットいのら' if ($mshp);
+    $petname = '超神獣テトラ' if ($tet);
     $mspet = '' if (!$mshp && !$tet);
 
     if ($mshp || $tet) {
@@ -1647,6 +1647,7 @@ END
 
 END
     if ($HmainMode eq 'owner') {
+
         out("<hr>");
         out("<b><a href=JavaScript:void(0); onClick='show_taijilist($island->{'id'},$ownmode)'>怪獣ずかん</a></b> / ");
         out("<b><a href=JavaScript:void(0); onClick='show_Productlist($island->{'id'},$ownmode)'>物資(仮)</a></b> / ");
@@ -1703,11 +1704,11 @@ END
     $hlv = Calc_HouseLevel($pts);
 
     local ($onm) = $island->{'onm'};
-    local ($shutomessage) = $island->{'shutomessage'};
-    local ($eis1) = $island->{'eis1'};
-    local ($area) = $island->{'area'};
-    local ($pop) = $island->{'pop'};
-    local ($mikomi) = int($pop * 3 * 11 / 500);
+    my ($shutomessage) = $island->{'shutomessage'};
+    my ($eis1) = $island->{'eis1'};
+    my ($area) = $island->{'area'};
+    my ($pop) = $island->{'pop'};
+    my ($mikomi) = int($pop * 3 * 11 / 500);
     local ($mshp, $msap, $msdp, $mssp, $mswin, $msexe, $tet) = split(/,/, $island->{'eisei5'});
     local ($sto, $std, $stk, $stwin, $stdrow, $stlose, $stwint, $stdrowt, $stloset, $styusho, $stshoka) = split(/,/, $island->{'eisei4'});
     local $kachiten = $stwin*3 + $stdrow;
@@ -1772,12 +1773,13 @@ END
         foreach $x (0..$islandSize) {
 
             if ($shuffle) {
+
                 $ir = $y * ISLAND_SIZE + $x;
                 $xx = $Hrpx[$ir];
                 $yy = $Hrpy[$ir];
-
             }
             else {
+
                 $xx = $x;
                 $yy = $y;
             }
