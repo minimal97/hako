@@ -14,6 +14,7 @@ sub rankIslandMain {
     my ($i);
 
     foreach $i (0..$islandNumber) {
+
         my ($rena) = $Hislands[$i]->{'rena'}; # ∑≥ªˆŒœ
         $Hislands[$i]->{'renae'} = int($rena / 10 ) + 1;
 
@@ -67,9 +68,9 @@ sub rankIslandMain {
                         'æ°≈¿' ,      '' ,
                         '');
 
-    my @islands;
+    my (%islands);
     {
-        my @ids;
+        my (%ids);
         $i = 0;
         foreach (@BUMON_ELEMENTS) {
             $islands{$_} = $Hislands[$HidToNumber{$HrankingID[$i]}];

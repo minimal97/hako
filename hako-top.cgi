@@ -407,8 +407,8 @@ END
     <div id='islandView'>
 END
 
-    my ($island, $j, $farm, $factory, $factoryHT, $mountain, $unemployed, $renae, $pts, $eisei1, $eisei2, $eisei2nd, $monsterlive,
-        $monsm, $hcturn, $rieki, $zouka, $seicho, $name, $id, $prize, $ii, $num);
+    my ($island, $j, $farm, $factory, $factoryHT, $mountain, $unemployed, $renae, $pts, $eisei2, $eisei2nd,
+        $hcturn, $rieki, $zouka, $seicho, $name, $id, $prize, $ii, $num);
     {
         my ($jj , $k);
 

@@ -127,7 +127,7 @@ sub readIsland {
     my ($num, $iNo) = @_;
 
     my ($chiptemp);
-    my ($factoryHT , $yobi2 , $yobi3 , $yobi4 , $weather , $temperature , $weather_old , $weather_chain);
+    my ($factoryHT, $weather , $temperature , $weather_old , $weather_chain);
     my ($name, $id, $prize, $absent, $comment, $password, $money, $food,$old_food, $tempfood, $BF_Flag, $hakoteam, $stadiumnum,
         $pop, $area, $farm, $factory, $mountain, $pts, $eis1, $eis2, $eis3, $eis4, $eis5, $eis6, $taiji, $onm,
         $id1, $ownername, @totoyoso, $shutomessage, $monumentnum, $rena, $shrtmp, $shr, $shrturn, $fore, $pika, $hamu, $monta, $tare, $zipro, $leje,
@@ -319,7 +319,7 @@ sub readIsland {
 
     # 地形
     my (@land, @landValue,@landValue2, @landValue3, $line, @command, @lbbs);
-    my (@item_land, @item_landValue, $item_landValue2, $item_landValue3);
+    my (@item_land, @item_landValue, @item_landValue2, @item_landValue3);
 
     if (($num == -1) || ($num == $id)) {
         if (!open(IIN, "${HdirName}/${id}.${HsubData}")) {
@@ -712,7 +712,7 @@ sub writeIsland {
 
 
         # コマンド
-        my ($command, $cur, $i);
+        my ($command, $i);
         $command = $island->{'command'};
         for ($i = 0; $i < $HcommandMax; $i++) {
             printf IOUT ("%d,%d,%d,%d,%d\n",
@@ -1064,13 +1064,13 @@ sub islandName {
     my ($color);
     foreach (@{$island->{'allyId'}}) {
         $i = $HidToAllyNumber{$_};
-		$mark  = $Hally[$i]->{'mark'};
-		$color = $Hally[$i]->{'color'};
-		$name .= '<FONT COLOR="' . $color . '"><B>' . $mark . '</B></FONT>';
-	}
-	$name .= $island->{'name'} . $AfterName;
+        $mark  = $Hally[$i]->{'mark'};
+        $color = $Hally[$i]->{'color'};
+        $name .= '<FONT COLOR="' . $color . '"><B>' . $mark . '</B></FONT>';
+    }
+    $name .= $island->{'name'} . $AfterName;
 
-	return ($name);
+    return ($name);
 }
 
 #----------------------------------------------------------------------
@@ -1181,7 +1181,7 @@ sub axeslog {
 
     my ($addr) = $ENV{'REMOTE_ADDR'};
 
-    if ( $addr != "192.168.24.53" ) {
+    if ( $addr ne "192.168.24.53" ) {
         my $host    = $ENV{'REMOTE_HOST'};
         my @lines;
         my $agent   = $ENV{'HTTP_USER_AGENT'};
