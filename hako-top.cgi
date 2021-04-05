@@ -54,9 +54,6 @@ sub PrintTopMenuLink {
     }
     out(qq|<span class='Nret'>[<A href="$HthisFile?Rename=0">${AfterName}の名前とパスワードの変更</A>]</span> |);
 
-    if ($server_config::HcssSetting) {
-        out(qq|[<A href="$HthisFile?Skin=0">箱庭スキンの設定</A>] |);
-    }
     #out(qq|[<A href="$HthisFile?JoinA=0">同盟の設定</A>] |) if(($HallyUse == 1) );
     if (   (USE_GZIP)
         || (!(USE_HTML_LOG_MDOE))
@@ -236,10 +233,10 @@ END
       <small>
         <a href="../wiki/" class='Nret'>マニュアル</a>　
         <a title="miniverse" href="../frm/viewforum.php?f=4" target="_blank" class='Nret'>miniverse</a>　
-        <a title="箱庭共通マップＮ" href="../hako_k" target="_blank" class='Nret'>箱庭共通マップN</A>
       </small>
     </h2>
 END
+    # <a title="箱庭共通マップＮ" href="../hako_k" target="_blank" class='Nret'>箱庭共通マップN</a>
 
     # 現在のターンを表示
     #my ($mode) = '';
@@ -689,11 +686,7 @@ END
 
                 if ($eisei1) {
 
-                    # $pts = $island->{'pts'};
-                    foreach (0..9) {
-                        $hlv = 9 - $_;
-                        last if($pts > $HouseLevel[$hlv]);
-                    }
+                    $hlv = Calc_HouseLevel($pts);
 
                     my ($onm) = $island->{'onm'};
                     my ($n) = "の$HHouseName[$hlv]";
@@ -894,11 +887,6 @@ sub historyPrint {
     }
     # @line = reverse(@line);
 
-    # 季節なし !$Hseason
-    # foreach $l (@line) {
-    # 	$l =~ /^([0-9]*),(.*)$/;
-    # 	out("${HtagNumber_}ターン${1}${H_tagNumber}：${2}<BR>\n");
-    # }
     out("$output");
     close(HIN);
 }

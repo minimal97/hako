@@ -1536,39 +1536,6 @@ sub cgiInput {
 
         $HmainMode = 'top';
     }
-
-    if($line =~ /IMGLINEMAC=([^&]*)\&/){
-        my ($flag) = $1;
-        if ($flag eq '') {
-            $flag = $HimageDir;
-        }
-        else {
-            $flag =~ s/ /%20/g;
-            $flag = 'file:///' . $flag;
-        }
-        $HimgLine = $flag;
-    } elsif($line =~ /IMGLINE=([^\&]*)\&/) {
-        my($flag) = $1;
-        $flag =~ tr/\\/\//;
-        if(($flag eq 'deletemodenow') || ($flag eq '')){
-            $flag = $HimageDir;
-        } else {
-#           $flag =~ s/:/|/g;
-            $flag =~ s/\/[\w\.]+\.gif$//g;
-            $flag = 'file:///' . $flag;
-        }
-        $HimgLine = $flag;
-    } elsif($line =~ /SKIN=([^\&]*)\&/) {
-        my($flag) = $1;
-        if(($flag eq 'del') || ($flag eq '')){
-
-            $flag = "${efileDir}/$HcssFile";
-        }
-        else {
-            $flag = "${efileDir}/${HcssDir}/" . $flag;
-        }
-        $HskinName = $flag;
-    }
 }
 
 #cookieÆþÎÏ

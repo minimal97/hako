@@ -496,18 +496,8 @@ sub logFilePrint {
             }
         }
 
-        if(!$set_turn){
-            if(!$Hseason) {
-                out("<b>=====[<span class='number'><font size='4'> 正□件$turn </font></span>]=====</b><br>\n");
-            } else {
-                # 筐濡及刓憎
-                my @seasonName = ('<span class="winter">鑣</span>','<span class="spring">調</span>','<span class="summer">笙</span>','<span class="autumn">蔗</span>');
-                my ($month) = ($turn % 12) + 1;
-                my ($year)  = ($turn / 12) + 1;
-                my ($calender) = sprintf('<span class=month><FONT SIZE=2><small>%s</small> %dヵ %d畸 </FONT></span>' , $Halmanac, $year, $month);
-                $calender .= "<span class='season'>$seasonName[int(($month - 1) / 3)]</span>";
-                out("<b>=====[<span class='number'><font size='4'> <small>正□件$turn</small> </font></span>]=====$calender</b><br>\n");
-            }
+        if (!$set_turn){
+            out("<b>=====[<span class='number'><font size='4'> 正□件$turn </font></span>]=====</b><br>\n");
             $set_turn++;
         }
         out('’'.${m}.$message."<br>\n");
@@ -576,17 +566,7 @@ _FOOTER_
 
             # 刓憎
             if (!$set_turn) {
-                if(!$Hseason) {
-                    $html2 .= "<B>=====[<span class='number'><font size='4'> 正□件$turn </font></span>]================================================</B><BR>\n";
-                } else {
-                    # 筐濡及刓憎
-                    my @seasonName = ('<span class=winter>鑣</span>','<span class=spring>調</span>','<span class=summer>笙</span>','<span class=autumn>蔗</span>');
-                    my $month = ($turn % 12) + 1;
-                    my $year  = ($turn / 12) + 1;
-                    my $calender = sprintf('<span class=month><font size=2><small>%s</small> %dヵ %d畸 </FONT></span>' , $Halmanac, $year, $month);
-                    $calender .= "<span class='season'>$seasonName[int(($month - 1) / 3)]</span>";
-                    $html2 .= "<B>=====[<span class=number><font size=4> <small>正□件$turn</small> </FONT></span>]=============================$calender</B><BR>\n";
-                }
+                $html2 .= "<B>=====[<span class='number'><font size='4'> 正□件$turn </font></span>]================================================</B><BR>\n";
                 $set_turn++;
             }
             $html2 .= "<span class='number'>↙</span>:$message<BR>\n";
