@@ -1101,7 +1101,7 @@ sub landString {
         $naviText  = "体力:？？" if ( $kind == $Mons_Totten);
         $naviExp = "\'MONSTER$kind\'";
 
-        $map_style = 'maptile_ret' if(seqnum2(($HislandTurn+$y),($id+$x)) % 2);
+        $map_style .= ' tile_ret' if (seqnum2(($HislandTurn+$y),($id+$x)) % 2);
 
     } elsif($l == $HlandPark) {
         # 遊園地
@@ -1370,25 +1370,25 @@ sub landString {
     if ( $boxmode ) {
         $point = "($x)";
         if($jsmode) {
-            out(qq|<A HREF="JavaScript:void(0);" onclick="boxslct($x);return true;" |);
+            out(qq|<a href="javascript:void(0);" onclick="boxslct($x);return true;" |);
             # out(qq|<A onclick="boxslct($x);return 1;" |);
             if($mode == 1 && $HmainMode ne 'landmap') {
                 out(qq|onMouseOver="set_com($x,$y,'$point $alt1');status='$point $alt1';return true;" onMouseOut="status='';">|);
             }elsif($HmainMode eq 'landmap') {
                 out(qq|onMouseOver="status= '$point $alt1';return 1;">|);
             }
-            out("<img src=\"$image\"TITLE=\"$point $alt\" class='maptile'></A>");
+            out("<img src=\"$image\" title=\"$point $alt\" class='maptile'></a>");
         } else {
             if($mode == 1) {
                 # 開発画面の場合は、座標設定
-                # out("<A HREF='JavaScript:void(0);' onclick='boxslct($x);return true;' ");
+                # out("<A HREF='javascript:void(0);' onclick='boxslct($x);return true;' ");
                 out("<IMG  ");
                 out("onclick=\"boxslct($x);return 1;\" onMouseOver=\"status = '$point $alt1 ';return true;\" onMouseOut=\"status = '';\" ");
-                out("alt='' SRC=\"$image\" TITLE=\"$point $alt \" class='maptile cur_p'>");
+                out("alt='' src=\"$image\" TITLE=\"$point $alt \" class='maptile cur_p'>");
                 # 座標設定閉じ
                 #out('</A>');
             } else {
-                out("<IMG alt='' SRC=\"$image\" class='maptile'>");
+                out("<img alt='' src=\"$image\" class='maptile'>");
                 # 座標設定閉じ
 
             }
@@ -1401,37 +1401,37 @@ sub landString {
 
         if ($jsmode) {
 
-            out(qq|<A HREF="JavaScript:void(0);" onclick="ps($x,$y);set_land($x,$y,'$point\\n $alt1','$image');" |);
+            out(qq|<a href="javascript:void(0);" onclick="ps($x,$y);set_land($x,$y,'$point\\n $alt1','$image');MapTileSelect($x,$y);" |);
 
             if (   ($mode == 1)
                 && ($HmainMode ne 'landmap') ) {
+#                out(qq|onMouseOver="set_com($x,$y,'$point $alt1');status='$point $alt1 $comStr'; Navi($x,$y,'$image','$naviTitle','$naviText',$naviExp); return true;" onMouseOut="status='';">|);
 
-                out(qq|onMouseOver="set_com($x,$y,'$point $alt1');status='$point $alt1 $comStr'; Navi($x,$y,'$image','$naviTitle','$naviText',$naviExp); return true;" onMouseOut="status='';">|);
+                out(qq|onMouseOver="set_com($x,$y,'$point $alt1');status='$point $alt1 $comStr'; return true;" onMouseOut="status='';">|);
 
             }elsif ($HmainMode eq 'landmap') {
 
                 out(qq|onMouseOver="status= '$point $alt1 $comStr';return true;" onMouseOut="status = '';">|);
             }
 
-            out("<img src=\"$image\"TITLE=\"$point $alt $comStr\" class='maptile'></A>");
+            out("<img src=\"$image\" id='map_$x-$y' title=\"$point $alt $comStr\" class='maptile'></a>");
 
         } else {
 
             if ($mode == 1) {
 
                 # 開発画面の場合は、座標設定
-                out(qq|<A HREF=\"JavaScript:void(0);\" onclick=\"ps($x,$y);tohint('$point $alt1\\n$comStr');return true;\" onMouseOver="status = '$point $alt1 $comStr';return true;" onMouseOut="status = '';"><img src=\"$image\"TITLE=\"$point $alt $comStr\" class='${map_style}' alt=''></A>|);
+                out(qq|<a href=\"javascript:void(0);\" onclick=\"ps($x,$y);tohint('$point $alt1\\n$comStr');return true;\" onMouseOver="status = '$point $alt1 $comStr';return true;" onMouseOut="status = '';"><img src=\"$image\"TITLE=\"$point $alt $comStr\" class='${map_style}' alt=''></a>|);
 
             } else {
-    #           out("<A HREF=\"JavaScript:void(0);\" onMouseOver=\"Navi($x, $y,'$image', '$naviTitle', '$naviText', $naviExp);\" onMouseOut=\"NaviClose(); return false\">");
-    #           out("<A HREF=\"JavaScript:void(0);\" onMouseOver=\"Navi($x, $y,'$image', '$naviTitle', '$naviText', $naviExp); status = '$point $alt1 $comStr'; return true;\" onMouseOut=\"NaviClose(); status=''; return false\">");
+    #           out("<A HREF=\"javascript:void(0);\" onMouseOver=\"Navi($x, $y,'$image', '$naviTitle', '$naviText', $naviExp);\" onMouseOut=\"NaviClose(); return false\">");
+    #           out("<A HREF=\"javascript:void(0);\" onMouseOver=\"Navi($x, $y,'$image', '$naviTitle', '$naviText', $naviExp); status = '$point $alt1 $comStr'; return true;\" onMouseOut=\"NaviClose(); status=''; return false\">");
     #           out("<img src=\"$image\" width=$Hms2 height=$Hms2 BORDER=0 onMouseOver=\"Navi($x,$y,'$image','$naviTitle','$naviText',$naviExp);\" onClick=\"Navi($x,$y,'$image','$naviTitle','$naviText',$naviExp);\" onMouseOut=\"NaviClose(); return false\">");
-                out("<img src=\"$image\" class='${map_style}' alt='' onMouseOver=\"Navi($x,$y,'$image','$naviTitle','$naviText',$naviExp);\" ONKEYPRESS='return false;' onClick=\"Navi($x,$y,'$image','$naviTitle','$naviText',$naviExp);\">");
+                out("<img src=\"$image\" class='${map_style}' id='map_$x-$y' alt='' onClick=\"Navi($x,$y,'$image','$naviTitle','$naviText',$naviExp);\"><!--  \n  -->");
                 # 座標設定閉じ
     #           out("</A>");
             }
         }
-
     }
 }
 
@@ -1898,7 +1898,16 @@ function show_Productlist(url,mode) {
   }
 }
 
+function MapTileSelect(x, y) {
+  ResetImgFrame();
+  SetImgFrame(x, y);
+}
+
 function Navi(x, y, img, title, text, exp) {
+
+  ResetImgFrame();
+  SetImgFrame(x, y);
+
   StyElm = document.getElementById("NaviView");
 
   StyElm.style.width = 250;
@@ -1922,6 +1931,34 @@ function Navi(x, y, img, title, text, exp) {
 function NaviClose() {
   StyElm = document.getElementById("NaviView");
   StyElm.style.visibility = "hidden";
+}
+
+function SetImgFrame(x ,y) {
+  var add = "";
+  var name = document.getElementById("map_" + x + "-" + y);
+
+  if (name.classList.contains('tile_ret') == true) {
+    add = "tile_ret";
+  }
+  name.className = "tileselect " + add;
+  name.style.borderColor = "#ffffff";
+}
+
+function ResetImgFrame() {
+  for (f=0;f<$HislandSize;f++) {
+    for (i=0;i<$HislandSize;i++) {
+      FrameDel(i, f);
+    }
+  }
+}
+
+function FrameDel(x, y) {
+  var add = "";
+  var name = document.getElementById("map_" + x + "-" + y);
+  if (name.classList.contains('tile_ret') == true) {
+    add = "tile_ret";
+  }
+  name.className = "maptile " + add;
 }
 
 function ps(x, y) {

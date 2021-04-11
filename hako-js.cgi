@@ -693,6 +693,7 @@ function moveLAYER(layName,x,y) {
 }
 
 function menuclose() {
+    ResetImgFrame();
     if (document.getElementById){
         document.getElementById("menu").style.display = "none";
     } else if (document.layers){

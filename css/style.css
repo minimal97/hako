@@ -257,6 +257,19 @@ span.HistoryTurnList { white-space : normal;}
       font-size:16pt;
     }
 }
+
+/* 順位表の数字 */
+@media screen and (min-width: 400px) {
+    .topNumber {
+      font-size:1.5em;
+    }
+}
+@media screen and (max-width: 399px) {
+    .topNumber {
+      font-size:1em;
+    }
+}
+
 /* リアルタイマー */
 .timer {
   background-color: #EEFFEE;
@@ -536,6 +549,13 @@ img.maptile {
   height: 32px;
   border: 0px;
   border-style:hidden;
+}
+
+img.tileselect {
+  width: 30px;
+  height: 30px;
+  border: 1px;
+  border-style:solid;
 }
 
 img.tile_ret {
