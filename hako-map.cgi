@@ -779,6 +779,40 @@ function set_land(x, y, land, img) {
   document.POPUP.COMSTATUS.value= com_str;
   document.POPUP.NAVIIMG.src= img;
 }
+
+function ResetImgFrame() {
+  for (f=0;f<$HislandSize;f++) {
+    for (i=0;i<$HislandSize;i++) {
+      FrameDel(i, f);
+    }
+  }
+}
+
+function FrameDel(x, y) {
+  var add = "";
+  var name = document.getElementById("map_" + x + "-" + y);
+  if (name.classList.contains('tile_ret') == true) {
+    add = "tile_ret";
+  }
+  name.className = "maptile " + add;
+}
+
+function MapTileSelect(x, y) {
+  ResetImgFrame();
+  SetImgFrame(x, y);
+}
+
+function SetImgFrame(x ,y) {
+  var add = "";
+  var name = document.getElementById("map_" + x + "-" + y);
+
+  if (name.classList.contains('tile_ret') == true) {
+    add = "tile_ret";
+  }
+  name.className = "tileselect " + add;
+  name.style.borderColor = "#ffffff";
+}
+
 //-->
 </SCRIPT>
 <h2 align='center'>${HtagName_}${HcurrentName}${H_tagName}</h2>
