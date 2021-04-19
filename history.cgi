@@ -53,12 +53,6 @@ my ($bye) = './hako-main.cgi';
 cookieInput();
 cgiInput();
 unless(($ENV{HTTP_REFERER}  =~ /${HbaseDir}/) || $HcurrentID) {
-    if ($HskinName ne '' ) {
-        $baseSKIN = $HskinName;
-    }
-    else {
-        $baseSKIN = "${efileDir}/$HcssFile";
-    }
     print qq{Content-type: text/html; charset=EUC-JP\n\n};
     out(<<END);
 <html>
@@ -209,24 +203,17 @@ sub cookieInput {
     if ($cookie =~ /${HthisFile}OWNISLANDPASSWORD=\(([^\)]*)\)/) {
         $HdefaultPassword = $1;
     }
-    if ($cookie =~ /${HthisFile}SKIN=\(([^\)]*)\)/) {
-        $HskinName = $1;
-    }
     if ($cookie =~ /${HHistoryFile}ID=\(([^\)]*)\)/) {
         $HcurrentID = $1;
     }
 }
+
 
 #---------------------------------------------------------------------
 #    HTMLのヘッダとフッタ部分を出力
 #---------------------------------------------------------------------
 # ヘッダ
 sub tempHeader {
-    if($HskinName ne '' ){
-        $baseSKIN = $HskinName;
-    } else {
-        $baseSKIN = "${efileDir}/$HcssFile";
-    }
     if ($ENV{'HTTP_ACCEPT_ENCODING'}=~/gzip/ && $Hgzip == 1) {
         print qq{Content-type: text/html; charset=EUC-JP\n};
         print qq{Content-encoding: gzip\n\n};

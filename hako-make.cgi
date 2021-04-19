@@ -627,19 +627,10 @@ _FOOTER_
 				next if(($id != $id1) && ($id != $id2));
 			}
 
-			# 表示
-			if(!$set_turn){
-				if(!$Hseason) {
-					$html2 .= "<B>=====[<span class=number><FONT SIZE=4> ターン$turn </FONT></span>]================================================</B><BR>\n";
-				} else {
-					# 季節の表示
-					my @seasonName = ('<span class=winter>冬</span>','<span class=spring>春</span>','<span class=summer>夏</span>','<span class=autumn>秋</span>');
-					my $month = ($turn % 12) + 1;
-					my $year  = ($turn / 12) + 1;
-					my $calender = sprintf('<span class=month><FONT SIZE=2><small>%s</small> %d年 %d月 </FONT></span>' , $Halmanac, $year, $month);
-					$calender .= "<span class='season'>$seasonName[int(($month - 1) / 3)]</span>";
-					$html2 .= "<B>=====[<span class=number><FONT SIZE=4> <small>ターン$turn</small> </FONT></span>]=============================$calender</B><BR>\n";
-				}
+            # 表示
+            if (!$set_turn) {
+
+                $html2 .= "<B>=====[<span class=number><FONT SIZE=4> ターン$turn </FONT></span>]================================================</B><br>\n";
 				$set_turn++;
 			}
 			$html2 .= "${HtagNumber_}★${H_tagNumber}:$message<BR>\n";

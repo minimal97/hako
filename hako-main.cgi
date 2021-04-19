@@ -2268,9 +2268,7 @@ sub logFilePrint {
         }
 
         if (!$set_turn){
-            if (!$Hseason) {
-                out("<B>=====[<span class=number><FONT SIZE=4> ターン$turn </FONT></span>]================================================</B><BR>\n");
-            }
+            out("<b>=====[<span class='number'><font size='4'> ターン$turn </font></span>]================================================</b><br>\n");
             $set_turn++;
         }
         out("　${m}$message<BR>\n");
@@ -2390,25 +2388,6 @@ END
 #----------------------------------------------------------------------
 # ヘッダ
 sub tempHeader {
-
-    if ($HimgLine ne '' ) {
-        $baseIMG = $HimgLine;
-
-    }
-    else {
-
-        $baseIMG = $HimageDir;
-    }
-
-    if ($HskinName ne '' ) {
-        $baseSKIN = $HskinName;
-    }
-    else {
-        $baseSKIN = "${efileDir}/$HcssFile";
-    }
-
-    #季節なし
-    $seasonIMG = '';
 
     my ($mapsizeNumber) = $HidToNumber{$defaultID};
     $Hms1 = 16;

@@ -26,24 +26,6 @@ require ('./server_config.pm');
 # ¥Ø¥Ã¥À
 sub tempHeaderJava {
 
-    if ($HimgLine ne '' ) {
-        $baseIMG = $HimgLine;
-    } else {
-        $baseIMG = $server_config::HimageDir;
-    }
-
-    if ($HskinName ne '' ) {
-        $baseSKIN = $HskinName;
-    } else {
-        $baseSKIN = "${efileDir}/$HcssFile";
-    }
-
-    if (SEASON_IMAGE_SET && $Hmonth) {
-        $seasonIMG = "$HseasonImg[$Hmonth]/";
-    } else {
-        $seasonIMG = '';
-    }
-
     my ($mapsizeNumber) = $HidToNumber{$defaultID};
 
     $Hms1 = 16;
