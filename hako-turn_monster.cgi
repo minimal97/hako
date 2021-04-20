@@ -37,37 +37,38 @@ sub FiveHexFlame {
 
     $ra=random(6);
 
-    if ($ra==1){
+    if ($ra==1) {
         @wayX = (-1,-2,-3,-4,-5);
         @wayY = ( 0, 0, 0, 0, 0);
-    } elsif ($ra==2) {
+    }
+    elsif ($ra==2) {
 
         @wayX = ( 1, 2, 3, 4, 5);
         @wayY = ( 0, 0, 0, 0, 0);
-
-    } elsif ($ra==3) {
+    }
+    elsif ($ra==3) {
         @wayX = ( 3, 2, 2, 1, 1);
         @wayY = (-5,-4,-3,-2,-1);
-
-    } elsif ($ra==4) {
+    }
+    elsif ($ra==4) {
         @wayX = ( 3, 2, 2, 1, 1);
         @wayY = ( 5, 4, 3, 2, 1);
-
-    } elsif ($ra==5) {
+    }
+    elsif ($ra==5) {
         @wayX = (0,-1, -1,-2,-2);
         @wayY = (1, 2,  3, 4, 5);
-
-    } else {
+    }
+    else {
         @wayX = (-2,-2,-1,-1, 0);
         @wayY = (-5,-4,-3,-2,-1);
     }
 
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($mKind, $mName, $mHp) = monsterSpec($landValue->[$x][$y]);
-    my($id) = $island->{'id'};
-    my($name) = islandName($island);
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($mKind, $mName, $mHp) = monsterSpec($landValue->[$x][$y]);
+    my ($id) = $island->{'id'};
+    my ($name) = islandName($island);
 
     my ($i , $sx , $sy);
 
@@ -76,24 +77,26 @@ sub FiveHexFlame {
         $sy = $y + $wayY[$i];
 
         # 行による位置調整
-        $sx-- if(!($sy % 2) && ($y % 2));
+        $sx-- if (!($sy % 2) && ($y % 2));
         # 範囲外
-        next if(($sx < 0) || ($sx > $islandSize) || ($sy < 0) || ($sy > $islandSize));
+        next if (($sx < 0) || ($sx > $islandSize) || ($sy < 0) || ($sy > $islandSize));
 
-        if (NoDamage_by_Flame($land->[$sx][$sy]) ){
+        if (NoDamage_by_Flame($land->[$sx][$sy]) ) {
 
-        } elsif ($land->[$sx][$sy] == $HlandMonster) {
+        }
+        elsif ($land->[$sx][$sy] == $HlandMonster) {
 
             # 対象となる怪獣の各要素取り出し
             my ($tKind, $tName, $tHp) = monsterSpec($landValue->[$sx][$sy]);
             my ($tlv) = $landValue->[$sx][$sy];
 
-            if(isMonsterCuring($tKind)) {
+            if (isMonsterCuring($tKind)) {
                 # 対象が硬化中なら効果なし
                 next;
             }
             if (random(1000) < 600) {
-                if(($tKind == 28) || ($tKind == 30)) {
+                if (   ($tKind == 28)
+                    || ($tKind == 30)) {
                     logLavaAttack($id, $name, $mName, "($x, $y)", $tName, "($sx, $sy)");
                     $dmge = random(4);
                     $tHp -= $dmge;
@@ -105,11 +108,12 @@ sub FiveHexFlame {
                         SetYoganLand($island , $sx , $sy);
                         $island->{'monsterlive'} -= 1;
                         # 報奨金
-                        my($value) = $HmonsterValue[$tKind];
+                        my ($value) = $HmonsterValue[$tKind];
                         $island->{'money'} += $value;
                         logMsMonMoney($id, $tName, $value);
                     }
-                } elsif($tKind != 33) {
+                }
+                elsif ($tKind != 33) {
                     logLavaAttack($id, $name, $mName, "($x, $y)", $tName, "($sx, $sy)");
 
                     # 対象の怪獣
@@ -120,13 +124,13 @@ sub FiveHexFlame {
                         SetMonument_Normal($island , $sx , $sy , 78);
                     }
                     # 報奨金
-                    my($value) = $HmonsterValue[$tKind];
+                    my ($value) = $HmonsterValue[$tKind];
                     $island->{'money'} += $value;
                     logMsMonMoney($id, $tName, $value);
                 }
             }
-
-        }else{
+        }
+        else {
 
             if ($land->[$sx][$sy] != $HlandYougan) {
                 logLavaAttack($id, $name, $mName, "($x, $y)", landName($land->[$sx][$sy], $landValue->[$sx][$sy],$landValue2->[$sx][$sy]), "($sx, $sy)");
@@ -147,51 +151,53 @@ sub FiveHexFlame {
 # 溶岩怪獣の3way
 # ---------------------------------------------------------------------
 sub ThreeWayFlame {
-    my($island, $x ,$y) = @_;
+    my ($island, $x ,$y) = @_;
 
     my (@wayX);
     my (@wayY);
     if (random(2)){
         @wayX = ( 1, 1, 1, 1,-1,-2);
         @wayY = (-2,-1, 1, 2, 0, 0);
-    } else {
+    }
+    else {
         @wayX = (-1, 0, 0,-1, 1, 2);
         @wayY = (-2,-1, 1, 2, 0, 0);
     }
 
-    my($id) = $island->{'id'};
-    my($name) = islandName($island);
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
-    my($mKind, $mName, $mHp) = monsterSpec($landValue->[$x][$y]);
+    my ($id) = $island->{'id'};
+    my ($name) = islandName($island);
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
+    my ($mKind, $mName, $mHp) = monsterSpec($landValue->[$x][$y]);
 
     my ($i , $sx , $sy);
 
-    for($i = 0; $i < 6; $i++) {
+    for ($i = 0; $i < 6; $i++) {
         $sx = $x + $wayX[$i];
         $sy = $y + $wayY[$i];
 
         # 行による位置調整
-        $sx-- if(!($sy % 2) && ($y % 2));
+        $sx-- if (!($sy % 2) && ($y % 2));
         # 範囲外
-        next if(($sx < 0) || ($sx > $islandSize) || ($sy < 0) || ($sy > $islandSize));
+        next if (($sx < 0) || ($sx > $islandSize) || ($sy < 0) || ($sy > $islandSize));
 
-        if (   NoDamage_by_Flame($land->[$sx][$sy]) ){
+        if (NoDamage_by_Flame($land->[$sx][$sy]) ){
 
-        } elsif ($land->[$sx][$sy] == $HlandMonster) {
+        }
+        elsif ($land->[$sx][$sy] == $HlandMonster) {
 
             # 対象となる怪獣の各要素取り出し
             my ($tKind, $tName, $tHp) = monsterSpec($landValue->[$sx][$sy]);
             my ($tlv) = $landValue->[$sx][$sy];
 
-            if(isMonsterCuring($tKind)) {
+            if (isMonsterCuring($tKind)) {
                 # 対象が硬化中なら効果なし
                 next;
             }
-
             if (random(1000) < 600) {
+
                 if (   ($tKind == 28)
                     || ($tKind == 30) ) {
 
@@ -214,8 +220,9 @@ sub ThreeWayFlame {
                         $island->{'money'} += $value;
                         logMsMonMoney($id, $tName, $value);
                     }
+                }
+                elsif($tKind != 33) {
 
-                } elsif($tKind != 33) {
                     logLavaAttack($id, $name, $mName, "($x, $y)", $tName, "($sx, $sy)");
 
                     # 対象の怪獣
@@ -236,8 +243,8 @@ sub ThreeWayFlame {
                     logMsMonMoney($id, $tName, $value);
                 }
             }
-
-        }else{
+        }
+        else {
 
             if ($land->[$sx][$sy] != $HlandYougan) {
                 logLavaAttack($island->{'id'}, $name, $mName, "($x, $y)", landName($land->[$sx][$sy], $landValue->[$sx][$sy], $landValue2->[$sx][$sy]), "($sx, $sy)");
@@ -247,7 +254,6 @@ sub ThreeWayFlame {
             $landValue2->[$sx][$sy] = 0;
             $landValue3->[$sx][$sy] = 0;
         }
-
     }
 }
 
@@ -283,7 +289,7 @@ sub RetroBeam {
             || ($land->[$tx][$ty] == $HlandSHTF)) {
 
             if ($landValue->[$tx][$ty] > 3) {
-                my($name) = islandName($island);
+                my ($name) = islandName($island);
                 my ($tPoint) = "($tx,$ty)";
 
                 $landValue->[$tx][$ty] = int($landValue->[$tx][$ty] / 2);

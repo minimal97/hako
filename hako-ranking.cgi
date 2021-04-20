@@ -129,7 +129,8 @@ END
   </tr>
 </table>
 END
-        } else {
+        }
+        else {
             out(<<END);
       <tr><td align="center">${HtagName_} - ${H_tagName}</td></tr>
       <tr><td align="center"> - </td></tr>

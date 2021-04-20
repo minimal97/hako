@@ -37,10 +37,11 @@ require('./hako-turn_food.cgi');
 # ---------------------------------------------------------------------
 sub SetMountain_Normal {
     my ($island , $x , $y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($landValue3) = $island->{'landValue3'};
+
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($landValue3) = $island->{'landValue3'};
 
     $land->[$x][$y] = $HlandMountain;
     $landValue->[$x][$y] = 0;
@@ -53,6 +54,7 @@ sub SetMountain_Normal {
 # ---------------------------------------------------------------------
 sub SetMonument_Normal {
     my ($island , $x , $y , $val) = @_;
+
     my ($land) = $island->{'land'};
     my ($landValue) = $island->{'landValue'};
     my ($landValue2) = $island->{'landValue2'};
@@ -70,6 +72,7 @@ sub SetMonument_Normal {
 # ---------------------------------------------------------------------
 sub SetYoganLand {
     my ($island , $x , $y) = @_;
+
     my ($land) = $island->{'land'};
     my ($landValue) = $island->{'landValue'};
     my ($landValue2) = $island->{'landValue2'};
@@ -87,6 +90,7 @@ sub SetYoganLand {
 # ---------------------------------------------------------------------
 sub SetWasteLand_Normal {
     my ($island , $x , $y) = @_;
+
     my ($land) = $island->{'land'};
     my ($landValue) = $island->{'landValue'};
     my ($landValue2) = $island->{'landValue2'};
@@ -104,6 +108,7 @@ sub SetWasteLand_Normal {
 # ---------------------------------------------------------------------
 sub SetWasteLand_Normal_val {
     my ($island , $x , $y , $val) = @_;
+
     my ($land) = $island->{'land'};
     my ($landValue) = $island->{'landValue'};
     my ($landValue2) = $island->{'landValue2'};
@@ -121,6 +126,7 @@ sub SetWasteLand_Normal_val {
 # ---------------------------------------------------------------------
 sub SetOilLand {
     my ($island , $x , $y) = @_;
+
     my ($land) = $island->{'land'};
     my ($landValue) = $island->{'landValue'};
     my ($landValue2) = $island->{'landValue2'};
@@ -139,18 +145,17 @@ sub SetOilLand {
 # ---------------------------------------------------------------------
 sub SetMonsterLand_Normal {
     my ($island , $x , $y , $mkind) = @_;
+
     my ($land) = $island->{'land'};
     my ($landValue) = $island->{'landValue'};
     my ($landValue2) = $island->{'landValue2'};
     my ($landValue3) = $island->{'landValue3'};
-
     my ($lv) = Calc_MonsterLandValue($mkind);
 
     $land->[$x][$y] = $HlandMonster;
     $landValue->[$x][$y] = $lv;
     $landValue2->[$x][$y] = 0;
     $landValue3->[$x][$y] = 0;
-
 
     $island->{'monspnt'}->[$island->{'monsterlive'}] = { x => $x, y => $y };
     $island->{'monsterlive'}++;
@@ -253,7 +258,6 @@ sub isNoAttackMonster {
 
         return 1;
     }
-
     return 0;
 }
 
@@ -285,16 +289,17 @@ sub CityAttack {
 
     $count = 0;
 
-    for($i = 1; $i < 7; $i++) {
+    for ($i = 1; $i < 7; $i++) {
         $sx = $x + $ax[$i];
         $sy = $y + $ay[$i];
 
         # 行による位置調整
-        $sx-- if(!($sy % 2) && ($y % 2));
+        $sx-- if (!($sy % 2) && ($y % 2));
 
-        if(($sx < 0) || ($sx > $islandSize) || ($sy < 0) || ($sy > $islandSize)) {
+        if (($sx < 0) || ($sx > $islandSize) || ($sy < 0) || ($sy > $islandSize)) {
             # 範囲外の場合
-        } else {
+        }
+        else {
 
             # 範囲内の場合
             if ($land->[$sx][$sy] == $HlandMonster) {
@@ -324,11 +329,11 @@ sub CityAttack {
         if (   ($landKind == $HlandSeacity)
             || ($landKind == $HlandUmishuto) ) {
             logMonsAttacksSecret($id, $name, $lName, $this_pos);
-        }else{
+        }
+        else {
             logMonsAttacks($id, $name, $lName, $this_pos);
         }
     }
-
     return $count;
 }
 
@@ -345,11 +350,10 @@ sub MonsterAttackHook {
     if ($mKind == $Mons_Kisinhei) {
 
         $landValue3->[$x][$y] += $damage;
-
-    }else{
+    }
+    else {
 
     }
-
 }
 
 
@@ -358,7 +362,6 @@ sub Town_Deserted {
     my ($island , $x , $y) = @_;
 
     my ($land) = $island->{'land'};
-
     my ($landKind) = $land->[$x][$y];
 
     if ($land->[$x][$y] == $HlandTown) {
@@ -371,7 +374,6 @@ sub Town_Deserted {
             return (1);
         }
     }
-
     return (0);
 }
 

@@ -115,8 +115,8 @@ sub islandInfo {
         || ($island->{'id'} > 100)) {
 
         # Ìµ¾ò·ï¤Þ¤¿¤Ïowner¥â¡¼¥É¤Þ¤¿¤ÏBattleField
-        $mStr1 = "<th $HbgTitleCell>${HtagTH_}»ñ¶â${H_tagTH}</th>";
-        $mStr2 = "<td $HbgInfoCell align=right>$island->{'money'}$HunitMoney</td>";
+        $mStr1 = "  <th $HbgTitleCell>${HtagTH_}»ñ¶â${H_tagTH}</th>\n";
+        $mStr2 = "  <td $HbgInfoCell align=right>$island->{'money'}$HunitMoney</td>\n";
         $col_num++;         # ¥Æ¡¼¥Ö¥ë¤ÎÄ¹¤µ¡Ü
     }
     elsif (   (INIT_HIDE_MONEY_MODE == 2)
@@ -125,8 +125,8 @@ sub islandInfo {
         my ($mTmp) = aboutMoney($island->{'money'});
 
         # 1000²¯Ã±°Ì¥â¡¼¥É
-        $mStr1 = "<th $HbgTitleCell>${HtagTH_}»ñ¶â${H_tagTH}</th>";
-        $mStr2 = "<td $HbgInfoCell align='right'>$mTmp</td>";
+        $mStr1 = "    <th $HbgTitleCell>${HtagTH_}»ñ¶â${H_tagTH}</th>\n";
+        $mStr2 = "    <td $HbgInfoCell align='right'>$mTmp</td>\n";
         $col_num++;         # ¥Æ¡¼¥Ö¥ë¤ÎÄ¹¤µ¡Ü
     }
 
@@ -134,18 +134,24 @@ sub islandInfo {
 
     if (($island->{'id'} <= 100) && !($island->{'BF_Flag'})) {
         # Áí¹ç¥Ý¥¤¥ó¥È¤È½ç°Ì
-        $rStr1 = "<th $HbgTitleCell>${HtagTH_}½ç°Ì${H_tagTH}</th><th $HbgTitleCell>${HtagTH_}<small>Áí¹çPoint</small>${H_tagTH}</th>";
-        $rStr2 = "<td $HbgNumberCell rowspan='2' align='center'>${HtagNumber_}$rank${H_tagNumber}</td><td $HbgPoinCell align=right>${pts}</td>";
+        $rStr1 = <<END;
+    <th $HbgTitleCell>${HtagTH_}½ç°Ì${H_tagTH}</th>
+    <th $HbgTitleCell>${HtagTH_}<small>Áí¹çPoint</small>${H_tagTH}</th>
+END
+        $rStr2 = <<END;
+    <td $HbgNumberCell rowspan='2' align='center'>${HtagNumber_}$rank${H_tagNumber}</td>
+    <td $HbgPoinCell align=right>${pts}</td>
+END
         # ¼º¶ÈÎ¨
-        $uStr1 = "<th $HbgTitleCell>${HtagTH_}¼º¶ÈÎ¨${H_tagTH}</th>";
-        $uStr2 = "<td $HbgInfoCell align='right'>${unemployed}</td>";
+        $uStr1 = "  <th $HbgTitleCell>${HtagTH_}¼º¶ÈÎ¨${H_tagTH}</th>\n";
+        $uStr2 = "  <td $HbgInfoCell align='right'>${unemployed}</td>\n";
         $col_num = $col_num + 2;             # ¥Æ¡¼¥Ö¥ë¤ÎÄ¹¤µ¡Ü
         # È¯¼Í²ÄÇ½¥ß¥µ¥¤¥ë¿ô(ÊÝÍ­¿ô)
         if (INIT_HIDE_MISSILE_MODE || ($HmainMode eq 'owner')) {
 
             # Ìµ¾ò·ï¤Þ¤¿¤Ïowner¥â¡¼¥É
-            $msStr1 = "<th $HbgTitleCell>${HtagTH_}¥ß¥µ¥¤¥ë¿ô";
-            $msStr2 = "<td $HbgInfoCell align=right>$island->{'missiles'}${HunitMissile}";
+            $msStr1 = "    <th $HbgTitleCell>${HtagTH_}¥ß¥µ¥¤¥ë¿ô";
+            $msStr2 = "    <td $HbgInfoCell align=right>$island->{'missiles'}${HunitMissile}";
             $col_num++;         # ¥Æ¡¼¥Ö¥ë¤ÎÄ¹¤µ¡Ü
 
             if (INIT_HIDE_MISSILE_MODE == 2) {
@@ -165,8 +171,15 @@ sub islandInfo {
                 $msStr2 .= "</td>";
             }
         }
-    } else {
-        $bStr = "<tr><th colspan='13'><font size='5'>${HtagTH_}Battle Field${H_tagTH}</font></th></tr>";
+    }
+    else {
+        $bStr = <<END;
+  <tr>
+    <th colspan='13'>
+      <font size='5'>${HtagTH_}Battle Field${H_tagTH}</font>
+    </th>
+  </tr>
+END
         $col_num ++;         # ¥Æ¡¼¥Ö¥ë¤ÎÄ¹¤µ¡Ü
     }
 
@@ -223,47 +236,47 @@ sub islandInfo {
 <div id='islandInfo' align="center">
 <table border>
 $bStr
-<tr>
+  <tr>
 $rStr1
-<th $HbgTitleCell>${HtagTH_}Å·¸õ${H_tagTH}</th>
-<th $HbgTitleCell>${HtagTH_}<small>¼¡¥¿¡¼¥ó<br>Å·¸õÍ½ÁÛ</small>${H_tagTH}</th>
-<th $HbgTitleCell>${HtagTH_}µ¤²¹${H_tagTH}</th>
-<th $HbgTitleCell>${HtagTH_}¿Í¸ý${H_tagTH}</th>
-<th $HbgTitleCell>${HtagTH_}ÌÌÀÑ${H_tagTH}</th>
+    <th $HbgTitleCell>${HtagTH_}Å·¸õ${H_tagTH}</th>
+    <th $HbgTitleCell>${HtagTH_}<small>¼¡¥¿¡¼¥ó<br>Å·¸õÍ½ÁÛ</small>${H_tagTH}</th>
+    <th $HbgTitleCell>${HtagTH_}µ¤²¹${H_tagTH}</th>
+    <th $HbgTitleCell>${HtagTH_}¿Í¸ý${H_tagTH}</th>
+    <th $HbgTitleCell>${HtagTH_}ÌÌÀÑ${H_tagTH}</th>
 $mStr1
-<th $HbgTitleCell>${HtagTH_}¿©ÎÁ${H_tagTH}</th>
-<th $HbgTitleCell>${HtagTH_}ÇÀ¾ì${H_tagTH}</th>
-<th $HbgTitleCell>${HtagTH_}¿¦¾ì${H_tagTH}</th>
-<th $HbgTitleCell>${HtagTH_}HT¿¦¾ì${H_tagTH}</th>
-<th $HbgTitleCell>${HtagTH_}ºÎ·¡¾ì${H_tagTH}</th>
+    <th $HbgTitleCell>${HtagTH_}¿©ÎÁ${H_tagTH}</th>
+    <th $HbgTitleCell>${HtagTH_}ÇÀ¾ì${H_tagTH}</th>
+    <th $HbgTitleCell>${HtagTH_}¿¦¾ì${H_tagTH}</th>
+    <th $HbgTitleCell>${HtagTH_}HT¿¦¾ì${H_tagTH}</th>
+    <th $HbgTitleCell>${HtagTH_}ºÎ·¡¾ì${H_tagTH}</th>
 $uStr1
-<th $HbgTitleCell>${HtagTH_}·³»ö<br>µ»½Ñ${H_tagTH}</th>
+    <th $HbgTitleCell>${HtagTH_}·³»ö<br>µ»½Ñ${H_tagTH}</th>
 $msStr1
-<th $HbgTitleCell>${HtagTH_}Í×Ë¾/¿ôÃÍ${H_tagTH}</th>
-</TR>
-<TR>
+    <th $HbgTitleCell>${HtagTH_}Í×Ë¾/¿ôÃÍ${H_tagTH}</th>
+  </tr>
+  <tr>
 $rStr2
-<TD $HbgInfoCell align=center>$w_tag</td>
-<TD $HbgInfoCell align=center>$wn_tag</td>
-<TD $HbgInfoCell align=center>$island->{'temperature'}</td>
-<TD $HbgInfoCell align=right>$island->{'pop'}$HunitPop</td>
-<TD $HbgInfoCell align=right>$areatag</td>
+    <td $HbgInfoCell align=center>$w_tag</td>
+    <td $HbgInfoCell align=center>$wn_tag</td>
+    <td $HbgInfoCell align=center>$island->{'temperature'}</td>
+    <td $HbgInfoCell align=right>$island->{'pop'}$HunitPop</td>
+    <td $HbgInfoCell align=right>$areatag</td>
 $mStr2
-<TD $HbgInfoCell align=right>$island->{'food'}$HunitFood</td>
-<TD $HbgInfoCell align=right>${farm}</td>
-<TD $HbgInfoCell align=right>${factory}</td>
-<TD $HbgInfoCell align=right>${HTfactor}</td>
-<TD $HbgInfoCell align=right>${mountain}</td>
+    <td $HbgInfoCell align=right>$island->{'food'}$HunitFood</td>
+    <td $HbgInfoCell align=right>${farm}</td>
+    <td $HbgInfoCell align=right>${factory}</td>
+    <td $HbgInfoCell align=right>${HTfactor}</td>
+    <td $HbgInfoCell align=right>${mountain}</td>
 $uStr2
-<TD $HbgInfoCell align=right>Lv${renae}</td>
+    <td $HbgInfoCell align=right>Lv${renae}</td>
 $msStr2
-<TD $HbgInfoCell align=right>$CivReqDisp[$civreq]</td>
-</TR>
-<TR>
-<TD $HbgCommentCell COLSPAN=${col_num} align=left>${HtagtTH_}info¡§<font size="-1">$prize$house$monslive$Farmcpc$bumons$me_sat</font>${H_tagtTH}
+    <td $HbgInfoCell align=right>$CivReqDisp[$civreq]</td>
+  </tr>
+  <tr>
+    <td $HbgCommentCell COLSPAN=${col_num} align=left>${HtagtTH_}info¡§<font size="-1">$prize$house$monslive$Farmcpc$bumons$me_sat</font>${H_tagtTH}
 END
     my $AllyBBS = '';
-    if($HallyNumber){
+    if ($HallyNumber) {
         my $aNo = random(100);
         $aNo *= 10;
         for ($i = 0; $i < $HallyNumber; $i++) {
@@ -288,25 +301,26 @@ END
             $allyName =~ s/¡Ú¾¡¼Ô¡ª¡Û//g;
             $aNo += $i;
             my $campInfo = '';
-            $campInfo = "<FORM name='allyForm$aNo' action='${HthisFile}' method='POST' target='_blank' style='margin-bottom: 0px;'>" if ($mode);
-            $campInfo .=<<_CAMP_ if($mode && $HarmisticeTurn);
-¡¡[<A STYlE="text-decoration:none" HREF="JavaScript:void(0)" onClick="document.allyForm${aNo}.submit();return false;">ºîÀïËÜÉô</A>]
+            $campInfo = "\n      <form name='allyForm$aNo' action='${HthisFile}' method='POST' target='_blank' style='margin-bottom: 0px;'>" if ($mode);
+            $campInfo .=<<_CAMP_ if ($mode && $HarmisticeTurn);
+¡¡[<a style="text-decoration:none" href="JavaScript:void(0)" onClick="document.allyForm${aNo}.submit();return false;">ºîÀïËÜÉô</A>]
 _CAMP_
             $campInfo .=<<_CAMP_ if($mode);
-<INPUT type=hidden name="camp" value="$allyId">
-<INPUT type=hidden name="ally" value="$allyId">
-<INPUT type=hidden name="cpass" value="$cpass">
-<INPUT type=hidden name="jpass" value="$jpass">
-<INPUT type=hidden name="PASSWORD" value="$HdefaultPassword">
-<INPUT type=hidden name="id" value="$island->{'id'}">
-</FORM>
-</td>
+        <input type='hidden' name="camp" value="$allyId">
+        <input type='hidden' name="ally" value="$allyId">
+        <input type='hidden' name="cpass" value="$cpass">
+        <input type='hidden' name="jpass" value="$jpass">
+        <input type='hidden' name="PASSWORD" value="$HdefaultPassword">
+        <input type='hidden' name="id" value="$island->{'id'}">
+      </form>
+    </td>
 _CAMP_
 
             if ($mode && $HallyBbs) {
                 if ($HarmisticeTurn) {
                     $AllyBBS .=<<_BBS_;
-<font color="$ally->{'color'}"><b>$ally->{'mark'}</b></font>$ally->{'name'}
+      <font color="$ally->{'color'}"><b>$ally->{'mark'}</b></font>
+$ally->{'name'}
 [<a style="text-decoration:none" href="JavaScript:void(0)" onClick="document.allyForm${aNo}.action='${HbaseDir}/${HallyBbsScript}';document.allyForm${aNo}.submit();return false;">ºîÀï²ñµÄ¼¼</a>]
 ${campInfo}
 _BBS_
@@ -334,14 +348,16 @@ _BBS_
   </tr>
   <tr>
     <th $HbgTitleCell>${HtagTH_}${allytitle}${H_tagTH}</th>
-    <td $HbgInfoCell colspan=${col_num} class='T'>${AllyBBS}
+    <td $HbgInfoCell colspan=${col_num} class='T'>
+${AllyBBS}
   </tr>
-  </table>
+</table>
 </div>
 END
 }
 
 
+#----------------------------------------------------------------------
 # ¥¢¥¤¥Æ¥à¤ÎÉ½¼¨
 sub islandItemData {
     print("<div id=itembox>");
@@ -379,7 +395,7 @@ END
     }
 
     out(<<END);
-    </TR>
+    </tr>
   </table>
 END
 
@@ -387,6 +403,7 @@ END
 }
 
 
+#----------------------------------------------------------------------
 sub landString2 {
     my ($island, $x, $y, $mode, $comStr, $jsmode, $boxmode) = @_;
 
@@ -471,8 +488,8 @@ sub College_LandString {
     $lv3 = $land_data->{'landValue3'};
 
         # Âç³Ø
-        my($p, $n);
-        if($lv == 0) {
+        my ($p, $n);
+        if ($lv == 0) {
             $p = '34';
             $n = 'ÇÀ¶ÈÂç³Ø';
         } elsif($lv == 1) {
@@ -529,18 +546,20 @@ sub Sea_LandString {
     $lv2 = $land_data->{'landValue2'};
     $lv3 = $land_data->{'landValue3'};
 
-    if ( $boxmode ) {
+    if ($boxmode) {
         $image = 'noitem.gif';
         $alt = '¤Ê¤·';
         $naviTitle  = '¤Ê¤·';
+    }
+    else {
 
-    }else{
-        if($lv) {
+        if ($lv) {
             # ÀõÀ¥
             $image = 'land14.gif';
             $alt = '³¤(ÀõÀ¥)';
             $naviTitle  = 'ÀõÀ¥';
-        } else {
+        }
+        else {
             # ³¤
             $image = Sea_Img_Gen(1, $x, $y);
             $alt = '³¤';
@@ -563,20 +582,20 @@ sub Town_LandString {
     $lv3 = $land_data->{'landValue3'};
 
         # Ä®
-        my($p, $n);
-        if($lv < 30) {
+        my ($p, $n);
+        if ($lv < 30) {
             $p = 'land3.png';
             $n = 'Â¼';
-        } elsif($lv < 65) {
+        } elsif ($lv < 65) {
             $p = 'land4.png';
             $n = 'Ä®';
-        } elsif($lv < 100) {
+        } elsif ($lv < 100) {
             $p = 'land402.png';
             $n = 'Ä®';
-        } elsif($lv < 150) {
+        } elsif ($lv < 150) {
             $p = 'land5.png';
             $n = 'ÅÔ»Ô';
-        } elsif($lv < 200) {
+        } elsif ($lv < 200) {
             $p = 'land501.png';
             $n = 'ÅÔ»Ô';
         } else {
@@ -609,7 +628,7 @@ sub Waste_LandString {
     $naviTitle  = '¹ÓÃÏ';
     $naviText  = '';
 
-    if($lv == 1) {
+    if ($lv == 1) {
         $image = 'land13.gif';  # ÃåÃÆÅÀ
     } elsif($lv  == 2) {
         $image = 'land13m.gif'; # ð¨ÀÐ
@@ -642,7 +661,7 @@ sub Mountain_LandString {
     # »³
     my($str);
     $str = '';
-    if($lv > 0) {
+    if ($lv > 0) {
         if ( $lv < 20){
             $image = 'mt1.png';
         }elsif ( $lv < 30){
@@ -1367,9 +1386,9 @@ sub landString {
 
     $image = $HMapImgDir . $image;
 
-    if ( $boxmode ) {
+    if ($boxmode) {
         $point = "($x)";
-        if($jsmode) {
+        if ($jsmode) {
             out(qq|<a href="javascript:void(0);" onclick="boxslct($x);return true;" |);
             # out(qq|<A onclick="boxslct($x);return 1;" |);
             if($mode == 1 && $HmainMode ne 'landmap') {
@@ -1378,8 +1397,10 @@ sub landString {
                 out(qq|onMouseOver="status= '$point $alt1';return 1;">|);
             }
             out("<img src=\"$image\" title=\"$point $alt\" class='maptile'></a>");
-        } else {
-            if($mode == 1) {
+        }
+        else {
+
+            if ($mode == 1) {
                 # ³«È¯²èÌÌ¤Î¾ì¹ç¤Ï¡¢ºÂÉ¸ÀßÄê
                 # out("<A HREF='javascript:void(0);' onclick='boxslct($x);return true;' ");
                 out("<IMG  ");
@@ -1387,14 +1408,14 @@ sub landString {
                 out("alt='' src=\"$image\" TITLE=\"$point $alt \" class='maptile cur_p'>");
                 # ºÂÉ¸ÀßÄêÊÄ¤¸
                 #out('</A>');
-            } else {
+            }
+            else {
                 out("<img alt='' src=\"$image\" class='maptile'>");
                 # ºÂÉ¸ÀßÄêÊÄ¤¸
-
             }
         }
-
-    }else{
+    }
+    else {
         my ($point) = "($x,$y)";
 
         #$point .= "debug($lv3)";
@@ -1409,14 +1430,16 @@ sub landString {
 
                 out(qq|onMouseOver="set_com($x,$y,'$point $alt1');status='$point $alt1 $comStr'; return true;" onMouseOut="status='';">|);
 
-            }elsif ($HmainMode eq 'landmap') {
+            }
+            elsif ($HmainMode eq 'landmap') {
 
                 out(qq|onMouseOver="status= '$point $alt1 $comStr';return true;" onMouseOut="status = '';">|);
             }
 
             out("<img src=\"$image\" id='map_$x-$y' title=\"$point $alt $comStr\" class='maptile'></a>");
 
-        } else {
+        }
+        else {
 
             if ($mode == 1) {
 
@@ -1436,9 +1459,10 @@ sub landString {
 }
 
 
+#----------------------------------------------------------------------
 # ³Æ¼ï³ÈÄ¥¥Ç¡¼¥¿É½¼¨(Äë¹ñ¤Î¶½Ë´) kokoha nokosu
 sub islandData {
-    my(@data) = @{$Hislands[$HcurrentNumber]->{'ext'}};
+    my (@data) = @{$Hislands[$HcurrentNumber]->{'ext'}};
 
     # Á°½èÍý
     $data[1] = int($data[1] / 10);
@@ -1453,11 +1477,11 @@ sub islandData {
     my ($sto, $std, $stk, $stwin, $stdrow, $stlose, $stwint, $stdrowt, $stloset, $styusho, $stshoka) = split(/,/, $Hislands[$HcurrentNumber]->{'eisei4'});
     my ($kachiten) = $stwin*3 + $stdrow;
     my $nn = $HStadiumResult[$stshoka];
-    $nn = 'Îý½¬Ãæ' if($nn eq '');
+    $nn = 'Îý½¬Ãæ' if ($nn eq '');
 
     if ($HallyNumber) {
         $aStr1 = "<th $HbgTitleCell align=center>${HtagTH_}¹×¸¥ÅÙ${H_tagTH}</th>";
-        $aStr2 = "<TD $HbgInfoCell align=center>$data[1]</td>";
+        $aStr2 = "<td $HbgInfoCell align=center>$data[1]</td>";
     }
 
     my ($island) = $Hislands[$HcurrentNumber];
@@ -1481,30 +1505,34 @@ sub islandData {
     if ($pop > $farm) {
         # ÇÀ¶È¤À¤±¤¸¤ã¼ê¤¬Í¾¤ë¾ì¹ç
         if ( $farm > 0 ){
+
             $work_farm = int( ($pop /$farm) * 100 );
             $work_farm = 100 if($work_farm > 100);
         }
         $tpop = ($pop - $farm);
 
-        if ( $factory + $mountain > 0 ) {
+        if ($factory + $mountain > 0) {
+
             $work_biz = int( ($tpop / ($factory + $mountain) )* 100 );
-            $work_biz = 100 if($work_biz > 100);
+            $work_biz = 100 if ($work_biz > 100);
         }
         $tpop = ($tpop - ($factory + $mountain));
 
         if (($factoryHT > 0) && ($tpop > 0) ) {
+
             $work_bizHT = int( ($tpop / ($factoryHT) )* 100 );
             $work_bizHT = 100 if($work_bizHT > 100);
         }
 
         $unemployed = $tpop - ($factoryHT) ;
-        $unemployed = 0  if($unemployed < 0);
-
-    } else {
+        $unemployed = 0  if ($unemployed < 0);
+    }
+    else {
         # ÇÀ¶È¤À¤±¤Ç¼ê°ìÇÕ¤Î¾ì¹ç
         if ($farm) {
             $work_farm = int( ($pop /$farm)*100);
-        }else{
+        }
+        else {
             $work_farm = 0;
         }
     }
@@ -1514,33 +1542,35 @@ sub islandData {
     }
 
     out(<<END);
-<div id='extInfo'>
-  <table border="0">
-    <tr>
-      <td>
+<div id='extInfo' align='center'>
+  <div class='ExtContainer'>
         <table border>
           <tr>
             $aStr1
-            <th $HbgTitleCell align=center>${HtagTH_}ËÉ·âÇË${H_tagTH}</th>
-            <th $HbgTitleCell align=center>${HtagTH_}¥ß·âÇË${H_tagTH}</th>
-            <th $HbgTitleCell align=center>${HtagTH_}Ì±µß½Ð${H_tagTH}</th>
-            <th $HbgTitleCell align=center>${HtagTH_}ÃÆÈôÍè${H_tagTH}</th>
-            <th $HbgTitleCell align=center>${HtagTH_}ÃÆÈ¯¼Í${H_tagTH}</th>
-            <th $HbgTitleCell align=center>${HtagTH_}ÃÆËÉ¸æ${H_tagTH}</th>
-            <th $HbgTitleCell align=center>${HtagTH_}Âà¼£¿ô${H_tagTH}</th>
+            <th $HbgTitleCell align='center'>${HtagTH_}ËÉ·âÇË${H_tagTH}</th>
+            <th $HbgTitleCell align='center'>${HtagTH_}¥ß·âÇË${H_tagTH}</th>
+            <th $HbgTitleCell align='center'>${HtagTH_}Ì±µß½Ð${H_tagTH}</th>
           </tr>
           <tr>
             $aStr2
-            <TD $HbgInfoCell align=center>$data[2]</td>
-            <TD $HbgInfoCell align=center>$data[3]</td>
-            <TD $HbgInfoCell align=center>$data[4]</td>
-            <TD $HbgInfoCell align=center>$data[5]</td>
-            <TD $HbgInfoCell align=center>$data[6]</td>
-            <TD $HbgInfoCell align=center>$data[7]</td>
-            <TD $HbgInfoCell align=center>$monsterkill</td>
+            <td $HbgInfoCell align='center'>$data[2]</td>
+            <td $HbgInfoCell align='center'>$data[3]</td>
+            <td $HbgInfoCell align='center'>$data[4]</td>
+          </tr>
+          <tr>
+            <th $HbgTitleCell align='center'>${HtagTH_}ÃÆÈôÍè${H_tagTH}</th>
+            <th $HbgTitleCell align='center'>${HtagTH_}ÃÆÈ¯¼Í${H_tagTH}</th>
+            <th $HbgTitleCell align='center'>${HtagTH_}ÃÆËÉ¸æ${H_tagTH}</th>
+            <th $HbgTitleCell align='center'>${HtagTH_}Âà¼£¿ô${H_tagTH}</th>
+          </tr>
+          <tr>
+            <td $HbgInfoCell align='center'>$data[5]</td>
+            <td $HbgInfoCell align='center'>$data[6]</td>
+            <td $HbgInfoCell align='center'>$data[7]</td>
+            <td $HbgInfoCell align='center'>$monsterkill</td>
           </tr>
         </table>
-      </td>
+  </div>
 END
     if ($island->{'stadiumnum'} > 0) {
         my ($shoritu);
@@ -1549,53 +1579,55 @@ END
             $shoritu = int(($stwint / ($stwint + $stloset)) * 100 );
         }
     out(<<END);
-      <td>
+  <div class='ExtContainer'>
         <table border>
           <tr>
-            <th $HbgTitleCell align=center>${HtagTH_}Áª¼ê${H_tagTH}</th>
-            <th $HbgTitleCell align=center>${HtagTH_}¹¶${H_tagTH}</th>
-            <th $HbgTitleCell align=center>${HtagTH_}¼é${H_tagTH}</th>
-            <th $HbgTitleCell align=center>${HtagTH_}KP${H_tagTH}</th>
-            <th $HbgTitleCell align=center>${HtagTH_}¾¡ÅÀ${H_tagTH}</th>
-            <th $HbgTitleCell align=center>${HtagTH_}»î¹ç${H_tagTH}</th>
-            <th $HbgTitleCell align=center>${HtagTH_}ÄÌ»»(¾¡Î¨)${H_tagTH}</th>
-            <th $HbgTitleCell align=center>${HtagTH_}Í¥¾¡${H_tagTH}</th>
-          </TR>
-          <TR>
-            <TD $HbgInfoCell align=center>$nn</td>
-            <TD $HbgInfoCell align=center>$sto</td>
-            <TD $HbgInfoCell align=center>$std</td>
-            <TD $HbgInfoCell align=center>$stk</td>
-            <TD $HbgInfoCell align=center>$kachiten</td>
-            <TD $HbgInfoCell align=center>$stwin¾¡$stloseÇÔ$stdrowÊ¬</td>
-            <TD $HbgInfoCell align=center>$stwint¾¡$stlosetÇÔ$stdrowtÊ¬($shoritu%)</td>
-            <TD $HbgInfoCell align=center>$styusho²ó</td>
-          </TR>
+            <th $HbgTitleCell align='center'>${HtagTH_}Áª¼ê${H_tagTH}</th>
+            <th $HbgTitleCell align='center'>${HtagTH_}¹¶${H_tagTH}</th>
+            <th $HbgTitleCell align='center'>${HtagTH_}¼é${H_tagTH}</th>
+            <th $HbgTitleCell align='center'>${HtagTH_}KP${H_tagTH}</th>
+            <th $HbgTitleCell align='center'>${HtagTH_}¾¡ÅÀ${H_tagTH}</th>
+          </tr>
+          <tr>
+            <td $HbgInfoCell align='center'>$nn</td>
+            <td $HbgInfoCell align='center'>$sto</td>
+            <td $HbgInfoCell align='center'>$std</td>
+            <td $HbgInfoCell align='center'>$stk</td>
+            <td $HbgInfoCell align='center'>$kachiten</td>
+          </tr>
+          <tr>
+            <th $HbgTitleCell align='center' colspan='1'>${HtagTH_}»î¹ç${H_tagTH}</th>
+            <th $HbgTitleCell align='center' colspan='3'>${HtagTH_}ÄÌ»»(¾¡Î¨)${H_tagTH}</th>
+            <th $HbgTitleCell align='center' colspan='1'>${HtagTH_}Í¥¾¡${H_tagTH}</th>
+          </tr>
+            <td $HbgInfoCell align='center' colspan='1'>$stwin¾¡$stloseÇÔ$stdrowÊ¬</td>
+            <td $HbgInfoCell align='center' colspan='3'>$stwint¾¡$stlosetÇÔ$stdrowtÊ¬($shoritu%)</td>
+            <td $HbgInfoCell align='center' colspan='1'>$styusho²ó</td>
+          <tr>
+          </tr>
         </table>
-        </td>
-      </tr>
+  </div>
 END
     }
 
     if ($HmainMode eq 'owner') {
     out(<<END);
-<tr>
-<td>
-<table border>
-  <tr>
-    <th $HbgTitleCell align=center>${HtagTH_}ÇÀ¶È<br>²ÔÆ¯Î¨${H_tagTH}</th>
-    <th $HbgTitleCell align=center>${HtagTH_}¥Ó¥¸¥Í¥¹<br>²ÔÆ¯Î¨${H_tagTH}</th>
-    <th $HbgTitleCell align=center>${HtagTH_}HT»º¶È<br>²ÔÆ¯Î¨${H_tagTH}</th>
-    <th $HbgTitleCell align=center>${HtagTH_}¼º¶È¼Ô${H_tagTH}</th>
-  </tr>
-  <tr>
-    <td $HbgInfoCell align=center>$work_farm%</td>
-    <td $HbgInfoCell align=center>$work_biz%</td>
-    <td $HbgInfoCell align=center>$work_bizHT%</td>
-    <td $HbgInfoCell align=center>$unemployed_str</td>
-  </tr>
-</table>
-</td>
+<div class='ExtContainer'>
+  <table border>
+    <tr>
+      <th $HbgTitleCell align=center>${HtagTH_}ÇÀ¶È<br>²ÔÆ¯Î¨${H_tagTH}</th>
+      <th $HbgTitleCell align=center>${HtagTH_}¥Ó¥¸¥Í¥¹<br>²ÔÆ¯Î¨${H_tagTH}</th>
+      <th $HbgTitleCell align=center>${HtagTH_}HT»º¶È<br>²ÔÆ¯Î¨${H_tagTH}</th>
+      <th $HbgTitleCell align=center>${HtagTH_}¼º¶È¼Ô${H_tagTH}</th>
+    </tr>
+    <tr>
+      <td $HbgInfoCell align=center>$work_farm%</td>
+      <td $HbgInfoCell align=center>$work_biz%</td>
+      <td $HbgInfoCell align=center>$work_bizHT%</td>
+      <td $HbgInfoCell align=center>$unemployed_str</td>
+    </tr>
+  </table>
+</div>
 END
     }
 
@@ -1611,38 +1643,36 @@ END
     if ($mshp || $tet) {
 
     out(<<END);
-<td>
-<table border="1">
-<tr>
-<th $HbgTitleCell align="center" rowspan="7">${HtagTH_}$petname ${H_tagTH}</th>
-</tr>
-<tr>
-<th $HbgTitleCell align=center rowspan="2">${HtagTH_}$mspet${H_tagTH}</th>
-<th $HbgTitleCell align=center>${HtagTH_}HP${H_tagTH}</th>
-<th $HbgTitleCell align=center>${HtagTH_}AP${H_tagTH}</th>
-<th $HbgTitleCell align=center>${HtagTH_}DP${H_tagTH}</th>
-<th $HbgTitleCell align=center>${HtagTH_}SP${H_tagTH}</th>
-<th $HbgTitleCell align=center>${HtagTH_}·âÇË${H_tagTH}</th>
-<th $HbgTitleCell align=center>${HtagTH_}·Ð¸³ÃÍ${H_tagTH}</th>
-</tr>
-<tr>
-<th $HbgInfoCell align=center>$mshp</th>
-<th $HbgInfoCell align=center>$msap</th>
-<th $HbgInfoCell align=center>$msdp</th>
-<th $HbgInfoCell align=center>$mssp</th>
-<th $HbgInfoCell align=center>$mswin</th>
-<th $HbgInfoCell align=center>$msexe</th>
-</tr>
-</table>
-</td>
+<div class='ExtContainer'>
+  <table border="1">
+    <tr>
+      <th $HbgTitleCell align='center' colspan='7'>${HtagTH_}$petname ${H_tagTH}</th>
+    </tr>
+    <tr>
+      <td $HbgTitleCell align='center' rowspan='2'>${HtagTH_}$mspet${H_tagTH}</td>
+      <td $HbgTitleCell align='center'>${HtagTH_}HP${H_tagTH}</td>
+      <td $HbgTitleCell align='center'>${HtagTH_}AP${H_tagTH}</td>
+      <td $HbgTitleCell align='center'>${HtagTH_}DP${H_tagTH}</td>
+      <td $HbgTitleCell align='center'>${HtagTH_}SP${H_tagTH}</td>
+      <td $HbgTitleCell align='center'>${HtagTH_}·âÇË${H_tagTH}</td>
+      <td $HbgTitleCell align='center'>${HtagTH_}·Ð¸³ÃÍ${H_tagTH}</td>
+    </tr>
+    <tr>
+      <td $HbgInfoCell align='center'>$mshp</td>
+      <td $HbgInfoCell align='center'>$msap</td>
+      <td $HbgInfoCell align='center'>$msdp</td>
+      <td $HbgInfoCell align='center'>$mssp</td>
+      <td $HbgInfoCell align='center'>$mswin</td>
+      <td $HbgInfoCell align='center'>$msexe</td>
+    </tr>
+  </table>
+</div>
 END
 
     }
     my ($ownmode) = 0;
     $ownmode = 1 if ($HmainMode eq 'owner');
     out(<<END);
-</tr>
-</table>
 </div>
 
 END
@@ -1685,6 +1715,7 @@ sub islandMap {
 
     my ($island) = $Hislands[$HcurrentNumber];
 
+    out("<div id='NaviView'></div>");
     out(<<END);
 <div id='islandMap'>
   <table border>
@@ -1718,7 +1749,7 @@ END
 
 
     if ( ($mode == 0) && ($island->{'effect'} & 1) ) {
-        out('<div align=center>ÅÅÇÈ¾ã³²¤¬È¯À¸¤·¤Æ¤¤¤Þ¤¹¡ª</div>');
+        out('<div align="center">ÅÅÇÈ¾ã³²¤¬È¯À¸¤·¤Æ¤¤¤Þ¤¹¡ª</div>');
     }
 
     # ¥³¥Þ¥ó¥É¼èÆÀ
@@ -1739,7 +1770,6 @@ END
     }
 
     #¥Ò¥ó¥È¥Ñ¥Í¥ë
-    out("<div id='NaviView'></div>");
     out("<div class='map_cur' id='map_cur'></div>") if(($jsmode) && ($mode));
     out('<center><textarea style="resize:none;" cols="70" rows="3" id="HINT_PANEL">hint</textarea></center>') if((!$jsmode) && ($mode));
     # ºÂÉ¸(¾å)¤ò½ÐÎÏ
@@ -1792,7 +1822,7 @@ END
         out("<img src=\"img/space${y}.gif\" width='$Hms1' height='${Hms2}' alt=''>") if ($y % 2);
 
         # ²þ¹Ô¤ò½ÐÎÏ
-        out("<br>\n");
+        out("<br><!--  \n  -->");
     }
     out("</td></tr></table></div>\n");
 }
@@ -1969,7 +1999,7 @@ function ps(x, y) {
   }
 }
 //-->
-</SCRIPT>
+</script>
 END
 }
 

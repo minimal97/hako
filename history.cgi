@@ -49,6 +49,36 @@ my ($body) = '<body bgcolor=#EEFFEE>';
 # 画面の「戻る」リンク先(URL)
 my ($bye) = './hako-main.cgi';
 
+
+our ($islandNumber);
+our ($HinputPassword);
+our ($HspecialPassword);
+our ($HcurrentName);
+our ($HcurrentNumber);
+our ($HMode);
+our ($HislandTurn);
+our ($HdirName);
+our ($HdefaultPassword);
+our ($baseSKIN);
+our ($efileDir);
+our ($Hakoniwa_start_time);
+our ($HtopLogTurn);
+our ($htmlDir);
+our ($HcssFile);
+our (@Hislands);
+our ($HhtmlDir);
+our ($Hjst);
+our ($HhtmlLogTurn);
+our ($HhtmlLogMake);
+our ($HislandList);
+our ($Htoppage);
+our (%HidToNumber);
+our ($Halmanac);
+use constant USE_PERFORMANCE    => 1;
+
+our ($HcurrentID) = 0;
+our ($defaultID) = 0;
+
 #メインルーチン-------------------------------------------------------
 cookieInput();
 cgiInput();
@@ -69,8 +99,8 @@ ${HbaseDir} / $ENV{HTTP_REFERER} / $HcurrentID
   </body>
 </html>
 END
-    exit(0);
-}
+        exit(0);
+    }
 if (-e $HpasswordFile) {
     # パスワードファイルがある
     open(PIN, "<$HpasswordFile") || die $!;
@@ -79,67 +109,71 @@ if (-e $HpasswordFile) {
     close(PIN);
 }
 if ($HhtmlLogMake && ($HcurrentID == 0)) {
-    unless (-e "${HhtmlDir}/hakolog.html") {
-        # 最近の出来事ＨＴＭＬ出力
-        logPrintHtml();
-        tempRefresh(3, 'ログ作成中です。そのまましばらくお待ち下さい');
-    }
-    else {
-        tempRefresh(0, 'しばらくお待ち下さい');
-    }
-}
-else {
-    if (!readIslandsFile()) {
-        tempHeader();
-        htmlError();
-    }
-    else {
-        $HislandList = getIslandList($HcurrentID);
-        tempHeader();
-        out("<div id='RecentlyLog'>\n");
-
-        $HcurrentNumber = $HidToNumber{$HcurrentID};
-        my ($island) = $Hislands[$HcurrentNumber];
-        $HcurrentName = islandName($island);
-        # 最近の出来事
-        if ($HMode == 99) {
-            if ($HcurrentID == 0) {
-                logFilePrintAll();
-            }
-            else {
-                tempIslandHeader($HcurrentID, $HcurrentName);
-                # パスワード
-                if (checkPassword($island, $HinputPassword) && ($HcurrentID eq $defaultID)) {
-                    logPrintLocal(1);
-                }
-                else {
-                    # password違う
-                    logPrintLocal(0);
-                }
-            }
+        unless (-e "${HhtmlDir}/hakolog.html") {
+            # 最近の出来事ＨＴＭＬ出力
+            logPrintHtml();
+            tempRefresh(3, 'ログ作成中です。そのまましばらくお待ち下さい');
         }
         else {
-            if ($HcurrentID == 0) {
-                logFilePrint($HMode, $HcurrentID, 0);
-            }
-            else {
-                tempIslandHeader($HcurrentID, $HcurrentName);
-                # パスワード
-                if (checkPassword($island, $HinputPassword) && ($HcurrentID eq $defaultID)) {
-                    logFilePrint($HMode, $HcurrentID, 1);
+            tempRefresh(0, 'しばらくお待ち下さい');
+        }
+    }
+    else {
+
+        if (!readIslandsFile()) {
+
+            tempHeader();
+            htmlError();
+        }
+        else {
+
+            $HislandList = getIslandList($HcurrentID);
+            tempHeader();
+            out("      <div id='RecentlyLog'>\n");
+
+            $HcurrentNumber = $HidToNumber{$HcurrentID};
+            my ($island) = $Hislands[$HcurrentNumber];
+            $HcurrentName = islandName($island);
+            # 最近の出来事
+            if ($HMode == 99) {
+                if ($HcurrentID == 0) {
+                    logFilePrintAll();
                 }
                 else {
-                    # password間違い
-                    logFilePrint($HMode, $HcurrentID, 0);
+                    tempIslandHeader($HcurrentID, $HcurrentName);
+                    # パスワード
+                    if (checkPassword($island, $HinputPassword) && ($HcurrentID eq $defaultID)) {
+                        logPrintLocal(1);
+                    }
+                    else {
+                        # password違う
+                        logPrintLocal(0);
+                    }
                 }
             }
+            else {
+
+                if ($HcurrentID == 0) {
+                    logFilePrint($HMode, $HcurrentID, 0);
+                }
+                else {
+                    tempIslandHeader($HcurrentID, $HcurrentName);
+                    # パスワード
+                    if (checkPassword($island, $HinputPassword) && ($HcurrentID eq $defaultID)) {
+                        logFilePrint($HMode, $HcurrentID, 1);
+                    }
+                    else {
+                        # password間違い
+                        logFilePrint($HMode, $HcurrentID, 0);
+                    }
+                }
+            }
+            out("      </div>\n");
         }
-        out("</div>\n");
     }
-}
-tempFooter();
-#終了
-exit(0);
+    tempFooter();
+    #終了
+    exit(0);
 
 #サブルーチン---------------------------------------------------------
 #---------------------------------------------------------------------
@@ -260,7 +294,8 @@ END
         out("<A HREF='history.cgi?Event=${i}'>");
         if ($i == 0) {
             out("[ターン${turn}(現在)]<br>");
-        } else {
+        }
+        else {
             out("[${turn}]");
         }
         out('</A> ');
@@ -269,11 +304,13 @@ END
     out('</span>');
 
     out(<<END);
-  <br>
-  <select name="ID">$HislandList</select>
-  <input type="hidden" name="PASSWORD" value="$HinputPassword">
-  <input type="submit" value="を見る">
-</form>
+        <br>
+        <select name="ID">
+$HislandList
+        </select>
+        <input type="hidden" name="PASSWORD" value="$HinputPassword">
+        <input type="submit" value="を見る">
+      </form>
 END
 
 }
@@ -281,9 +318,9 @@ END
 # フッタ
 sub tempFooter {
     out(<<END);
-<hr>
-<div class='LinkFoot' align='center'>
-  <small>ホームページ(<a href="$Htoppage">■</a>)</small>
+      <hr>
+      <div class='LinkFoot' align='center'>
+        <small>ホームページ(<a href="$Htoppage">■</a>)</small>
 END
 
 ##### 追加 親方20020307
@@ -300,33 +337,35 @@ END
     #       close(POUT);
 
         out(<<END);
-<div align="right">
-  <small>CPU($cpu) : user($uti) system($sti)/t:$timea</small>
-</div>
+        <div align="right">
+          <small>CPU($cpu) : user($uti) system($sti)/t:$timea</small>
+        </div>
 END
     }
 #####
     out(<<END);
-</div>
-</div></body>
+      </div>
+    </div>
+  </body>
 </html>
 END
 }
 # html化リフレッシュ
 sub tempRefresh {
-    my($delay, $str) = @_;
+    my ($delay, $str) = @_;
 
     unless($Hgzip == 1) {
         print qq{Content-type: text/html; charset=EUC-JP\n\n};
         print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">\n\n};
         out(<<END);
 <html>
-<head>
-  <title>HTML化</title>
-  <meta http-equiv='refresh' content='$delay; url="${htmlDir}/hakolog.html"'>
-</head>
-<body><div id='BodySpecial'>
-<h2>$str</h2>
+  <head>
+    <title>HTML化</title>
+    <meta http-equiv='refresh' content='$delay; url="${htmlDir}/hakolog.html"'>
+  </head>
+<body>
+<div id='BodySpecial'>
+  <h2>$str</h2>
 END
     }
     else {
@@ -338,7 +377,8 @@ END
             print qq{Content-encoding: gzip\n\n};
             open(STDOUT,"| $HpathGzip/gzip -1 -c");
             print " " x 2048 if($ENV{HTTP_USER_AGENT}=~/MSIE/);
-        } else {
+        }
+        else {
             print qq{Content-type: text/html;\n\n};
         }
         print @buffer;
@@ -377,7 +417,7 @@ sub getIslandList {
 sub tempIslandHeader {
     my ($id, $name) = @_;
 
-    if(checkPassword($Hislands[$HidToNumber{$id}]->{'password'}, $HinputPassword) && ($HcurrentID eq $defaultID)) {
+    if (checkPassword($Hislands[$HidToNumber{$id}]->{'password'}, $HinputPassword) && ($HcurrentID eq $defaultID)) {
         out(<<END);
 <hr>
 <font color=\"#FF0000\"><b>[${name}の近況]</b></font>
@@ -390,21 +430,24 @@ END
 END
     }
 
-    if($HinputPassword eq '') {
-        out("<A HREF='history.cgi?ID=${id}&Event=99'><br>【ALL】</A>");
-    } else {
-        out("<A HREF='history.cgi?ID=${id}&PASSWORD=${HinputPassword}&Event=99'><br>【ALL】</A>");
+    if ($HinputPassword eq '') {
+        out("<a href='history.cgi?ID=${id}&Event=99'><br>【ALL】</a>");
+    }
+    else {
+        out("<a href='history.cgi?ID=${id}&PASSWORD=${HinputPassword}&Event=99'><br>【ALL】</a>");
     }
     my ($i, $turn);
-    for($i = 0;$i < $HtopLogTurn;$i++) {
+    for ($i = 0;$i < $HtopLogTurn;$i++) {
         $turn = $HislandTurn - $i;
         return unless($turn > 0);
-        if($HinputPassword eq '') {
-            out("<A HREF='history.cgi?ID=${id}&Event=${i}'>");
-        } else {
-            out("<A HREF='history.cgi?ID=${id}&PASSWORD=${HinputPassword}&Event=${i}'>");
+
+        if ($HinputPassword eq '') {
+            out("<a href='history.cgi?ID=${id}&Event=${i}'>");
         }
-        if($i == 0) {
+        else {
+            out("<a href='history.cgi?ID=${id}&PASSWORD=${HinputPassword}&Event=${i}'>");
+        }
+        if ($i == 0) {
             out("[ターン${turn}(現在)]<br>");
         }
         else {
@@ -471,14 +514,15 @@ sub logFilePrint {
                 next;
             }
             $m = '<b>(機密)</b>:';
-        } else {
+        }
+        else {
             $m = '';
         }
 
         # 表示的確か
         if ($id != 0) {
-            if(($id != $id1) &&
-               ($id != $id2)) {
+            if (   ($id != $id1)
+                && ($id != $id2)) {
                 next;
             }
         }
@@ -498,9 +542,13 @@ sub logFilePrint {
 # ＨＴＭＬ生成
 #----------------------------------------------------------------------
 sub logPrintHtml {
+
     my ($sec, $min, $hour, $date, $mon, $year, $day, $yday, $dummy) = gmtime(time + $Hjst);
     $mon++;
     my ($sss) = "${mon}月${date}日 ${hour}時${min}分${sec}秒";
+    my ($html1);
+    my ($html2);
+    my ($html3);
 
     $html1=<<_HEADER_;
 <html><head>
@@ -508,7 +556,7 @@ sub logPrintHtml {
   <base href="$htmlDir/">
   <link rel="stylesheet" type="text/css" href="${efileDir}/$HcssFile">
 </head>
-<body $htmlBody><DIV ID='BodySpecial'>
+<body><div id='BodySpecial'>
   <div id='RecentlyLog'>
     <h1>最近の出来事</h1>
     <form>

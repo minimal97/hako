@@ -252,7 +252,7 @@ END
         my ($real) = ($HislandTurn + 8) % 12 ;
         for ($i = 0 ; $i < 12; $i++) {
 
-            $str_sq .= ( $i == $real ) ? '■' : '□';
+            $str_sq .= ($i == $real) ? '■' : '□';
         }
         out($str_sq);
     }
@@ -291,6 +291,7 @@ END
         $bbb = "${mon2}月 ${date2}日 ${hour2}時 ${min2}分";
     }
     else {
+
         $bbb = '更新は停止しています';
     }
 
@@ -306,9 +307,11 @@ END
     else {
 
         if ($HplayNow) {
+
             $rtStr = "ターンを更新しました\n";
         }
         else {
+
             $rtStr = '';
         }
     }
@@ -354,7 +357,9 @@ END
     }
     # フォーム
     out(<<END);
-    <div id="nexttime">現在の時間：<b>$sss</b><br>（次回の更新時間：$bbb）</div><br>
+    <div id="nexttime">
+        現在の時間：<b>$sss</b><br>（次回の更新時間：$bbb）
+    </div><br>
     <span class="rednews">ターン更新付近での更新連打は控えてください。<br>島データが壊れます。<br>せめて30秒は待ってください。<br>
 島の作成はひとり、１島までです。<br>同じIPアドレスが割り当てられた島を見つけたら、沈めます。</span>
   </div>
@@ -367,6 +372,7 @@ END
 <hr>
 END
 }
+
 
 #----------------------------------------------------------------------
 # トップページ
@@ -436,8 +442,10 @@ END
     if (INIT_HIDE_MISSILE_MODE) {
         $msStr1 = "  <th $HbgTitleCell align='center'>${HtagTH_}ミサイル数";
         if (INIT_USE_ARM_SUPPLY) {
+
             $msStr1 .= "(軍事物資)${H_tagTH}</th>";
-        } else {
+        }
+        else {
             $msStr1 .= "${H_tagTH}</th>";
         }
     }
@@ -469,7 +477,7 @@ END
 
     $HviewIslandNumber *= INIT_VIEW_ISLAND_COUNT;
     my ($start, $end) = ($HviewIslandNumber + $HbfieldNumber, min($HviewIslandNumber + INIT_VIEW_ISLAND_COUNT + $HbfieldNumber, $HislandNumber));
-    $start = 0 if(!$HviewIslandNumber);
+    $start = 0 if (!$HviewIslandNumber);
 
     my ($food_zouka , $area_zouka);
     my ($HbgStatCell);
@@ -511,7 +519,7 @@ END
 
         $j = $ii + 1 - $HbfieldNumber;
         $island = $Hislands[$ii];
-        out("<TR><TH></th></tr><TR><TH></th></tr>$head") if (($HbfieldNumber && $j == 1) || ($ii == $start));
+        out("<tr><th></th></tr><tr><th></th></tr>$head") if (($HbfieldNumber && $j == 1) || ($ii == $start));
 
         $id         = $island->{'id'};
         $farm       = $island->{'farm'};
@@ -550,14 +558,19 @@ END
 
         $name = islandName($island);
         if ( ($id > 100) || ($BF_Flag) ) {
+
             $j = '★';
             $name = ${HtagNumber_}. $name. ${H_tagNumber};
-        } elsif($absent == 0) {
+        }
+        elsif ($absent == 0) {
+
             $name = ${HtagName_}.$name.${H_tagName};
-        } else {
+        }
+        else {
+
             $name = ${HtagName2_} . $name . '('.$absent.')' . ${H_tagName2} ;
         }
-        $name = '<span class="attention">【管理人あずかり】</span><BR>' . $name if ($island->{'predelete'});
+        $name = '<span class="attention">【管理人あずかり】</span><br>' . $name if ($island->{'predelete'});
 
         $bumons = '';
         $prize = '';
@@ -573,7 +586,7 @@ END
             $island->{'tuni'} = 0;
 
             foreach (0..$#uniName) {
-                $unilist .= " $uniName[$_]\n" if($uniData[$_] > 0);
+                $unilist .= " $uniName[$_]\n" if ($uniData[$_] > 0);
                 $island->{'tuni'} += $uniData[$_];
                 $island->{'uni'}++ if($uniData[$_] > 0);
             }
@@ -604,15 +617,18 @@ END
                 $nn = ($nn eq '') ? '練習中' : $HStadiumResult[$stshoka] ;
 
                 if ($stshoka >= 1) {
+
                     $ssss = "<img src=\"./img/sc.gif\" title=\"".$nn.' 攻('.$sto.')守('.$std.')KP('.$stk.')'.$rt.'チーム成績 勝点' . $island->{'kachiten'} .'/ '.$stwin.'勝'.$stlose.'敗'.$stdrow.'分'.$rt." / 通算$stwint勝$stloset敗$stdrowt分 / 優勝$styusho回\" alt='' class='landinfoIcon'> "
-                } elsif ($stshoka == 0) {
+                }
+                elsif ($stshoka == 0) {
+
                     $ssss = '';
                 }
             }
 
             {
                 my ($mshp, $msap, $msdp, $mssp, $mswin, $msexe, $tet) = split(/,/, $island->{'eisei5'});
-                my ($force) = $mshp+$msap+$msdp+$mssp;
+                my ($force) = $mshp + $msap + $msdp + $mssp;
                 $island->{'force'} = $force;
                 $mspet = "<img alt='' src=\"${HMapImgDir}ms.gif\" title=\"マスコットいのら" .
                          "(HP$mshp.AP$msap.DP$msdp.SP$mssp/$mswin匹撃破/経験値$msexe)\" ".
@@ -656,18 +672,23 @@ END
             if (INIT_HIDE_MISSILE_MODE == 2) {
                 my ($mTmp) = aboutMissile($island->{'missiles'});
                 $msStr1 = "<td class=TopInfoCell align=right>${mTmp}</td>";
-            } elsif (INIT_USE_ARM_SUPPLY) {
+            }
+            elsif (INIT_USE_ARM_SUPPLY) {
+
                 $msStr1 .= "($island->{'army'}個)</td>";
-            } else {
+            }
+            else {
+
                 $msStr1 .= '</td>';
             }
         }
 
         {
             my ($comment_tag);
-            if ($island->{'onm'} eq ''){
+            if ($island->{'onm'} eq '') {
                 $comment_tag = "${HtagTH_}コメント : ${H_tagTH}";
-            } else {
+            }
+            else {
                 $comment_tag = "${HtagLbbsSS_}$island->{'onm'} : ${H_tagLbbsSS}";
             }
             $oStr = "<td $HbgTotoCell COLSPAN=$col1 align='left'>${comment_tag}$island->{'comment'}</td>";
@@ -691,9 +712,10 @@ END
                     my ($onm) = $island->{'onm'};
                     my ($n) = "の$HHouseName[$hlv]";
                     my ($zeikin) = int($pop * ($hlv + 1) * $eisei1 / 100);
-                    $house .= "<span class='house'><IMG SRC=\"${HMapImgDir}house${hlv}.gif\" alt='' title=\"$onm$n\" class='landinfoIcon'>税率$eisei1％($zeikin$HunitMoney)</span>"
+                    $house .= "<span class='house'><img src=\"${HMapImgDir}house${hlv}.gif\" alt='' title=\"$onm$n\" class='landinfoIcon'>税率$eisei1％($zeikin$HunitMoney)</span>"
                 }
                 else {
+
                     $house = '';
                 }
             }
@@ -735,11 +757,11 @@ END
   </div>
 </td>
 END
-        } else {
+        }
+        else {
 
             $msStr1 = "<td ${HbgInfoCell} align=right>−</td>" if (INIT_HIDE_MISSILE_MODE);
             $oStr = "<td $HbgTotoCell COLSPAN=$col1 align=left>${HtagLbbsSS_}$server_config::HadminName${H_tagLbbsSS} : $island->{'comment'}</td>";
-
             out(<<END);
 <th $HbgNameCell rowspan="4" align="left">
   <div class="t_center">
@@ -782,7 +804,6 @@ END
 </div>
 END
     hcPrint();
-
     JoinAllyforAdmin();
 }
 
@@ -835,7 +856,7 @@ END
     while ($l = <CIN>) {
         chomp($l);
         $l =~ /^([0-9]*),(.*)$/;
-        $output = ${HtagNumber_}.'ターン'.${1} . ${H_tagNumber}. '：' . ${2} . "<BR>\n" . $output;
+        $output = ${HtagNumber_}.'ターン'.${1} . ${H_tagNumber}. '：' . ${2} . "<br>\n" . $output;
     }
     #   @line = reverse(@line);
     #
@@ -878,12 +899,12 @@ sub historyPrint {
 
     my ($output) = '';
     open(HIN, "${HdirName}/hakojima.his");
-    my(@line, $l);
-    while($l = <HIN>) {
+    my (@line, $l);
+    while ($l = <HIN>) {
         chomp($l);
     #   push(@line, $l);
         $l =~ /^([0-9]*),(.*)$/;
-        $output = "${HtagNumber_}ターン${1}${H_tagNumber}：${2}<BR>\n" . $output;
+        $output = "${HtagNumber_}ターン${1}${H_tagNumber}：${2}<br>\n" . $output;
     }
     # @line = reverse(@line);
 
@@ -908,33 +929,39 @@ sub amityOfAlly() {
 <h1>$allyNameの情報</h1>
 END
 
-    allyInfo($HallyID) if($ally->{'number'});
+    allyInfo($HallyID) if ($ally->{'number'});
 
     my ($mStr1) = '';
     if (INIT_HIDE_MONEY_MODE) {
+
         $mStr1 = "<th $HbgTitleCell align='center'>${HtagTH_}資金${H_tagTH}</th>";
         $col++;
     }
 
     my ($msStr1) = '';
     if (INIT_HIDE_MISSILE_MODE) {
+
         $msStr1 = "<th $HbgTitleCell align='center'>${HtagTH_}ミサイル数";
         $col++;
-        if(INIT_USE_ARM_SUPPLY) {
+        if (INIT_USE_ARM_SUPPLY) {
+
             $msStr1 .= "(軍事物資)${H_tagTH}</th>";
-        } else {
+        }
+        else {
+
             $msStr1 .= "${H_tagTH}</th>";
         }
     }
 
     if ($ally->{'message'} ne '') {
+
         my ($allyTitle) = $ally->{'title'};
         $allyTitle = '盟主からのメッセージ' if($allyTitle eq '');
         my ($allyMessage) = $ally->{'message'};
         $allyMessage =~ s/([^=^\"]|^)(http\:[\w\.\~\-\/\?\&\+\=\:\@\%\;\#\%]+)/$1<a href=\"$2\" target='_top'>$2<\/a>/g;
         out(<<END);
-<HR>
-<table border width=80%>
+<hr>
+<table border width="80%">
   <tr><th $HbgTitleCell>${HtagTH_}$allyTitle${H_tagTH}</th></tr>
   <tr><td $HbgInfoCell><blockquote>$allyMessage</blockquote></td></tr>
 </table>
@@ -958,10 +985,11 @@ END
   $msStr1
 </tr>
 END
-    out("<TR><th colspan=$col>所属している島がありません！</th></tr>") if (!$ally->{'number'});
+    out("<tr><th colspan=$col>所属している島がありません！</th></tr>") if (!$ally->{'number'});
 
     my ($id, $number, $island, $factory, $mountain, $farm, $name, $mStr2, $msStr2);
     foreach (@{$ally->{'memberId'}}) {
+
         $id = $_;
         $number = $HidToNumber{$id};
         $island = $Hislands[$number];
@@ -975,11 +1003,16 @@ END
         $name = islandName($island);
 
         if ($island->{'field'}) {
+
             $number = '★';
             $name = "${HtagNumber_}${name}${H_tagNumber}";
-        } elsif(!($island->{'absent'})) {
+        }
+        elsif (!($island->{'absent'})) {
+
             $name = "${HtagName_}${name}${H_tagName}";
-        } else {
+        }
+        else {
+
             $name = "${HtagName2_}${name}($island->{'absent'})${H_tagName2}";
         }
         $name = '<span class="attention">【管理人あずかり】</span><BR>' . $name if ($island->{'predelete'});
@@ -987,7 +1020,10 @@ END
         $mStr2 = '';
         if (INIT_HIDE_MONEY_MODE == 1) {
             $mStr2 = "<td $HbgInfoCell align=right>$island->{'money'}$HunitMoney</td>";
-        } elsif((INIT_HIDE_MONEY_MODE == 2) || (INIT_HIDE_MONEY_MODE == 3)) {
+        }
+        elsif (   (INIT_HIDE_MONEY_MODE == 2)
+               || (INIT_HIDE_MONEY_MODE == 3)) {
+
             my ($mTmp) = aboutMoney($island->{'money'});
             $mStr2 = "<td $HbgInfoCell align=right>$mTmp</td>";
         }
@@ -995,13 +1031,18 @@ END
         $renae = int($island->{'rena'} / 10 );
         $msStr2 = '';
         if (INIT_HIDE_MISSILE_MODE) {
+
             $msStr2 = "<td $HbgInfoCell align=right>$island->{'missiles'}${HunitMissile}";
             if (INIT_HIDE_MISSILE_MODE == 2) {
+
                 my($mTmp) = aboutMissile($island->{'missiles'});
                 $msStr2 = "<td $HbgInfoCell align=right>${mTmp}</td>";
-            } elsif(INIT_USE_ARM_SUPPLY) {
+            }
+            elsif (INIT_USE_ARM_SUPPLY) {
+
                 $msStr2 .= "($island->{'army'}個)</td>";
-            } else {
+            }
+            else {
                 $msStr2 .= '</td>';
             }
         }
@@ -1010,7 +1051,7 @@ END
 <tr>
   <td $HbgNumberCell align="center">${HtagNumber_}$number${H_tagNumber}</td>
   <td $HbgNameCell align="left">
-    <a style=\"text-decoration:none\" HREF="${HthisFile}?Sight=${id}">$name</a>
+    <a style=\"text-decoration:none\" href="${HthisFile}?Sight=${id}">$name</a>
   </td>
   <td class="TopInfoCell" align="right">$island->{'pts'}</td>
   <td class="TopInfoCell" align="right">$island->{'pop'}$HunitPop</td>
@@ -1038,6 +1079,7 @@ END
 sub AllyMakeButton() {
 
     if ($HallyNumber) {
+ 
         allyInfo(-1);
         my ($aStr) = ($HarmisticeTurn) ? '陣営' : '同盟';
         my ($l_comment) = '';
@@ -1056,31 +1098,32 @@ END
 sub allyInfo() {
     my ($num) = @_;
     my ($aStr) = ($HarmisticeTurn) ? '陣営' : '同盟';
-    if($num == -1) {
+
+    if ($num == -1) {
         out(<<END);
 <div class='campInfo'>
-<h2 class="subtitle">各同盟の状況</h2>
+  <h2 class="subtitle">各同盟の状況</h2>
 END
     }
 
     out(<<END);
-<p>占有率は、<B>ポイント</B>により算出されたものです。</p>
-<p>[<A href="$HthisFile?JoinA=0">加盟、同盟の作成</A>]</p>
-<table class="top_ary" border>
-  <thead class="sc">
-    <tr>
-      <th class='TitleCell nm' align=center>${HtagTH_}順位${H_tagTH}</th>
-      <th class='TitleCell dd' align=center>${HtagTH_}${aStr}${H_tagTH}</th>
-      <th class='TitleCell ee' align=center>${HtagTH_}マーク${H_tagTH}</th>
-      <th class='TitleCell ee' align=center>${HtagTH_}${AfterName}の数${H_tagTH}</th>
-      <th class='TitleCell ee' align=center>${HtagTH_}ポイント${H_tagTH}</th>
-      <th class='TitleCell ee' align=center>${HtagTH_}占有率${H_tagTH}</th>
-      <th class='TitleCell ee' align=center>${HtagTH_}弾発射${H_tagTH}</th>
-      <th class='TitleCell ee' align=center>${HtagTH_}弾飛来${H_tagTH}</th>
-      <th class='TitleCell dd' align=center>${HtagTH_}GNP${H_tagTH}</th>
-    </tr>
-  </thead>
-  <tbody class="sb">
+  <p>占有率は、<b>ポイント</b>により算出されたものです。</p>
+  <p>[<a href="$HthisFile?JoinA=0">加盟、同盟の作成</a>]</p>
+  <table class="top_ary" border>
+    <thead class="sc">
+      <tr>
+        <th class='TitleCell nm' align=center>${HtagTH_}順<br>位${H_tagTH}</th>
+        <th class='TitleCell dd' align=center>${HtagTH_}${aStr}${H_tagTH}</th>
+        <th class='TitleCell ee' align=center>${HtagTH_}マーク${H_tagTH}</th>
+        <th class='TitleCell ee' align=center>${HtagTH_}${AfterName}の数${H_tagTH}</th>
+        <th class='TitleCell ee' align=center>${HtagTH_}ポイント${H_tagTH}</th>
+        <th class='TitleCell ee' align=center>${HtagTH_}占有率${H_tagTH}</th>
+        <th class='TitleCell ee' align=center>${HtagTH_}弾発射${H_tagTH}</th>
+        <th class='TitleCell ee' align=center>${HtagTH_}弾飛来${H_tagTH}</th>
+        <th class='TitleCell dd' align=center>${HtagTH_}GNP${H_tagTH}</th>
+      </tr>
+    </thead>
+    <tbody class="sb">
 END
 
     my ($row);
@@ -1091,7 +1134,7 @@ END
 
     foreach (0..($HallyNumber - 1)) {
 
-        next if(($num != -1) && ($_ != $HidToAllyNumber{$num}));
+        next if (($num != -1) && ($_ != $HidToAllyNumber{$num}));
 
         $n = $_ + 1;
         $ally = $Hally[$_];
@@ -1102,27 +1145,34 @@ END
 
         $row = 2;
         if (defined $owner) {
+
             $owner = islandName($Hislands[$owner]);
-        } else {
+        }
+        else {
+
             $row = 1;
         }
+
         if ($num == -1) {
+
             $name = "<A style=\"text-decoration:none\" href=\"$HthisFile?AmiOfAlly=$ally->{'id'}\">$ally->{'name'}</A>";
-        } else {
+        }
+        else {
+
             $name = $ally->{'name'};
         }
         $comment = $ally->{'comment'};
         out(<<END);
-  <TR>
-    <TD class='NumberCell nm' rowspan=$row align=center>${HtagNumber_}$n${H_tagNumber}</td>
-    <TD class='InfoCell dd' rowspan=$row align=center>$name</td>
-    <TD class='InfoCell ee' align=center><b><font color="$ally->{'color'}">$ally->{'mark'}</font></b></td>
-    <TD class='InfoCell ee' align=right>$ally->{'number'}${AfterName}</td>
-    <TD class='InfoCell ee' align=right>$ally->{'score'}</td>
-    <TD class='InfoCell ee' align=right>$ally->{'occupation'}\%</td>
-    <TD class='InfoCell ee' align=right>$missileOut</td>
-    <TD class='InfoCell ee' align=right>$missileIn</td>
-    <TD class='InfoCell dd' align=right>$gnp</td>
+  <tr>
+    <td class='NumberCell nm' rowspan=$row align=center>${HtagNumber_}$n${H_tagNumber}</td>
+    <td class='InfoCell dd' rowspan=$row align=center>$name</td>
+    <td class='InfoCell ee' align=center><b><font color="$ally->{'color'}">$ally->{'mark'}</font></b></td>
+    <td class='InfoCell ee' align=right>$ally->{'number'}${AfterName}</td>
+    <td class='InfoCell ee' align=right>$ally->{'score'}</td>
+    <td class='InfoCell ee' align=right>$ally->{'occupation'}\%</td>
+    <td class='InfoCell ee' align=right>$missileOut</td>
+    <td class='InfoCell ee' align=right>$missileIn</td>
+    <td class='InfoCell dd' align=right>$gnp</td>
   </tr>
 END
         out(<<END) if($row == 2);
@@ -1133,8 +1183,8 @@ END
 END
     }
 
-    out("  </tbody>\n</TABLE>");
-    out('</DIV>') if ($num == -1);
+    out("    </tbody>\n  </table>");
+    out('</div>') if ($num == -1);
 }
 
 1;

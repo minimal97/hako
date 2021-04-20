@@ -859,9 +859,9 @@ sub TradeObjectList {
 #----------------------------------------------------------------------
 sub TradeListHead {
     out(<<END);
-<DIV align='center'>${HtagBig_}<span class='Nret'>${HtagName_}「${HcurrentName}」${H_tagName}の</span><span class='Nret'>取引画面</span>${H_tagBig}<BR>
-$HtempBack<BR>
-</DIV>
+<div align='center'>${HtagBig_}<span class='Nret'>${HtagName_}「${HcurrentName}」${H_tagName}の</span><span class='Nret'>取引画面</span>${H_tagBig}<br>
+$HtempBack<br>
+</div>
 END
 }
 

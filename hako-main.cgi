@@ -2253,7 +2253,7 @@ sub logFilePrint {
                 # 機密表示権利なし
                 next;
             }
-            $m = '<B>(機密)</B>:';
+            $m = '<b>(機密)</b>:';
         }
         else {
             $m = '';
@@ -2271,7 +2271,7 @@ sub logFilePrint {
             out("<b>=====[<span class='number'><font size='4'> ターン$turn </font></span>]================================================</b><br>\n");
             $set_turn++;
         }
-        out("　${m}$message<BR>\n");
+        out("　${m}$message<br>\n");
     }
     close(LIN);
 }
@@ -2304,8 +2304,8 @@ sub getIslandList {
         $name = islandName($island);
         $name =~ s/<[^<]*>//g;
         $id = $island->{'id'};
-        $s = ($id eq $select) ? 'SELECTED' : '';
-        $list .= '<OPTION VALUE="'.$id.'" ' .$s. '>' . $predel . $name. "</option>\n" if($mode || ($id <=100));
+        $s = ($id eq $select) ? 'selected' : '';
+        $list .= '<option value="'.$id.'" ' .$s. '>' . $predel . $name. "</option>\n" if ($mode || ($id <=100));
     }
     return $list;
 }
@@ -2317,8 +2317,8 @@ sub getIslandList {
 sub tempLockFail {
     # タイトル
     out(<<END);
-<span class='big'>同時アクセスエラーです。<BR>
-ブラウザの「戻る」ボタンを押し、<BR>
+<span class='big'>同時アクセスエラーです。<br>
+ブラウザの「戻る」ボタンを押し、<br>
 しばらく待ってから再度お試し下さい。</span>$HtempBack
 END
 }
@@ -2330,7 +2330,7 @@ END
 sub tempUnlock {
     # タイトル
     out(<<END);
-<span class='big'>前回のアクセスが異常終了だったようです。<BR>
+<span class='big'>前回のアクセスが異常終了だったようです。<br>
 ロックを強制解除しました。</span>$HtempBack
 END
 }
@@ -2363,14 +2363,14 @@ sub tempWrong {
     my($str) = @_;
 
     out(<<END);
-<SCRIPT type="text/javascript">
+<script type="text/javascript">
 <!--
 function init(){
 }
 function SelectList(theForm){
 }
 //-->
-</SCRIPT>
+</script>
 <span class='big'>$str</span>$HtempBack
 END
 }
@@ -2388,6 +2388,11 @@ END
 #----------------------------------------------------------------------
 # ヘッダ
 sub tempHeader {
+
+    $baseIMG = $HimageDir;
+    $baseSKIN = "${efileDir}/$HcssFile";
+    #季節なし
+    $seasonIMG = '';
 
     my ($mapsizeNumber) = $HidToNumber{$defaultID};
     $Hms1 = 16;
@@ -2446,10 +2451,14 @@ END
 html_template::PrintHeader();
 }
 
+
+#----------------------------------------------------------------------
 # フッタ
 sub tempFooter {
+
     out(<<END);
-<hr><div class='LinkFoot'>
+<hr>
+<div class='LinkFoot'>
 $Hfooter
 <br>
 <small>
