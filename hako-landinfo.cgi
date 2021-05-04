@@ -76,7 +76,9 @@ sub ScoreBoard_Farm {
     my ($buta) = $island->{'zipro'};
     my ($ushi) = $island->{'leje'};
 
-    if( $tori || $buta || $ushi) {
+    if (   ($tori)
+        || ($buta)
+        || ($ushi)) {
 
         $Farmcpc  = "<span class='unemploy1'>";
         $Farmcpc .= "<img src=\"img/niwatori.gif\"  alt='' title=\"にわとり\" class='landinfoIcon'>$tori万羽" if ($tori);
@@ -192,5 +194,42 @@ sub ScoreBoard_Bumon {
 
     return $bumons;
 }
+
+
+#----------------------------------------------------------------------
+# 前ターンからの
+#----------------------------------------------------------------------
+sub UpdateStat {
+    my ($island, $turn ) = @_;
+
+    my ($seicho, $zouka, $food_zouka, $area_zouka, $rieki);
+
+    my ($out_html);
+
+    $seicho     = ($island->{'monta'} < 0) ? "$island->{'monta'}pts." : "＋$island->{'monta'}pts.";
+
+    $zouka      = ($island->{'hamu'} < 0) ? $island->{'hamu'}.$HunitPop : '＋'.$island->{'hamu'}.$HunitPop;
+    $zouka      = '' if ($island->{'hamu'} == 0) ;
+
+    $food_zouka = ($island->{'old_food'} < 0) ? "$island->{'old_food'}$HunitFood" : "＋$island->{'old_food'}$HunitFood";
+    $food_zouka = '' if ($island->{'old_food'} == 0) ;
+
+    $area_zouka = ($island->{'old_area'} < 0) ? "$island->{'old_area'}$HunitArea" : "＋$island->{'old_area'}$HunitArea";
+    $area_zouka = '' if ($island->{'old_area'} == 0) ;
+
+    $rieki      = ($island->{'pika'} < 0) ? $island->{'pika'}.$HunitMoney : '＋'.$island->{'pika'}.$HunitMoney;
+    $rieki      = '' if ($island->{'pika'} == 0) ;
+
+    my ($tha_t) = int($turn / 100) * 100;
+
+
+#    <span class="monsm"><font size="-2">前ターン<br>$seicho$zouka$rieki$food_zouka$area_zouka</font></span><br>
+#    <span class="monsm"><font size="-2">$tha_tターンから$island->{'tha_diff'}pts.</font></span>
+    $out_html = "<span class='monsm'><font size='-1'>前ターン：$seicho$zouka$rieki$food_zouka$area_zouka：";
+    $out_html .= "$tha_tターンから$island->{'tha_diff'}pts.</font></span>";
+
+    return $out_html;
+}
+
 
 1;

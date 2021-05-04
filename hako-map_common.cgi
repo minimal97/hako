@@ -56,7 +56,7 @@ sub command_arg {
     for ($i = 0; $i < 100; $i++) {
         $out .= ("<option value=$i>$i");
         $i++;
-        $out .= ("<option value=$i>$i");
+        $out .= ("<option value=$i>$i\n");
     }
     out($out);
 }
@@ -140,7 +140,7 @@ sub islandInfo {
 END
         $rStr2 = <<END;
     <td $HbgNumberCell rowspan='2' align='center'>${HtagNumber_}$rank${H_tagNumber}</td>
-    <td $HbgPoinCell align=right>${pts}</td>
+    <td $HbgPoinCell align='right'>${pts}</td>
 END
         # ¼º¶ÈÎ¨
         $uStr1 = "  <th $HbgTitleCell>${HtagTH_}¼º¶ÈÎ¨${H_tagTH}</th>\n";
@@ -180,40 +180,46 @@ END
     </th>
   </tr>
 END
-        $col_num ++;         # ¥Æ¡¼¥Ö¥ë¤ÎÄ¹¤µ¡Ü
+   #     $col_num ++;         # ¥Æ¡¼¥Ö¥ë¤ÎÄ¹¤µ¡Ü
     }
 
-    my ($prize);
-    $prize = '';
+    my ($prize) = '';
+    my ($monslive) = '';
+    my ($bumons) = '';
+    my ($me_sat) = '';
+    my ($Farmcpc) = '';
 
-    # ¥¿¡¼¥óÇÕ¡¢¤½¤ÎÂ¾¾Þ
-    $prize = ScoreBoard_Prize($island);
+    if (($island->{'id'} <= 100) && !($island->{'BF_Flag'})) {
 
-    # ÅÝ¤·¤¿²ø½Ã¥ê¥¹¥È  ²ø½Ã¤òÁý¤ä¤¹¤Î¤Ç¡¢¥ê¥¹¥È¤Ïºï½ü
-    $prize .= ScoreBoard_Taiji($island);
+        # ¥¿¡¼¥óÇÕ¡¢¤½¤ÎÂ¾¾Þ
+        $prize = ScoreBoard_Prize($island);
 
-    # ÉôÌç¾Þ
-    my $bumons = ScoreBoard_Bumon($island);
+        # ÅÝ¤·¤¿²ø½Ã¥ê¥¹¥È  ²ø½Ã¤òÁý¤ä¤¹¤Î¤Ç¡¢¥ê¥¹¥È¤Ïºï½ü
+        $prize .= ScoreBoard_Taiji($island);
 
-    my ($monslive);
+        # ÉôÌç¾Þ
+        $bumons = ScoreBoard_Bumon($island);
+
+
+        # ¿Í¹©±ÒÀ±
+        $me_sat = ScoreBoard_Eisei($island);
+
+        # ËÒ¾ì·Ï
+        $Farmcpc = ScoreBoard_Farm($island);
+    }
+    # ²ø½Ã¤Î¿ô¤Ï BF¤Ë¤âÉ¬Í×
     $monslive = ScoreBoard_LiveMonster($island);
-
-    # ¿Í¹©±ÒÀ±
-    $me_sat = ScoreBoard_Eisei($island);
-
-    # ËÒ¾ì·Ï
-    my($Farmcpc) = ScoreBoard_Farm($island);
 
     # ²È
     my ($house) = '';
-    my ($hlv);
     my ($tax) = $island->{'eisei1'};
-    $hlv = Calc_HouseLevel($island->{'pts'});
-    my $onm = $island->{'onm'};
-    my $n = ('¤Î¾®²°', '¤Î´Ê°×½»Âð', '¤Î½»Âð', '¤Î¹âµé½»Âð', '¤Î¹ëÅ¡', '¤ÎÂç¹ëÅ¡', '¤Î¹âµé¹ëÅ¡', '¤Î¾ë', '¤Îµð¾ë', '¤Î²«¶â¾ë')[$hlv];
-    my $zeikin = int($island->{'pop'} * ($hlv + 1) * $tax / 100);
 
     if ($tax) {
+        my ($zeikin) = int($island->{'pop'} * ($hlv + 1) * $tax / 100);
+        my ($hlv)= Calc_HouseLevel($island->{'pts'});
+        my ($onm) = $island->{'onm'};
+        my ($n) = ('¤Î¾®²°', '¤Î´Ê°×½»Âð', '¤Î½»Âð', '¤Î¹âµé½»Âð', '¤Î¹ëÅ¡', '¤ÎÂç¹ëÅ¡', '¤Î¹âµé¹ëÅ¡', '¤Î¾ë', '¤Îµð¾ë', '¤Î²«¶â¾ë')[$hlv];
+
         $house  = "<span class='house'>";
         $house .= "<img src=\"./img/land/house${hlv}.gif\" alt=\"$onm$n\" class='landinfoIcon'>ÀÇÎ¨$tax¡ó($zeikin$HunitMoney)" ;
         $house .= '</span>';
@@ -225,12 +231,20 @@ END
     $weather    = $island->{'weather_old'};
     $w_tag      = "<img src='./img/weather/weather$weather.gif' TITLE='Ï¢Â³¡§$island->{'weather_chain'}Æü'>";
     $weather    = $island->{'weather'};
-    $wn_tag      = "<img src='./img/weather/weather$weather.gif'>";
+    $wn_tag     = "<img src='./img/weather/weather$weather.gif'>";
 
     my ($areatag);
 
     $areatag = (!$island->{'area'}) ? '0ÄÚ' : "$island->{'area'}$HunitArea";
 
+    my ($update_stat) = '';
+
+    if (   ($island->{'id'} <= 100)
+        && (!($island->{'BF_Flag'}))
+        && ($HmainMode ne 'landmap')) {
+
+        $update_stat = UpdateStat($island,$HislandTurn);
+    }
 
     out(<<END);
 <div id='islandInfo' align="center">
@@ -238,45 +252,49 @@ END
 $bStr
   <tr>
 $rStr1
-    <th $HbgTitleCell>${HtagTH_}Å·¸õ${H_tagTH}</th>
-    <th $HbgTitleCell>${HtagTH_}<small>¼¡¥¿¡¼¥ó<br>Å·¸õÍ½ÁÛ</small>${H_tagTH}</th>
-    <th $HbgTitleCell>${HtagTH_}µ¤²¹${H_tagTH}</th>
-    <th $HbgTitleCell>${HtagTH_}¿Í¸ý${H_tagTH}</th>
-    <th $HbgTitleCell>${HtagTH_}ÌÌÀÑ${H_tagTH}</th>
+    <th class='TitleCell'>${HtagTH_}Å·¸õ${H_tagTH}</th>
+    <th class='TitleCell'>${HtagTH_}<small>¼¡¥¿¡¼¥ó<br>Å·¸õÍ½ÁÛ</small>${H_tagTH}</th>
+    <th class='TitleCell'>${HtagTH_}µ¤²¹${H_tagTH}</th>
+    <th class='TitleCell'>${HtagTH_}¿Í¸ý${H_tagTH}</th>
+    <th class='TitleCell'>${HtagTH_}ÌÌÀÑ${H_tagTH}</th>
 $mStr1
-    <th $HbgTitleCell>${HtagTH_}¿©ÎÁ${H_tagTH}</th>
-    <th $HbgTitleCell>${HtagTH_}ÇÀ¾ì${H_tagTH}</th>
-    <th $HbgTitleCell>${HtagTH_}¿¦¾ì${H_tagTH}</th>
-    <th $HbgTitleCell>${HtagTH_}HT¿¦¾ì${H_tagTH}</th>
-    <th $HbgTitleCell>${HtagTH_}ºÎ·¡¾ì${H_tagTH}</th>
+    <th class='TitleCell'>${HtagTH_}¿©ÎÁ${H_tagTH}</th>
+    <th class='TitleCell'>${HtagTH_}ÇÀ¾ì${H_tagTH}</th>
+    <th class='TitleCell'>${HtagTH_}¿¦¾ì${H_tagTH}</th>
+    <th class='TitleCell'>${HtagTH_}HT¿¦¾ì${H_tagTH}</th>
+    <th class='TitleCell'>${HtagTH_}ºÎ·¡¾ì${H_tagTH}</th>
 $uStr1
-    <th $HbgTitleCell>${HtagTH_}·³»ö<br>µ»½Ñ${H_tagTH}</th>
+    <th class='TitleCell'>${HtagTH_}·³»ö<br>µ»½Ñ${H_tagTH}</th>
 $msStr1
-    <th $HbgTitleCell>${HtagTH_}Í×Ë¾/¿ôÃÍ${H_tagTH}</th>
+    <th class='TitleCell'>${HtagTH_}Í×Ë¾/¿ôÃÍ${H_tagTH}</th>
   </tr>
   <tr>
 $rStr2
-    <td $HbgInfoCell align=center>$w_tag</td>
-    <td $HbgInfoCell align=center>$wn_tag</td>
-    <td $HbgInfoCell align=center>$island->{'temperature'}</td>
-    <td $HbgInfoCell align=right>$island->{'pop'}$HunitPop</td>
-    <td $HbgInfoCell align=right>$areatag</td>
+    <td $HbgInfoCell align='center'>$w_tag</td>
+    <td $HbgInfoCell align='center'>$wn_tag</td>
+    <td $HbgInfoCell align='center'>$island->{'temperature'}</td>
+    <td $HbgInfoCell align='right'>$island->{'pop'}$HunitPop</td>
+    <td $HbgInfoCell align='right'>$areatag</td>
 $mStr2
-    <td $HbgInfoCell align=right>$island->{'food'}$HunitFood</td>
-    <td $HbgInfoCell align=right>${farm}</td>
-    <td $HbgInfoCell align=right>${factory}</td>
-    <td $HbgInfoCell align=right>${HTfactor}</td>
-    <td $HbgInfoCell align=right>${mountain}</td>
+    <td $HbgInfoCell align='right'>$island->{'food'}$HunitFood</td>
+    <td $HbgInfoCell align='right'>${farm}</td>
+    <td $HbgInfoCell align='right'>${factory}</td>
+    <td $HbgInfoCell align='right'>${HTfactor}</td>
+    <td $HbgInfoCell align='right'>${mountain}</td>
 $uStr2
-    <td $HbgInfoCell align=right>Lv${renae}</td>
+    <td $HbgInfoCell align='right'>Lv${renae}</td>
 $msStr2
-    <td $HbgInfoCell align=right>$CivReqDisp[$civreq]</td>
+    <td $HbgInfoCell align='right'>$CivReqDisp[$civreq]</td>
   </tr>
   <tr>
-    <td $HbgCommentCell COLSPAN=${col_num} align=left>${HtagtTH_}info¡§<font size="-1">$prize$house$monslive$Farmcpc$bumons$me_sat</font>${H_tagtTH}
+    <td $HbgCommentCell colspan='${col_num}' align='left'>${HtagtTH_}info¡§<font size="-1">$prize$house$monslive$Farmcpc$bumons$me_sat</font><br>$update_stat${H_tagtTH}
 END
     my $AllyBBS = '';
-    if ($HallyNumber) {
+    my ($allytitle) = $HarmisticeTurn ? '¿Ø±Ä' : 'Æ±ÌÁ';
+
+    if (   ($HallyNumber)
+        && (   ($island->{'id'} <= 100)
+            && !($island->{'BF_Flag'}))) {
         my $aNo = random(100);
         $aNo *= 10;
         for ($i = 0; $i < $HallyNumber; $i++) {
@@ -305,7 +323,7 @@ END
             $campInfo .=<<_CAMP_ if ($mode && $HarmisticeTurn);
 ¡¡[<a style="text-decoration:none" href="JavaScript:void(0)" onClick="document.allyForm${aNo}.submit();return false;">ºîÀïËÜÉô</A>]
 _CAMP_
-            $campInfo .=<<_CAMP_ if($mode);
+            $campInfo .=<<_CAMP_ if ($mode);
         <input type='hidden' name="camp" value="$allyId">
         <input type='hidden' name="ally" value="$allyId">
         <input type='hidden' name="cpass" value="$cpass">
@@ -340,16 +358,17 @@ _BBS_
         }
         $AllyBBS .= '';
         #$AllyBBS = "" if (!$allyId);
-    }
 
-    my ($allytitle) = $HarmisticeTurn ? '¿Ø±Ä' : 'Æ±ÌÁ';
-    out(<<END) if($HallyNumber);
+        out(<<END);
   </td>
   </tr>
   <tr>
     <th $HbgTitleCell>${HtagTH_}${allytitle}${H_tagTH}</th>
     <td $HbgInfoCell colspan=${col_num} class='T'>
 ${AllyBBS}
+END
+    }
+        out(<<END);
   </tr>
 </table>
 </div>
@@ -365,11 +384,11 @@ sub islandItemData {
     out(<<END);
   <table border>
     <tr>
-      <th $HbgTitleCell align="center" rowspan="2">${HtagTH_}»ý¤ÁÊª${H_tagTH}</th>
+      <th class='TitleCell' align="center" rowspan="2"><span class='head'>»ý¤ÁÊª</span></th>
 END
     for ( $ibox = 0 ; $ibox < $HItem_MAX ; $ibox++){
 
-        print( "<th $HbgTitleCell align=center>${HtagTH_}${ibox}${H_tagTH}</th>\n");
+        print( "        <th class='TitleCell' align='center'><span class='head'>${ibox}</span></th>\n");
     }
 
     out(<<END);
@@ -381,12 +400,13 @@ END
     my ($land) = $island->{'item_land'};
     my ($lv) = $island->{'item_landValue'};
     my ($lv2) = $island->{'item_landValue2'};
+    my ($lv3) = $island->{'item_landValue3'};
     my ($id) = $island->{'id'};
     my ($shrturn) = $island->{'shrturn'};
 
     for ( $ibox = 0 ; $ibox < $HItem_MAX ; $ibox++){
 
-        print( "<td id='itembox${ibox}' ${HbgInfoCell} align='center'>");
+        print( "<td id='itembox${ibox}' class='InfoCell' align='center'>");
         # ³ÆÃÏ·Á¤ò½ÐÎÏ
         #landString($island, $land->[$ibox], $lv->[$ibox], $lv2->[$ibox], $ibox, 0, 1, "", $jsmode, 1);
         landString2($island, $ibox, 0,  1, "", $jsmode, 1);

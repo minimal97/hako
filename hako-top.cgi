@@ -19,7 +19,7 @@ require './server_config.pm';
 # メイン
 sub topPageMain {
     # アクセス・ログ
-    axeslog() if($HtopAxes == 2);
+    axeslog() if ($HtopAxes == 2);
     # 開放
     unlock();
 
@@ -45,28 +45,32 @@ END
 #----------------------------------------------------------------------
 sub PrintTopMenuLink {
 
-    out('<div class="TopMenuLink">');
+    my ($output);
+
+    $output = "<div class='TopMenuLink'>\n";
+
     if (!(ADMIN_JOIN_ONLY)) {
-        out(qq|[<a class='Nret' href="$HthisFile?Join=0">新しい${AfterName}を探す</a>] |);
+        $output .= "[<a class='Nret' href='$HthisFile?Join=0'>新しい${AfterName}を探す</a>] \n";
     }
     else {
-        out(qq|<b>※</b>新しい${AfterName}を探したい方は「<b>${AfterName}名、あなたの名前、パスワード</b>」を管理人までメールしてください。<br>|);
+        $output .= (qq|<b>※</b>新しい${AfterName}を探したい方は「<b>${AfterName}名、あなたの名前、パスワード</b>」を管理人までメールしてください。<br>|);
     }
-    out(qq|<span class='Nret'>[<A href="$HthisFile?Rename=0">${AfterName}の名前とパスワードの変更</A>]</span> |);
+    $output .= (qq|<span class='Nret'>[<A href="$HthisFile?Rename=0">${AfterName}の名前とパスワードの変更</A>]</span> |);
 
     #out(qq|[<A href="$HthisFile?JoinA=0">同盟の設定</A>] |) if(($HallyUse == 1) );
     if (   (USE_GZIP)
         || (!(USE_HTML_LOG_MDOE))
         || (!(-e "${HhtmlDir}/hakolog.html")) ) {
 
-        out(qq|[<a class='Nret' href="${HbaseDir}/history.cgi?Event=0" target="_blank">最近の出来事</a>] |);
+        $output .= (qq|[<a class='Nret' href="${HbaseDir}/history.cgi?Event=0" target="_blank">最近の出来事</a>] |);
     }
     else {
 
-        out(qq|[<a class='Nret' href="${htmlDir}/hakolog.html" target="_blank">最近の出来事</a>] |);
+        $output .= (qq|[<a class='Nret' href="${htmlDir}/hakolog.html" target="_blank">最近の出来事</a>] |);
     }
 
     out(<<END);
+  $output
   [<a class='Nret' href="$HthisFile?Rekidai=0" target="_blank">歴代最多人口記録</a>] 
   [<a class='Nret' href="$HthisFile?Rank=0" target="_blank">ランキング</a>] 
 </div><!-- $init_server -->
@@ -78,7 +82,6 @@ END
 sub PrintScriptTag {
 
     out(<<END);
-<hr>
 <script type="text/javascript"><!--
 function newdevelope(){
   document.Island.target = "newWindow";
@@ -111,18 +114,18 @@ sub Login_space {
 
     my ($radio,$radio2);
 
+    $radio = '';
+    $radio2 = '';
+
     # java モードか、 cgiモードか
     if ($HjavaModeSet eq 'java') {
-        $radio = '';
         $radio2 = 'checked';
     }
     elsif ($HjavaModeSet eq 'cgi') {
         $radio = 'checked';
-        $radio2 = '';
     }
     else {
         # default
-        $radio = '';
         $radio2 = 'checked';
     }
 
@@ -145,7 +148,6 @@ sub Login_space {
     </form>
   </div>
 </div>
-
 END
 
 
@@ -156,10 +158,12 @@ sub PrintTopBlock {
 
     out(<<END);
 ${HtagTitle_}$Htitle${H_tagTitle}
-<h2 class="subtitle"><small><span class='Nret'>新規のかたは、</span><span class='Nret'>[新しい${AfterName}を探す]から!!</span></small></h2>
-END
-
-    out(<<END);
+<h2 class="subtitle">
+  <small>
+    <span class='Nret'>新規のかたは、</span>
+    <span class='Nret'>[新しい${AfterName}を探す]から!!</span>
+  </small>
+</h2>
 <div style="display:block;">
   <div class="topblock">
 END
@@ -267,7 +271,7 @@ END
     }
 
 
-    my ($sec2, $min2, $hour2, $date2, $mon2, $year2, $day2, $yday2, $dummy2);
+    my ($sec2, $min2, $hour2, $date2, $mon2, $dummy2);
     {
         ($sec2, $min2, $hour2, $date2, $mon2, $dummy2, $dummy2, $dummy2, $dummy2) = gmtime($aaa + $Hjst);
     }
@@ -320,7 +324,7 @@ END
     if (INIT_REAL_TIMER) {
         out(<<END) if (defined $HleftTime);
 
-    <form name="TIME" style="margin  : 2px 0px;">
+    <form name="frm_TIME" style="margin  : 2px 0px;">
       <input type="text" name="TIME" size="50" readonly class="timer">
     </form>
     <script type="text/javascript"><!--
@@ -334,17 +338,18 @@ function showTimeLeft() {
     min  = Math.floor(leftTime % 3600 / 60);
     sec  = leftTime % 60;
     leftTime--;
-    document.TIME.TIME.value = '次の更新時間まであと ' + hour + '時間 ' + min + '分 ' + sec + '秒';
+    document.frm_TIME.TIME.value = '次の更新時間まであと ' + hour + '時間 ' + min + '分 ' + sec + '秒';
   }
   else {
-    document.TIME.TIME.value = 'ターン更新時刻になりました！ ($HnextTime)';
+    document.frm_TIME.TIME.value = 'ターン更新時刻になりました！ ($HnextTime)';
   }
 }
 
 if ($HplayNow) {
   showTimeLeft();
-} else {
-  document.TIME.TIME.value = '';
+}
+else {
+  document.frm_TIME.TIME.value = '';
 }
 //-->
     </script>
@@ -357,9 +362,9 @@ END
     }
     # フォーム
     out(<<END);
-    <div id="nexttime">
+    <p id="nexttime">
         現在の時間：<b>$sss</b><br>（次回の更新時間：$bbb）
-    </div><br>
+    </p>
     <span class="rednews">ターン更新付近での更新連打は控えてください。<br>島データが壊れます。<br>せめて30秒は待ってください。<br>
 島の作成はひとり、１島までです。<br>同じIPアドレスが割り当てられた島を見つけたら、沈めます。</span>
   </div>
@@ -369,7 +374,6 @@ END
 
     out(<<END);
 </div>
-<hr>
 END
 }
 
@@ -383,18 +387,20 @@ sub tempTopPage {
 
     PrintScriptTag();
 
+    out("<hr>");
+
     PrintTopBlock();
+
+    out("<hr>");
 
     Login_space();
 
     historySpace();
 
     out(<<END);
-<hr>
 <div style="display:block; float:none">
+  <hr>
 END
-
-    islandSort('pts');
 
     AllyMakeButton();
 
@@ -404,6 +410,7 @@ END
 END
     PrintWorldStat();
 
+    islandSort('pts');
     out(<<END);
 <div>
   <div>
@@ -413,8 +420,8 @@ END
     <div id='islandView'>
 END
 
-    my ($island, $j, $farm, $factory, $factoryHT, $mountain, $unemployed, $renae, $pts, $eisei2, $eisei2nd,
-        $hcturn, $rieki, $zouka, $seicho, $name, $id, $prize, $ii, $num);
+    my ($island, $j, $farm, $factory, $factoryHT, $mountain, $unemployed, $renae, $pts, $eisei1, $eisei2, $eisei2nd, $monsterlive,
+        $monsm, $hcturn, $name, $id, $prize, $ii, $num);
     {
         my ($jj , $k);
 
@@ -426,7 +433,7 @@ END
                 $j = $ii * INIT_VIEW_ISLAND_COUNT;
                 $k = min($j + INIT_VIEW_ISLAND_COUNT, $HislandNumber - $HbfieldNumber);
                 $j++;
-                $j = '★' if(!$ii && $HbfieldNumber);
+                $j = '★' if (!$ii && $HbfieldNumber);
 
                 out(qq|<a href="$HthisFile?View=$ii#View">${HtagNumber_}[$j〜$k]${H_tagNumber}</a>&nbsp;|);
             }
@@ -479,7 +486,6 @@ END
     my ($start, $end) = ($HviewIslandNumber + $HbfieldNumber, min($HviewIslandNumber + INIT_VIEW_ISLAND_COUNT + $HbfieldNumber, $HislandNumber));
     $start = 0 if (!$HviewIslandNumber);
 
-    my ($food_zouka , $area_zouka);
     my ($HbgStatCell);
     my ($HbgNumCell);
     my ($weather , $w_tag);
@@ -538,20 +544,10 @@ END
         $pts        = $island->{'pts'};
         $eisei2     = $island->{'eisei2'};
         $eisei2nd   = int($eisei2 / 100 );
-        $rieki      = ($island->{'pika'} < 0) ? $island->{'pika'}.$HunitMoney : '＋'.$island->{'pika'}.$HunitMoney;
-        $rieki      = '' if ($island->{'pika'} == 0) ;
-        $zouka      = ($island->{'hamu'} < 0) ? $island->{'hamu'}.$HunitPop : '＋'.$island->{'hamu'}.$HunitPop;
-        $zouka      = '' if ($island->{'hamu'} == 0) ;
-        $food_zouka = ($island->{'old_food'} < 0) ? "$island->{'old_food'}$HunitFood" : "＋$island->{'old_food'}$HunitFood";
-        $food_zouka = '' if ($island->{'old_food'} == 0) ;
 
         $weather    = $island->{'weather_old'};
         $w_tag      = "<img src='./img/weather/weather$weather.gif' alt=''>";
 
-        $area_zouka = ($island->{'old_area'} < 0) ? "$island->{'old_area'}$HunitArea" : "＋$island->{'old_area'}$HunitArea";
-        $area_zouka = '' if ($island->{'old_area'} == 0) ;
-
-        $seicho     = ($island->{'monta'} < 0) ? "$island->{'monta'}pts." : "＋$island->{'monta'}pts.";
         $eisei2     = ($eisei2nd == 0) ? '通算観光者数１万人未満<br>' : '通算観光者数'.$eisei2nd.'万人<br>';
 
         $absent = $island->{'absent'};
@@ -731,19 +727,18 @@ END
         $monslive = ScoreBoard_LiveMonster($island);
         $monslive = "<br>$monslive" if (($island->{'monsterlive'}) && (!$BF_Flag));
 
-        $HbgNumCell = ($island->{'missileAlert'}) ? 'class=NumberCellAlert' : $HbgNumberCell ;
+        $HbgNumCell = ($island->{'missileAlert'}) ? 'class="NumberCellAlert topNumber"' : 'class="NumberCell topNumber"' ;
 
         out(<<END);
 <tr>
 <th $HbgNumCell rowspan="4" align="center">
-  <font size="5">${HtagNumber_}$j${H_tagNumber}</font>
+  ${HtagNumber_}$j${H_tagNumber}
 </th>
 END
 
         if (   ($id <= 100)
             && (!$BF_Flag) ) {
 
-            my ($tha_t) = int(${HislandTurn} / 100) * 100;
             out(<<END);
 <td $HbgNameCell rowspan="4" align="left">
   <div align="center">
@@ -752,8 +747,6 @@ END
     <span class="point">$pts</span>pts.<br>
     <font size="-1">失業率</font>:($unemployed)<br>
     <span class="eisei"><font size="-1">$eisei2</font></span>
-    <span class="monsm"><font size="-2">前ターン<br>$seicho$zouka$rieki$food_zouka$area_zouka</font></span><br>
-    <span class="monsm"><font size="-2">$tha_tターンから$island->{'tha_diff'}pts.</font></span>
   </div>
 </td>
 END
@@ -803,6 +796,7 @@ END
 </table>
 </div>
 END
+    out("<hr>");
     hcPrint();
     JoinAllyforAdmin();
 }
@@ -842,7 +836,6 @@ END
 sub hcPrint {
 
     out(<<END);
-<hr>
 <h2 class="subtitle">
   <a href="$HthisFile?HCdata=0" target="_blank">Hakoniwa Cup $hcturn</a>
 </h2>
@@ -867,7 +860,7 @@ END
 
     out($output);
     close(CIN);
-    out("</DIV>");
+    out("</div>");
 }
 
 
@@ -875,16 +868,12 @@ END
 sub historySpace {
 
     out(<<END);
-<div class="topblock">
-  <div class="M">
-    <div id='HistoryLog'>
-      <h2 class="subtitle">発見の記録</h2>
-      <div class="topHistoryLog">
+<div id='HistoryLog' class="topblock M">
+  <h2 class="subtitle">発見の記録</h2>
+  <div class="topHistoryLog">
 END
   historyPrint();
   out(<<END);
-      </div>
-    </div>
   </div>
 </div>
 END
@@ -924,7 +913,7 @@ sub amityOfAlly() {
     my ($allyName) = "<font color=\"$ally->{'color'}\"><B>$ally->{'mark'}</B></FONT>$ally->{'name'}";
 
     out(<<END);
-<div align='center'>$HtempBack</div><br>
+<p align='center'>$HtempBack</p>
 <div id='campInfo'>
 <h1>$allyNameの情報</h1>
 END
