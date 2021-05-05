@@ -607,6 +607,20 @@ function jump(theForm, j_mode) {
         }
     }
 }
+
+
+var monumentlist;
+function monument_page(theForm, j_mode) {
+    if ( (monumentlist == null)||(monumentlist.closed) ) {
+        monumentlist = window.open("$HthisFile?MONUMENT_NUM=1", "minitar", "menubar=1,toolbar=0,location=0,directories=no,status=1,scrollbars=1,resizable=1,width=700,height=630");
+    }
+    else{
+        monumentlist.location.href = "$HthisFile?MONUMENT_NUM=1";
+        monumentlist.focus();
+    }
+}
+
+
 function SelectList(theForm) {
     var u, selected_ok;
     if(!theForm){s = ''}

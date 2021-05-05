@@ -864,8 +864,8 @@ sub landString {
             $naviTitle  = '¹©¾ì';
             $naviText  = "${lv}0${HunitPop}µ¬ÌÏ";
         }
-
-    } elsif ($l == $HlandNursery) {
+    }
+    elsif ($l == $HlandNursery) {
         # ÍÜ¿£¾ì
         $image = 'nursery.gif';
         $alt = "ÍÜ¿£¾ì(${lv}0${HunitPop}µ¬ÌÏ)";
@@ -1396,8 +1396,8 @@ sub landString {
         }
         $naviTitle  = '¿¹';
         $naviTitle  = '³¤' if ($lv & $Hmine_SEA_FLAG);
-
-    } else{
+    }
+    else {
         $alt = "kind:($l)/val:($lv)";
     }
 

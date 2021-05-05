@@ -675,10 +675,9 @@ our ($Body) = '<body>';
         } elsif($HmainMode eq 'lbbs') {             # ローカル掲示板モード
             require('./hako-lbbs.cgi');
             localBbsMain();
-
-        } else {
+        }
+        else {
             ownerMain();
-
         }
         # フッタ出力
         tempFooter();
@@ -699,9 +698,24 @@ our ($Body) = '<body>';
         tempFooter();
         # 終了
         exit(0);
-
     }
-    elsif ($HmainMode eq 'taijilist') {        # 管理人によるあずかりモード
+    elsif ($HmainMode eq 'monument_num') {
+        require('./hako-map.cgi');
+        require('./hako_monument.cgi');
+
+        $Htitle_sub = ' 記念碑リスト';
+        $Body = '<body>';
+        # ヘッダ出力
+        tempHeaderJava();
+
+        MonumentNumList();
+
+        # フッタ出力
+        tempFooter();
+        # 終了
+        exit(0);
+    }
+    elsif ($HmainMode eq 'taijilist') {             # 怪獣退治リスト
         require('./hako-map.cgi');
         $Body = '<body>';
         # ヘッダ出力
@@ -1291,6 +1305,9 @@ sub cgiInput {
         if ($getLine =~ /FROM_ISLAND=([0-9]*)/) {
             our $HmyislandID = $1;
         }
+    }
+    elsif ($getLine =~ /MONUMENT_NUM/) {
+        $HmainMode = 'monument_num';
 
     } elsif($getLine =~ /TaijiList=([0-9]*)/) {
         $HmainMode = 'taijilist';

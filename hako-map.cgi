@@ -84,12 +84,14 @@ $Body<div id='BodySpecial'>
 END
 
     if (   ($HmainMode eq 'landmap')
-        || ($HmainMode eq 'taijilist') ) {
+        || ($HmainMode eq 'taijilist')
+        || ($HmainMode eq 'monument_num')
+                                         ) {
 
     out(<<END);
-<div align='center'>
+<p align='center'>
   <a href=\"#\" onclick=\"window.close()\">${HtagBig_}[閉じる]${H_tagBig}</a>
-</div>
+</p>
 END
     }
     else {
@@ -300,7 +302,7 @@ END
 
     if (EXTRA_JS) {
         out(<<END);
-<script language="JavaScript" src="${efileDir}/hakojima.js"></script>
+<script type="text/javascript" src="${efileDir}/hakojima.js"></script>
 END
     }
     else {
@@ -351,7 +353,7 @@ END
         <center>
           <table border>
             <tr valign=top>
-              <td $HbgInputCell width='25%'>
+              <td $HbgInputCell>
                 <center>
                   <form name="myForm" action="$HthisFile" method="POST">
 <b>計画番号</b>
@@ -423,17 +425,17 @@ END
                     </select>
 <hr>
 <b>目標の${AfterName}</b>：
-<b><a href='javascript:void(0);' onClick="jump(myForm, '$HjavaMode')"> 表示 </a></b>
+<b><a href='javascript:void(0);' onclick="jump(myForm, '$HjavaMode')"> 表示 </a></b>
 ・
-<b><a href='javascript:void(0);' onClick="myisland(myForm,'$myislandID')"> 前選択 </a></b><br>
+<b><a href='javascript:void(0);' onclick="myisland(myForm,'$myislandID')"> 前選択 </a></b><br>
                     <select name='TARGETID'>
 $HtargetList
                     </select>
 <hr>
 <b>コマンド移動</b>：
 <big>
-  <a href='javascript:void(0);' onClick="cominput(myForm,4)" STYlE="text-decoration:none"> ▲ </a>・・
-  <a href='javascript:void(0);' onClick="cominput(myForm,5)" STYlE="text-decoration:none"> ▼ </a>
+  <a href='javascript:void(0);' onClick="cominput(myForm,4)" style="text-decoration:none"> ▲ </a>・・
+  <a href='javascript:void(0);' onClick="cominput(myForm,5)" style="text-decoration:none"> ▼ </a>
 </big>
 <hr>
                     <input type="hidden" name="COMARY" value="comary">
@@ -446,6 +448,7 @@ $HtargetList
 <font size=2>最後に<span class='attention'>計画送信ボタン</span>を<br>押すのを忘れないように。</font>
 <hr>
                   </form>
+                    <p><b><a href="javascript:void(0);" onclick="monument_page(myForm, '$HjavaMode')">記念碑数量リスト</a></b></p>
                     <textarea class="popupnavi" style="resize:none;" cols="20" rows="5" id="CMD_HELP">test</textarea>
                 </center>
               </td>
@@ -695,7 +698,7 @@ sub printIslandJava {
                             $tag_s_e = '</s>';
                         }
                     }
-                    $click_com[$m] .= "<a title='$l_cost' href='javascript:void(0);' onClick='window.opener.cominput(window.opener.document.myForm,6,$l_kind)' STYlE='text-decoration:none'>$tag_s_s$HcomName[$l_kind]<font size='-1'>($l_cost)</font>$tag_s_e</a><br>\n";
+                    $click_com[$m] .= "<a title='$l_cost' href='javascript:void(0);' onClick='window.opener.cominput(window.opener.document.myForm,6,$l_kind)' style='text-decoration:none'>$tag_s_s$HcomName[$l_kind]<font size='-1'>($l_cost)</font>$tag_s_e</a><br>\n";
 #                   $click_com[$m] .= "<a title='$l_cost' href='javascript:void(0);' onClick='window.opener.cominput(window.opener.document.myForm,6,$l_kind)' STYlE='text-decoration:none'>$HcomName[$l_kind]/$l_cost</a><br>\n";
                 }
             }
@@ -821,7 +824,7 @@ function SetImgFrame(x ,y) {
 }
 
 //-->
-</SCRIPT>
+</script>
 <h2 align='center'>${HtagName_}${HcurrentName}${H_tagName}</h2>
 <div id='targetMap'>
 END
@@ -1403,6 +1406,18 @@ function cmdsl() {
     return true;
 }
 
+var monumentlist;
+function monument_page(theForm, j_mode) {
+    if ( (monumentlist == null)||(monumentlist.closed) ) {
+        monumentlist = window.open("$HthisFile?MONUMENT_NUM=1", "minitar", "menubar=1,toolbar=0,location=0,directories=no,status=1,scrollbars=1,resizable=1,width=700,height=630");
+    }
+    else{
+        monumentlist.location.href = "$HthisFile?MONUMENT_NUM=1";
+        monumentlist.focus();
+    }
+}
+
+
 function jump(theForm, j_mode) {
     var sIndex = theForm.TARGETID.selectedIndex;
     var url = theForm.TARGETID.options[sIndex].value;
@@ -1486,7 +1501,7 @@ END
             $cost .= $HunitMoney;
         }
         $s = ($kind == $HdefaultKind) ? 'selected' : '';
-        out("<option value=$kind $s>$HcomName[$kind]($cost)");
+        out("<option value='$kind' $s>$HcomName[$kind]($cost)\n");
     }
 
     out(<<END);
@@ -1506,7 +1521,7 @@ END
 </select>
           <hr>
           <b>目標の${AfterName}</b>：
-          <b><a href="JavaScript:void(0);" onClick="jump(myForm, '$HjavaMode')"> 表\示 </a></b><br>
+          <b><a href="javascript:void(0);" onclick="jump(myForm, '$HjavaMode')"> 表\示 </a></b><br>
           <select name='TARGETID'>
 $HtargetList
           </select>
@@ -1520,6 +1535,7 @@ $HtargetList
           <br>
         </form>
         <center>
+          <p><b><a href="javascript:void(0);" onclick="monument_page(myForm, '$HjavaMode')">記念碑数量リスト</a></b></p>
           <textarea class="popupnavi" style="resize:none;" cols="20" rows="5" id="CMD_HELP">test</textarea>
         </center>
       </td>
@@ -2232,25 +2248,29 @@ sub islandJamp {
         $jumptag = "if (url != \"\" ) location.href = \"$HthisFile?Sight=\"+url;";
     }
     out(<<END);
-<CENTER>
-<SCRIPT LANGUAGE="JavaScript">
+<script type="text/javascript">
 function jump(theForm) {
     var sIndex = theForm.urlsel.selectedIndex;
     var url = theForm.urlsel.options[sIndex].value;
     $jumptag
 }
-</SCRIPT>
-<FORM name="urlForm">
-<TABLE align=center border=0>
-<TR><TD>
-<SELECT NAME="urlsel">
+</script>
+<center>
+<form name="urlForm">
+  <table align='center' border='0'>
+    <tr>
+      <td>
+        <select name="urlsel">
 $HtargetList
-</SELECT><BR>
-</TD>
-<TD><input type="button" value=" GO " onClick="jump(this.form)"></TD>
-</TR></TABLE>
+        </select><BR>
+      </td>
+      <td>
+        <input type="button" value=" GO " onClick="jump(this.form)">
+      </td>
+    </tr>
+  </table>
 </form>
-</CENTER>
+</center>
 END
 }
 
@@ -2268,9 +2288,9 @@ sub exLbbs {
         my ($onm) = $island->{'onm'};
         $onm = "$island->{'name'}$AfterName" if($onm eq '');
         $admin =<<"END";
-<INPUT type=hidden name=name value='$onm'>
-<INPUT type=hidden name=title value='$island->{'name'}$AfterName観光掲示板'>
-<INPUT type=hidden name=message value='ようこそ！$island->{'name'}$AfterName観光案内所へ'>
+<input type='hidden' name='name' value='$onm'>
+<input type='hidden' name='title' value='$island->{'name'}$AfterName観光掲示板'>
+<input type='hidden' name='message' value='ようこそ！$island->{'name'}$AfterName観光案内所へ'>
 END
     }
     elsif ($defaultID ne '') {
@@ -2283,7 +2303,7 @@ END
     }
 
     out(<<END);
-<SCRIPT Language="JavaScript">
+<script type="text/javascript">
 <!--
 function Exlbbs(){
     newExlbbs = window.open("", "newExlbbs", "menubar=yes,toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,width=600,height=300");
@@ -2291,20 +2311,20 @@ function Exlbbs(){
 //    document.exLbbs.submit();
 }
 //-->
-</SCRIPT>
+</script>
 <DIV ID='localBBS'>
 <HR>
 <h2><span class='Nret'>${HtagName_}${HcurrentName}${AfterName}${H_tagName}</span><span class='Nret'>観光者通信</span></h2>
-<FORM name="exLbbs" action="${HlbbsDir}/lbbs.cgi" method=POST encType=multipart/form-data>
-  <INPUT type="hidden" name="mode" value='view'>
+<form name="exLbbs" action="${HlbbsDir}/lbbs.cgi" method=POST encType=multipart/form-data>
+  <input type="hidden" name="mode" value='view'>
   $admin
-  <INPUT type="hidden" name=owner value="$mode">
-  <INPUT type="hidden" name=logfile value="${bbsID}.cgi">
-  <INPUT type="hidden" name=id value="$id">
-  <INPUT type="hidden" name=pass value="$HdefaultPassword">
-  <INPUT type="submit" value='観光掲示板の閲覧・投稿' onClick="Exlbbs()">
-</FORM>
-</DIV>
+  <input type="hidden" name='owner' value="$mode">
+  <input type="hidden" name='logfile' value="${bbsID}.cgi">
+  <input type="hidden" name='id' value="$id">
+  <input type="hidden" name='pass' value="$HdefaultPassword">
+  <input type="submit" value='観光掲示板の閲覧・投稿' onClick="Exlbbs()">
+</form>
+</div>
 END
 }
 
