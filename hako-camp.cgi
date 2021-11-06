@@ -34,9 +34,9 @@ sub campMain {
 
     # パスワード
     if ($HcampPassward ne $HcurrentCamp->{'Takayan'}) {
-        # password間違い
-        tempWrongPassword();
-        unlock ();      # 開放
+
+        tempWrongPassword();        # password間違い
+        unlock ();                  # 開放
         return;
     }
 
@@ -56,8 +56,8 @@ sub campMain {
 sub tempPrintCampHead {
     out(<<END);
 <div align='center'>
-$HtempBack<br><br>
-<h1>${HtagName_}「<font color="$HcurrentCamp->{'color'}"><b>$HcurrentCamp->{'mark'}</b></font>$HcurrentCamp->{'name'}」${H_tagName} 作戦本部</h1><br>
+  $HtempBack<br><br>
+  <h1>${HtagName_}「<font color="$HcurrentCamp->{'color'}"><b>$HcurrentCamp->{'mark'}</b></font>$HcurrentCamp->{'name'}」${H_tagName} 作戦本部</h1><br>
 陣営パスワード：『<b>$HcurrentCamp->{'Takayan'}</b>』<br><br>
 END
 
@@ -80,6 +80,7 @@ END
 }
 
 
+#----------------------------------------------------------------------
 sub camp_comment {
 
     local ($Hbbsislandname);
@@ -87,8 +88,8 @@ sub camp_comment {
     $HdefaultName = $Hislands[$HidToNumber{$HcurrentID}]->{'onm'};
     $Hbbsislandname = $Hislands[$HidToNumber{$HcurrentID}]->{'name'};
     out(<<END);
-<div ID='localBBS'>
-<hr>
+<div id='localBBS'>
+  <hr>
 END
     require('./hako-map.cgi');
     islandJamp(1);   # 島の移動
@@ -97,10 +98,13 @@ END
     out('</div>');
 }
 
+
+#----------------------------------------------------------------------
 # ローカル掲示板内容
 sub campLbbsContents {
 
     out(<<END);
+
 <table border>
   <tr>
     <th>番号</th>
@@ -115,7 +119,7 @@ END
         my ($bbsline);
         my (@bbsmsg);
 
-        while ($bbsline = <DATAFILE>){
+        while ($bbsline = <DATAFILE>) {
             @bbsmsg = split(/\,/,$bbsline);
             #unshift(@lines, "$sendto,$HcurrentCampID,$HcurrentID,$HlbbsName,$HlbbsMessage,$Hlbbsturn,$Hlbbssendisland,\n");
 
@@ -180,6 +184,7 @@ END
 }
 
 
+#----------------------------------------------------------------------
 # ローカル掲示板入力フォーム owner mode用
 sub campLbbsInputOW {
 
@@ -247,6 +252,8 @@ $allyList
 END
 }
 
+
+#----------------------------------------------------------------------
 # 島のコマンド読み込み(陣営画面作成用)
 sub readCommands {
 
@@ -282,6 +289,8 @@ sub readCommands {
     return \@command,
 }
 
+
+#----------------------------------------------------------------------
 # 情報の表示
 sub campAllIslandsInfo {
 
@@ -310,6 +319,8 @@ sub campAllIslandsInfo {
 
 }
 
+
+#----------------------------------------------------------------------
 sub campIslandInfo {
     my ($island, $rank) = @_;
 
@@ -374,6 +385,8 @@ END
 END
 }
 
+
+#----------------------------------------------------------------------
 sub campTableHeader {
 
     out(<<END);

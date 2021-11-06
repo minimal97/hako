@@ -62,7 +62,7 @@ sub makeAllyMain {
     if (checkSpecialPassword($HoldPassword)) {
         $adminMode = 1;
         if ($HallyID > 200) {
-            my $max = $HallyID;
+            my ($max) = $HallyID;
             if ($HallyNumber) {
                 foreach (0..$#Hally) {
                     $max = $Hally[$_]->{'id'} + 1 if($max <= $Hally[$_]->{'id'});
@@ -70,9 +70,11 @@ sub makeAllyMain {
             }
 
             $HcurrentID = $max;
-        } elsif(defined $HcurrentAnumber) {
+        }
+        elsif (defined $HcurrentAnumber) {
             $HcurrentID = $Hally[$HcurrentAnumber]->{'id'};
-        } else {
+        }
+        else {
             unlock();
             out("${HtagBig_}結成or変更できません。<br>${adminMode}/${HcurrentAnumber}/${HallyID}<br>${H_tagBig}$HtempBack");
             return;
@@ -166,12 +168,13 @@ sub makeAllyMain {
                 push(@{$Hally[$n]->{'memberId'}}, $aIsland->{'id'});
                 push(@{$aIsland->{'allyId'}}, $aIsland->{'id'});
             }
-        } else {
+        }
+        else {
             # すでに結成ずみなら変更
             logChangeAlly($Hally[$n]->{'name'}, $HallyName) if(!$adminMode && ($Hally[$n]->{'name'} ne $HallyName));
         }
-
-    } else {
+    }
+    else {
         # 他の島の同盟に入っている場合は、結成できない
         my ($flag) = 0;
         for ($i = 0; $i < $HallyNumber; $i++) {
@@ -202,8 +205,8 @@ sub makeAllyMain {
             $Hally[$n]->{'number'}   = 1;
             @memberId = ($HcurrentID);
             $Hally[$n]->{'score'}    = $island->{'pts'};
-
-        } else {
+        }
+        else {
             $Hally[$n]->{'oName'}    = '';
             $Hally[$n]->{'password'} = encode($HinputPassword);
             $Hally[$n]->{'number'}   = 0;
@@ -310,8 +313,8 @@ sub deleteAllyMain {
         $n = $HcurrentAnumber;
         $HcurrentID = $Hally[$n]->{'id'};
         $adminMode = 1;
-
-    } else {
+    }
+    else {
 
         # passwordの判定
         if (!checkPassword($island,$HinputPassword)) {
@@ -588,8 +591,8 @@ sub newAllyTop {
 
         foreach (0..$#Hally) {
             my ($s) = '';
-            $s = ' SELECTED' if($Hally[$_]->{'id'} == $defaultAllyId);
-            $allyList .= "<OPTION VALUE=\"$_\"$s>$Hally[$_]->{'name'}\n";
+            $s = ' selected' if ($Hally[$_]->{'id'} == $defaultAllyId);
+            $allyList .= "<option value=\"$_\"$s>$Hally[$_]->{'name'}\n";
             $jsAllyList .= "'$Hally[$_]->{'name'}'";
             $jsAllyIdList .= "$Hally[$_]->{'id'}";
             $jsAllyMarkList .= "'$Hally[$_]->{'mark'}'";
@@ -633,7 +636,7 @@ $HislandList
 </select><br>あなた";
 
     out(<<END);
-<div align='center'>$HtempBack</div><br>
+<p align='center'>$HtempBack</p>
 <div id='changeInfo'>
 <h1>同盟の結成・変更・解散${str1}</h1>
 <table border=0 width="50%"><tr><td class="M"><p>
@@ -847,29 +850,31 @@ sub tempAllyPactPage {
     $allyMessage =~ s/&quot;/\"/g; #"
 
     out(<<END);
-<DIV align='center'>$HtempBack</DIV><br>
-<DIV ID='changeInfo'>
-<h1>コメント変更（$ally->{'name'}）</H1>
+<div align='center'>$HtempBack</div><br>
+  <div id='changeInfo'>
+    <h1>コメント変更（$ally->{'name'}）</H1>
 <table border="0" width="50%"><tr><td class="M">
-<form action="$HthisFile" method="POST">
-<B>盟主パスワードは？</B><br>
+          <form action="$HthisFile" method="POST">
+            <b>盟主パスワードは？</b><br>
 <INPUT TYPE="password" NAME="Allypact" VALUE="$HdefaultPassword" SIZE=32 MAXLENGTH=32 class=f>
-<INPUT TYPE="hidden"  NAME="ISLANDID" VALUE="$ally->{'id'}">
-<INPUT TYPE="submit" VALUE="送信" NAME="AllypactButton"><br>
-<B>コメント</B><small>(全角${HlengthAllyComment}字まで：トップページの「各同盟の状況」欄に表示されます)</small><br>
-<INPUT TYPE="text" NAME="ALLYCOMMENT"  VALUE="$ally->{'comment'}" SIZE="100" MAXLENGTH="50"><br>
-<br>
-<B>メッセージ・盟約など</B>(「同盟の情報」欄の上に表示されます)<br>
+            <input type="hidden"  name="ISLANDID" value="$ally->{'id'}">
+            <input type="submit" value="送信" name="AllypactButton"><br>
+            <b>コメント</b><small>(全角${HlengthAllyComment}字まで：トップページの「各同盟の状況」欄に表示されます)</small><br>
+            <input type="text" name="ALLYCOMMENT"  value="$ally->{'comment'}" size="100" maxlength="50"><br>
+            <br>
+            <b>メッセージ・盟約など</b>(「同盟の情報」欄の上に表示されます)<br>
 タイトル<small>(全角${HlengthAllyTitle}字まで)</small><br>
-<INPUT TYPE="text" NAME="ALLYTITLE"  VALUE="$ally->{'title'}" SIZE="100" MAXLENGTH="50"><br>
+            <input type="text" name="ALLYTITLE"  value="$ally->{'title'}" size="100" maxlength="50"><br>
 メッセージ<small>(全角${HlengthAllyMessage}字まで)</small><br>
-<TEXTAREA COLS="50" ROWS="16" NAME="ALLYMESSAGE" WRAP="soft">$allyMessage</TEXTAREA>
+            <textarea cols="50" rows="16" name="ALLYMESSAGE" wrap="soft">$allyMessage</textarea>
 <br>
 「タイトル」を空欄にすると『盟主からのメッセージ』というタイトルになります。<br>
 「メッセージ」を空欄にすると「同盟の情報」欄には何も表示されなくなります。
-</FORM>
-</td></tr></table>
-</DIV>
+          </form>
+        </td>
+      </tr>
+    </table>
+  </div>
 END
 }
 
@@ -877,7 +882,7 @@ END
 #----------------------------------------------------------------------
 # 盟主コメント変更完了
 sub tempAllyPactOK {
-    my($name) = @_;
+    my ($name) = @_;
     out(<<END);
 ${HtagBig_}$name${AfterName}のコメントを変更しました。${H_tagBig}$HtempBack
 END
@@ -888,14 +893,15 @@ END
 # 同盟(陣営)設定
 #----------------------------------------------------------------------
 sub amitySetupMain() {
+
     if (!$HasetupMode) {
         # 開放
         unlock();
 
         # テンプレート出力
         tempAmitySetupPage();
-
-    } else {
+    }
+    else {
         # パスワードチェック
         if (checkSpecialPassword($HdefaultPassword)) {
             # 特殊パスワード
@@ -908,7 +914,7 @@ sub amitySetupMain() {
                 undef $Hally[$_]->{'memberId'};
                 undef $Hally[$_]->{'number'};
                 undef $Hally[$_]->{'score'};
-                my $aId = $Hally[$_]->{'id'};
+                my ($aId) = $Hally[$_]->{'id'};
                 if (defined $HidToNumber{$aId}) {
                     push(@{$Hally[$_]->{'memberId'}}, $Hally[$_]->{'id'});
                     $Hally[$_]->{'score'} += $Hislands[$HidToNumber{$aId}]->{'pts'};
@@ -919,7 +925,7 @@ sub amitySetupMain() {
             foreach (@HallyChange) {
                 ($id, $aId) = split(/-/, $_);
                 $Hally[$HidToAllyNumber{$aId}]->{'score'} += $Hislands[$HidToNumber{$id}]->{'pts'};
-                next if($id == $aId);
+                next if ($id == $aId);
                 push(@{$Hally[$HidToAllyNumber{$aId}]->{'memberId'}}, $id);
                 push(@{$Hislands[$HidToNumber{$id}]->{'allyId'}}, $aId);
             }
@@ -933,7 +939,8 @@ sub amitySetupMain() {
             unlock();
             # 変更成功
             tempAmitySetupPage();
-        } else {
+        }
+        else {
             # password間違い
             unlock();
             tempWrongPassword();
@@ -950,11 +957,11 @@ sub tempAmitySetupPage() {
     unlock();
 
     out(<<END);
-<DIV align='center'>$HtempBack</DIV><br>
-<DIV ID='campInfo'>
-<h1>同盟(陣営)所属設定</H1>
-<form action="$HthisFile" method="POST">
-<INPUT TYPE="hidden" VALUE="$HdefaultPassword" NAME="ASetup">
+<div align='center'>$HtempBack</div><br>
+<div id='campInfo'>
+  <h1>同盟(陣営)所属設定</H1>
+  <form action="$HthisFile" method="POST">
+    <input type="hidden" value="$HdefaultPassword" name="ASetup">
 <TABLE BORDER><TR>
 <TH $HbgTitleCell align="center" rowspan="2">${HtagTH_}設定${H_tagTH}<br><INPUT TYPE="submit" VALUE="変更" NAME="AmityChangeButton"></TD>
 END
@@ -979,17 +986,17 @@ END
         $ally = $Hally[$_];
         $name = "<font color=\"$ally->{'color'}\"><b>$ally->{'mark'}</b></font>$ally->{'name'}";
         out(<<END);
-<TD class='T'>$name</TD>
+        <td class='T'>$name</td>
 END
     }
-    out("</tr>\n");
+    out("      </tr>\n");
 
     foreach (0..$islandNumber) {
         $island = $Hislands[$idx[$_]];
         $name = islandName($island);
-        my($id, $amity, $aId);
+        my ($id, $amity, $aId);
         $id = $island->{'id'};
-        out("<tr><th $HbgTitleCell>$name</th>");
+        out("      <tr><th $HbgTitleCell>$name</th>");
 
         for ($i = 0; $i < $HallyNumber; $i++) {
             $ally  = $Hally[$i];
@@ -1004,15 +1011,18 @@ END
             }
 
             if ($flag) {
-                out("<th><input type='checkbox' name='ally' value='$id-$aId'></th>");
+                out("        <th><input type='checkbox' name='ally' value='$id-$aId'></th>");
             } else {
-                out("<th><input type='checkbox' name='ally' value='$id-$aId' checked></th>");
+                out("        <th><input type='checkbox' name='ally' value='$id-$aId' checked></th>");
             }
         }
-        out("</tr>\n");
+        out("      </tr>\n");
     }
     out(<<END);
-</table><input type="hidden" value="dummy" name="AmityChange"></form></div>
+    </table>
+    <input type="hidden" value="dummy" name="AmityChange">
+  </form>
+</div>
 END
 }
 

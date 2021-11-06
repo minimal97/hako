@@ -250,7 +250,6 @@ sub localBbsMain {
 sub slideLbbsMessage {
     my ($lbbs) = @_;
 
-    my ($i);
     pop(@$lbbs);
     unshift(@$lbbs, $lbbs->[0]);
 }
@@ -261,7 +260,6 @@ sub slideLbbsMessage {
 sub slideBackLbbsMessage {
     my ($lbbs, $number) = @_;
 
-    my ($i);
     splice(@$lbbs, $number, 1);
     $lbbs->[$HlbbsMax - 1] = '0<<0>>';
 }
@@ -276,11 +274,12 @@ sub tempLbbsMain {
     out('<div id="localBBS" align="center">');
     tempLbbsHead();     # ローカル掲示板
     out('</div>');
-    out('<div id="localBBS" align="left">');
+    out('  <div id="localBBS" align="left">');
     # 書き込みフォーム
     if ($mode) {
         tempLbbsInputOW();
-    } else {
+    }
+    else {
         tempLbbsInput();
     }
     tempLbbsContents(); # 掲示板内容
