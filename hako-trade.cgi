@@ -35,8 +35,8 @@ our ($HtradeFile) = "tradelist.dat";
     SetTradeObjList(  6,  7, "豚肉",    "00トン",   "butaniku"  , $TradeKindFood);
     SetTradeObjList(  7,  8, "牛肉",    "00トン",   "gyuniku"   , $TradeKindFood);
     SetTradeObjList(  8,  9, "たまご",  "00トン",   "tamago"    , $TradeKindFood);
-    SetTradeObjList(  9, 30, "木材",    "00トン",   "wood"      , $TradeKindTEST);
-    SetTradeObjList( 10, 50, "家具",    "00トン",   "furniture" , $TradeKindTEST);
+    SetTradeObjList(  9, 30, "木材",    "00トン",   "wood"      , $TradeKindMaterial);
+    SetTradeObjList( 10, 50, "家具",    "00トン",   "furniture" , $TradeKindGoods);
     SetTradeObjList( 11, 70, "ゴミ",    "トン",     "gomi"      , $TradeKindTEST);
     SetTradeObjList( 12,  0, "",        "",         "0"         , $TradeKindTEST);         # 最終
 

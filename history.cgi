@@ -2,13 +2,17 @@
 # ＲＡ用に改造
 #---------------------------------------------------------------------
 #   究想の箱庭　最近の出来事と最近の天気の履歴を表示
+#
 #   作成日 : 2001/11/25 (ver0.10)
 #   作成者 : ラスティア <nayupon@mail.goo.ne.jp>
 #---------------------------------------------------------------------
 #use strict "vars";
-use strict "refs";
+#use strict "refs";
+use strict;
 #use strict "subs";
 use Time::HiRes;
+
+require './server_config.pm';
 
 BEGIN {
     # Perl 5.004 以上が必要
@@ -80,11 +84,15 @@ our ($HcurrentID) = 0;
 our ($defaultID) = 0;
 
 #メインルーチン-------------------------------------------------------
-cookieInput();
-cgiInput();
-unless(($ENV{HTTP_REFERER}  =~ /${HbaseDir}/) || $HcurrentID) {
-    print qq{Content-type: text/html; charset=EUC-JP\n\n};
-    out(<<END);
+    cookieInput();
+    cgiInput();
+
+    unless (   ($ENV{HTTP_REFERER}  =~ /$server_config::HbaseDir/)
+            || $HcurrentID) {
+
+        $baseSKIN = "${efileDir}/$HcssFile";
+        print qq{Content-type: text/html; charset=EUC-JP\n\n};
+        out(<<END);
 <html>
   <head>
     <title>$title</title>
@@ -95,7 +103,7 @@ unless(($ENV{HTTP_REFERER}  =~ /${HbaseDir}/) || $HcurrentID) {
   </head>
 $body
   <h1>不正なアクセスです</h1>
-${HbaseDir} / $ENV{HTTP_REFERER} / $HcurrentID
+$server_config::HbaseDir / $ENV{HTTP_REFERER} / $HcurrentID
   </body>
 </html>
 END
@@ -228,8 +236,8 @@ sub cgiInput {
 sub cookieInput {
 
     my ($cookie) = $ENV{'HTTP_COOKIE'};
-    my ($HthisFile) = "$HbaseDir/hako-main.cgi";
-    my ($HHistoryFile) = "$HbaseDir/history.cgi";
+    my ($HthisFile) = "$server_config::HbaseDir/hako-main.cgi";
+    my ($HHistoryFile) = "$server_config::HbaseDir/history.cgi";
 
     if ($cookie =~ /${HthisFile}OWNISLANDID=\(([^\)]*)\)/) {
         $defaultID = $1;
@@ -248,58 +256,65 @@ sub cookieInput {
 #---------------------------------------------------------------------
 # ヘッダ
 sub tempHeader {
-    if ($ENV{'HTTP_ACCEPT_ENCODING'}=~/gzip/ && $Hgzip == 1) {
+
+    my ($baseSKIN);
+
+    $baseSKIN = "${efileDir}/$HcssFile";
+
+    if (   ($server_config::Hgzip == 1)
+        && ($ENV{'HTTP_ACCEPT_ENCODING'}=~/gzip/)) {
+
         print qq{Content-type: text/html; charset=EUC-JP\n};
         print qq{Content-encoding: gzip\n\n};
-        open(STDOUT,"| $HpathGzip/gzip -1 -c");
-        print " " x 2048 if($ENV{HTTP_USER_AGENT}=~/MSIE/);
-        print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">\n\n};
+        open(STDOUT,"| $server_config::HpathGzip/gzip -1 -c");
+        print " " x 2048 if ($ENV{HTTP_USER_AGENT}=~/MSIE/);
     }
     else {
         print qq{Content-type: text/html; charset=EUC-JP\n\n};
-        print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">\n\n};
     }
+    print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">\n\n};
 
     out(<<END);
 <html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html;charset=EUC-JP">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#99FF99">
-  <link rel="shortcut icon" href="./img/fav.ico">
-  <title>$title</title>
-  <link rel="stylesheet" type="text/css" href="${baseSKIN}">
-</head>
-$body<div id='BodySpecialForHistory' width='100%'>
-<div id='LinkHead'>
-  <hr>
-</div>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=EUC-JP">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#99FF99">
+    <link rel="shortcut icon" href="./img/fav.ico">
+    <title>$title</title>
+    <link rel="stylesheet" type="text/css" href="${baseSKIN}">
+  </head>
+  $body
+    <div id='BodySpecialForHistory' width='100%'>
+      <div id='LinkHead'>
+        <hr>
+      </div>
 END
 # <A HREF="$bye">[戻る]</A><br>
     out(<<END);
-<span class="big"><a href=href=\"#\" onclick=\"window.close()\">[閉じる]</a></span><br>
+      <span class="big"><a href=href=\"#\" onclick=\"window.close()\">[閉じる]</a></span><br>
 END
     logDekigoto();
     out(<<END);
-<hr>
-<form name="recentForm" action="${HbaseDir}/history.cgi" method="post" style="margin  : 2px 0px;">
-<b>[最近の出来事]</b><br>
-<!-- <A href="history.cgi?Event=99">【ALL】</A> -->
+      <hr>
+      <form name="recentForm" action="$server_config::HbaseDir/history.cgi" method="post" style="margin  : 2px 0px;">
+        <b>[最近の出来事]</b><br>
+<!-- <a href="history.cgi?Event=99">【ALL】</a> -->
 END
     my ($i, $turn);
     out("<span class='HistoryTurnList'>");
     for ($i = 0;$i < $HtopLogTurn;$i++) {
         $turn = $HislandTurn - $i;
         last unless($turn > 0);
-        out("<A HREF='history.cgi?Event=${i}'>");
+        out("<a href='history.cgi?Event=${i}'>");
         if ($i == 0) {
             out("[ターン${turn}(現在)]<br>");
         }
         else {
             out("[${turn}]");
         }
-        out('</A> ');
-        out("<br>\n") if($i != 0 && ($i % 10) == 0 ); 
+        out("</a>\n");
+        out("<br>\n") if ($i != 0 && ($i % 10) == 0 ); 
     }
     out('</span>');
 
@@ -354,9 +369,9 @@ END
 sub tempRefresh {
     my ($delay, $str) = @_;
 
-    unless($Hgzip == 1) {
+    unless($server_config::Hgzip == 1) {
         print qq{Content-type: text/html; charset=EUC-JP\n\n};
-        print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">\n\n};
+        print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">\n\n};
         out(<<END);
 <html>
   <head>
@@ -369,13 +384,16 @@ sub tempRefresh {
 END
     }
     else {
+        my (@buffer);
+
         open(IN, "<${HhtmlDir}/hakolog.html") || die $!;
         @buffer = <IN>;
         close(IN);
-        if($ENV{'HTTP_ACCEPT_ENCODING'}=~/gzip/) {
+
+        if ($ENV{'HTTP_ACCEPT_ENCODING'}=~/gzip/) {
             print qq{Content-type: text/html;\n};
             print qq{Content-encoding: gzip\n\n};
-            open(STDOUT,"| $HpathGzip/gzip -1 -c");
+            open(STDOUT,"| $server_config::HpathGzip/gzip -1 -c");
             print " " x 2048 if($ENV{HTTP_USER_AGENT}=~/MSIE/);
         }
         else {
@@ -395,6 +413,7 @@ sub getIslandList {
     $list = '';
     my ($predel);
     foreach $i (0..$islandNumber) {
+
         $name = islandName($Hislands[$i]);
         $name =~ s/<[^<]*>//g;
         $predel = ($Hislands[$i]->{'predelete'}) ? '[預]' : '';
@@ -499,9 +518,11 @@ sub logPrintLocal {
 #---------------------------------------------------------------------
 sub logFilePrint {
     my ($fileNumber, $id, $mode) = @_;
+
     my ($set_turn) = 0;
-    open(LIN, "${HdirName}/hakojima.log$_[0]");
     my ($line, $m, $turn, $id1, $id2, $message);
+
+    open(LIN, "${HdirName}/hakojima.log$_[0]");
 
     while ($line = <LIN>) {
         $line =~ /^([0-9]*),([0-9]*),([0-9]*),([0-9]*),(.*)$/;

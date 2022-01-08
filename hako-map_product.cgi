@@ -12,6 +12,8 @@ sub ProductListMain {
     # 開放
     unlock();
 
+    tempHeader_woTopmenu();
+
     # idから島番号を取得
     $HcurrentNumber = $HidToNumber{$HcurrentID};
 
@@ -29,6 +31,8 @@ sub ProductListMain {
 
     ProductList_Pirnt();
 
+    # フッタ出力
+    tempFooter();
 }
 
 
@@ -45,21 +49,23 @@ sub ProductList_Pirnt {
     out(<<END);
 <hr>
 <div>
-<table>
-<tr>
-<th $HbgTitleCell >${HtagTH_}物資${H_tagTH}</th>
-<th $HbgTitleCell >${HtagTH_}数量${H_tagTH}</th>
-</tr>
+  <table>
+    <tr>
+      <th $HbgTitleCell >${HtagTH_}物資${H_tagTH}</th>
+      <th $HbgTitleCell >${HtagTH_}数量${H_tagTH}</th>
+    </tr>
 END
     foreach $product (@HProduct_Food_hash_table) {
 
         out(<<END);
-<tr><td>$HProduct_Name{$product}</td><td>$island->{$product}$HProduct_unitName{$product}</td></tr>
+    <tr>
+      <td>$HProduct_Name{$product}</td><td>$island->{$product}$HProduct_unitName{$product}</td>
+    </tr>
 
 END
     }
     out(<<END);
-</table>
+  </table>
 </div>
 END
 }
@@ -69,9 +75,8 @@ END
 sub ProductListHead {
 
     out(<<END);
-<div align='center'>${HtagBig_}<span class='Nret'>${HtagName_}「${HcurrentName}」${H_tagName}の</span><span class='Nret'>物資</span>${H_tagBig}<br>
-$HtempBack<BR>
-</div>
+<p align='center'>${HtagBig_}<span class='Nret'>${HtagName_}「${HcurrentName}」${H_tagName}の</span><span class='Nret'>物資</span>${H_tagBig}</p>
+
 END
 
 }

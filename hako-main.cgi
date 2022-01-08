@@ -67,6 +67,7 @@ require './hako-init.cgi';
 require './hako-io.cgi';
 require './init-game.cgi';
 require './server_config.pm';
+require './hako-common.cgi';
 
 use constant MAIN_WIIU_AXES_FILE    => 'ipfile.dat';
 
@@ -109,9 +110,10 @@ our ($HadminMode) = 0;
 require './hako-land_const.cgi';
 
 
-# =============================================================================
+#----------------------------------------------------------------------
 # 計画番号の設定
 # 整地系
+#----------------------------------------------------------------------
 our $HcomPrepare    = 01; #  1 整地
 our $HcomPrepare2   = 02; #  2 地ならし
 our $HcomReclaim    = 03; #  3 埋め立て
@@ -641,26 +643,26 @@ our ($Body) = '<body>';
 
         # ヘッダ出力
         tempHeaderJava();
-        if($HmainMode eq 'commandJava') {           # 開発モード
+        if ($HmainMode eq 'commandJava') {          # 開発モード
             commandJavaMain();
 
-        } elsif($HmainMode eq 'command2') {         # 開発モード2（ver1.1より追加・自動系コマンド用）
+        } elsif ($HmainMode eq 'command2') {        # 開発モード2（ver1.1より追加・自動系コマンド用）
             commandMain();
 
-        } elsif($HmainMode eq 'comment') {          # コメント入力モード
+        } elsif ($HmainMode eq 'comment') {         # コメント入力モード
             commentMain();
 
-        } elsif($HmainMode eq 'totoyoso') {         # TOTO予想１入力モード
+        } elsif ($HmainMode eq 'totoyoso') {        # TOTO予想１入力モード
             totoInputMain(0);
 
-        } elsif($HmainMode eq 'totoyoso2') {        # TOTO予想２入力モード
+        } elsif ($HmainMode eq 'totoyoso2') {       # TOTO予想２入力モード
             totoInputMain(1);
 
-        } elsif($HmainMode eq 'shuto') {            # 首都名変更モード
+        } elsif ($HmainMode eq 'shuto') {           # 首都名変更モード
             require('./hako-map.cgi');
             shutoMain();
 
-        } elsif($HmainMode eq 'teamname') {         # 首都名変更モード
+        } elsif ($HmainMode eq 'teamname') {        # 首都名変更モード
             require('./hako-map.cgi');
             TeamMain();
 
@@ -705,29 +707,28 @@ our ($Body) = '<body>';
 
         $Htitle_sub = ' 記念碑リスト';
         $Body = '<body>';
-        # ヘッダ出力
-        tempHeaderJava();
 
+        tempHeader_woTopmenu();         # ヘッダ出力
         MonumentNumList();
-
-        # フッタ出力
-        tempFooter();
-        # 終了
-        exit(0);
+        tempFooter();                   # フッタ出力
+        exit(0);                        # 終了
     }
     elsif ($HmainMode eq 'taijilist') {             # 怪獣退治リスト
         require('./hako-map.cgi');
         $Body = '<body>';
-        # ヘッダ出力
-        tempHeaderJava();
 
+        tempHeader_woTopmenu();         # ヘッダ出力
         Show_Taiji_List();
+        tempFooter();                   # フッタ出力
+        exit(0);                        # 終了
 
-        # フッタ出力
-        tempFooter();
+    }
+    elsif ($HmainMode eq 'productlist') {  # プロダクトリスト
+        require ('./hako-map_product.cgi');
+        $Htitle_sub = ' 物資';
+        ProductListMain();
         # 終了
         exit(0);
-
     }
     elsif(   ($HmainMode ne 'new')
           && ($HmainMode ne 'lbbs') ) {
@@ -800,11 +801,6 @@ our ($Body) = '<body>';
         require('./hako-map.cgi');
         $Htitle_sub = ' マップ';
         printIslandMain();
-
-    } elsif($HmainMode eq 'productlist') {  # プロダクトリスト
-        require ('./hako-map_product.cgi');
-        $Htitle_sub = ' 物資';
-        ProductListMain();
 
     } elsif($HmainMode eq 'tradelist') {    # 取引リスト
         require ('./hako-map.cgi');
@@ -1013,27 +1009,28 @@ sub cgiInput {
     $getLine = $ENV{'QUERY_STRING'};
 
     # 対象の島
-    if($line =~ /ISLANDID=([0-9]+)\&/){
+    if ($line =~ /ISLANDID=([0-9]+)\&/) {
         $HcurrentID = $1;
     }
 
     # パスワード
-    if($line =~ /OLDPASS=([^\&]*)\&/) {
+    if ($line =~ /OLDPASS=([^\&]*)\&/) {
         $HoldPassword = $1;
         $HdefaultPassword = $1;
     }
-    if($line =~ /PASSWORD=([^\&]*)\&/) {
+    if ($line =~ /PASSWORD=([^\&]*)\&/) {
         $HinputPassword = $1;
         $HdefaultPassword = $1;
     }
-    if($line =~ /PASSWORD2=([^\&]*)\&/) {
+    if ($line =~ /PASSWORD2=([^\&]*)\&/) {
         $HinputPassword2 = $1;
     }
 
     # Ｊａｖａスクリプトモード
     if ($line =~ /JAVAMODE=(cgi|java)/) {
         $HjavaMode = $1;
-    } elsif ($getLine =~ /JAVAMODE=(cgi|java)/) {
+    }
+    elsif ($getLine =~ /JAVAMODE=(cgi|java)/) {
         $HjavaMode = $1;
     }
     if ($getLine =~ /UNLOCK=([0-9]*)/) {
@@ -1104,21 +1101,21 @@ sub cgiInput {
         $line =~ /POINTY=([^\&]*)\&/;
         $HcommandY = $1;
         $HdefaultY = $1;
-        if($line =~ /COMMANDMODE=(write|insert|delete)/) {
+        if ($line =~ /COMMANDMODE=(write|insert|delete)/) {
             $HcommandMode = $1;
         }
         # コマンドのポップアップメニューを開く？
-        if($line =~ /MENUOPEN=on/) {
+        if ($line =~ /MENUOPEN=on/) {
             $HmenuOpen = 'CHECKED';
         } elsif($line =~ /MENUOPEN2=on/) {
             $HmenuOpen2 = 'CHECKED';
         }
-    } elsif($line =~ /Trade=([0-9]*)/) {
+    }
+    elsif ($line =~ /Trade=([0-9]*)/) {
         $HmainMode = 'tradelist';
         $HcurrentID = $1;
-
     }
-    elsif($line =~ /TRADE_DEL=([0-9]*)/) {
+    elsif ($line =~ /TRADE_DEL=([0-9]*)/) {
         $HmainMode = 'tradedelete';
         $TradeTargetID = $1;
         if ($line =~ /myID=([0-9]*)/) {
@@ -1152,7 +1149,6 @@ sub cgiInput {
         if ($line =~ /TradeObjSide=([0-9]*)/) {
             $TradeObjSide = $1;
         }
-
     }
     elsif ($getLine =~ /SightC=([0-9]*)/) {
         $HtempBack = "<A href=\"Javascript:void(0);\" onclick=\"window.open('about:blank','_self').close()\"><span class='big'>[閉じる]</span></A>";
@@ -1170,7 +1166,8 @@ sub cgiInput {
         if ($getLine =~ /ADMINMODE=([0-9]*)/) {
             $HadminMode = $1;
         }
-    } elsif ($getLine =~ /Product=([0-9]*)/) {
+    }
+    elsif ($getLine =~ /Product=([0-9]*)/) {
         $HmainMode = 'productlist';
         $HcurrentID = $1;
 
@@ -1183,8 +1180,8 @@ sub cgiInput {
         $HmainMode = 'print';
         $line =~ /TARGETID=([^\&]*)\&/;
         $HcurrentID = $1;
-
-    } elsif ($line =~ /LbbsButton(..)([0-9]*)/) {
+    }
+    elsif ($line =~ /LbbsButton(..)([0-9]*)/) {
         $HmainMode = 'lbbs';
         if ($1 eq 'AD') {
             # 管理人
@@ -1222,18 +1219,18 @@ sub cgiInput {
         $line =~ /LBBSTYPE=([^\&]*)\&/;
         $HlbbsType = $1;
         # 削除かもしれないので、番号を取得
-        if($line =~ /NUMBER=([^\&]*)\&/) {
+        if ($line =~ /NUMBER=([^\&]*)\&/) {
             $HcommandPlanNumber = $1;
         }
-
-    } elsif ($line =~ /ChangeInfoButton/) {
+    }
+    elsif ($line =~ /ChangeInfoButton/) {
         $HmainMode = 'change';
         # 名前指定の場合
-        if ($line =~ /ISLANDNAME=([^\&]*)\&/){
+        if ($line =~ /ISLANDNAME=([^\&]*)\&/) {
             $HcurrentName = cutColumn($1, $HlengthIslandName*2);
         }
         # オーナー名の取得
-        if ($line =~ /OWNERNAME=([^\&]*)\&/){
+        if ($line =~ /OWNERNAME=([^\&]*)\&/) {
             $HcurrentOwnerName = cutColumn($1, $HlengthOwnerName*2);
         }
 
@@ -1361,14 +1358,14 @@ sub cgiInput {
         $HtempBack = "<A href=\"Javascript:void(0);\" onclick=\"window.open('about:blank','_self').close()\"><span class='big'>[閉じる]</span></A>";
         $HmainMode = 'campCHAT';
         $HcurrentCampID = $1;
-        if($line =~ /PASSWORD=([^\&]*)\&/) {
+        if ($line =~ /PASSWORD=([^\&]*)\&/) {
             $HinputPassword = $1;
             $HdefaultPassword = $1;
         }
-        if($line =~ /jpass=([a-zA-Z0-9]*)/) {
+        if ($line =~ /jpass=([a-zA-Z0-9]*)/) {
             $HcampPassward = $1; # 陣営パスワード
         }
-        if($line =~ /id=([0-9]*)/) {
+        if ($line =~ /id=([0-9]*)/) {
             $HcurrentID = $1;
         }
         $line =~ /LBBSNAME=([^\&]*)\&/;
@@ -1397,7 +1394,7 @@ sub cgiInput {
         $HtempBack = "<A href=\"Javascript:void(0);\" onclick=\"window.open('about:blank','_self').close()\"><span class='big'>[閉じる]</span></A>";
         $HmainMode = 'camp';
         $HcurrentCampID = $1;
-        if($line =~ /PASSWORD=([^\&]*)\&/) {
+        if ($line =~ /PASSWORD=([^\&]*)\&/) {
             $HinputPassword = $1;
             $HdefaultPassword = $1;
         }
@@ -1548,8 +1545,8 @@ sub cgiInput {
 
     } elsif($getLine =~ /Rekidai=([0-9]*)/) {       # 歴代最多人口記録
         $HmainMode = 'rekidai';
-
-    } else {
+    }
+    else {
 
         $HmainMode = 'top';
     }
@@ -1915,74 +1912,10 @@ sub max {
 sub encode {
     if ($cryptOn == 1) {
         return crypt($_[0], 'h2');
-    } else {
+    }
+    else {
         return $_[0];
     }
-}
-
-#----------------------------------------------------------------------
-# 1000億単位丸めルーチン
-sub aboutMoney {
-    my ($m) = @_;
-
-    my ($order) = 10 ** (INIT_HIDE_MONEY_MODE - 2);
-    my ($money);
-
-    if ($m < 500 * $order) {
-        $money = 500 * $order;
-        return "推定${money}${HunitMoney}未満";
-    }
-    else {
-        $m = int(($m + 500 * $order) / (1000 * $order));
-        $money = $m * 1000 * $order;
-        return "推定${money}${HunitMoney}";
-    }
-}
-
-#----------------------------------------------------------------------
-# 10発単位丸めルーチン
-sub aboutMissile {
-    my ($m) = @_;
-
-    if ($m < 5) {
-        return "推定10${HunitMissile}未満";
-    }
-    else {
-        $m = int(($m + 5) / 10);
-        return "推定${m}0${HunitMissile}";
-    }
-}
-
-
-# ---------------------------------------------------------------------
-sub Get_ZooState {
-    my ($island) = @_;
-
-    my ($tmp);
-    my (@mons_list);
-
-    $tmp = $island->{'zoo'};
-    chomp($tmp);
-
-    @mons_list = split(/\,/,$tmp);
-
-    my ($kazu) = 0;
-    my ($zookazu) = 0;
-    my ($zookazus) = 0;
-    my ($mshurui) = 0;
-    my ($mkind) = 0;
-
-    foreach $kazu (@mons_list) {
-
-        $zookazu  += $kazu;
-        $zookazus += $kazu * $HmonsterZooMoney[$mkind];  # $parは設定怪獣ごとにする
-        if ($kazu > 0) {
-            $mshurui++;
-        }
-        $mkind++;
-    }
-
-    return ($zookazu, $zookazus, $mshurui);
 }
 
 
@@ -2158,16 +2091,25 @@ sub makeRandomPointArray {
 
 
 #----------------------------------------------------------------------
-sub Calc_HouseLevel {
-    my ($pts) = @_;
+sub GetIslandForce {
+    my ($island) = @_;
 
-    my ($hlv) = 0;
-    foreach (0..9) {
-        $hlv = 9 - $_;
-        last if($pts > $HouseLevel[$hlv]);
-    }
+    my ($ret);
 
-    return ($hlv);
+    my ($mshp, $msap, $msdp, $mssp, $mswin, $msexe, $tet) = split(/,/, $island->{'eisei5'});
+    my ($force) = $mshp + $msap + $msdp + $mssp;
+    $ret = $force;
+
+    return ($ret);
+}
+
+
+#----------------------------------------------------------------------
+sub GetStadiumResult {
+    my ($stshoka) = @_;
+
+
+
 }
 
 
@@ -2336,7 +2278,8 @@ sub tempLockFail {
     out(<<END);
 <span class='big'>同時アクセスエラーです。<br>
 ブラウザの「戻る」ボタンを押し、<br>
-しばらく待ってから再度お試し下さい。</span>$HtempBack
+しばらく待ってから再度お試し下さい。</span><br>
+$HtempBack
 END
 }
 
@@ -2403,11 +2346,73 @@ END
 
 
 #----------------------------------------------------------------------
+# MIMEタイプの出力
+#----------------------------------------------------------------------
+sub Print_MIMEtype {
+
+    print qq{Content-type: text/html; charset=EUC-JP\n\n};
+    if ($server_config::HpathGzip == 1 && $ENV{'HTTP_ACCEPT_ENCODING'}=~/gzip/ ) {
+        print qq{Content-encoding: gzip\n\n};
+        open(STDOUT,"| $HpathGzip/gzip -1 -c");
+        print " " x 2048 if ($ENV{HTTP_USER_AGENT}=~/MSIE/);
+    }
+    print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">\n\n};
+}
+
+
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+# ヘッダ
+sub tempHeader_woTopmenu {
+
+    $baseIMG = $server_config::HimageDir;
+    $baseSKIN = "${efileDir}/$HcssFile";
+    $seasonIMG = '';
+
+    my ($mapsizeNumber) = $HidToNumber{$defaultID};
+
+    $Hms1 = 16;
+    $Hms2 = $Hms1 << 1; # x2
+
+    Print_MIMEtype();
+
+    out(<<END);
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
+END
+    out(<<END);
+  <meta name="theme-color" content="#99FF99">
+  <link rel="shortcut icon" href="./img/fav.ico">
+  <title>$Htitle $Htitle_sub</title>
+  <base href="${baseIMG}/${seasonIMG}">
+  <link rel="stylesheet" type="text/css" href="${baseSKIN}">
+  <style type="text/css">
+img.maptile {
+  width: 32px;
+  height: 32px;
+  border: 0px;
+  border-style:hidden;
+}
+  </style>
+</head>
+$Body<div id='BodySpecial'>
+<p align='center'>
+  <a href=\"#\" onclick=\"window.close()\">${HtagBig_}[閉じる]${H_tagBig}</a>
+</p>
+END
+}
+
+
+#----------------------------------------------------------------------
 # ヘッダ
 sub tempHeader {
 
     $baseIMG = $HimageDir;
     $baseSKIN = "${efileDir}/$HcssFile";
+
     #季節なし
     $seasonIMG = '';
 
@@ -2415,57 +2420,47 @@ sub tempHeader {
     $Hms1 = 16;
     $Hms2 = $Hms1 << 1;     # 2倍
 
-    if ($server_config::HpathGzip == 1 && $ENV{'HTTP_ACCEPT_ENCODING'}=~/gzip/ ) {
-        print qq{Content-type: text/html; charset=EUC-JP\n};
-        print qq{Content-encoding: gzip\n\n};
-        open(STDOUT,"| $HpathGzip/gzip -1 -c");
-        print " " x 2048 if($ENV{HTTP_USER_AGENT}=~/MSIE/);
-        print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">\n\n};
-#       print qq{<!DOCTYPE html>\n\n};
-    }
-    else {
-        print qq{Content-type: text/html; charset=EUC-JP\n\n};
-        print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">\n\n};
-#       print qq{<!DOCTYPE html>\n\n};
-    }
+    Print_MIMEtype();
+
+    HeaderTagPring();
 
     out(<<END);
-<html lang="ja">
-<head>
-  <title>$Htitle</title>
-  <meta http-equiv="Content-Type" CONTENT="text/html; charset=EUC-JP">
-  <meta http-equiv="Expires" content="259200">
-  <meta http-equiv="Content-Script-Type" content="text/javascript">
-  <meta name="format-detection" content="telephone=no">
-  <meta name="theme-color" content="#99FF99">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="og:type" content="website"/>
-  <meta property="og:url" content="http://minimal97.mydns.jp:8123/hako/">
-  <meta property="og:title" content="minimal97の箱庭諸島" />
-  <meta property="og:description" content="minimal97が運営する無料ブラウザゲームです。" />
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="@minimal97">
-  <meta name="twitter:creator" content="@minimal97" />
-  <meta name="twitter:title" content="minimal97の箱庭諸島">
-  <meta name="twitter:description" content="minimal97が運営する無料ブラウザゲームです。">
-  <meta property="og:image" content="http://graphics8.nytimes.com/images/2011/12/08/technology/bits-newtwitter/bits-newtwitter-tmagArticle.jpg" />
-  <base href="${baseIMG}/${seasonIMG}">
-  <link rel="shortcut icon" href="./img/fav.ico">
-  <link rel="stylesheet" type="text/css" href="${baseSKIN}">
-  <style type="text/css">
-img.maptile_ret {
-  width: ${Hms2}px;
-  height: ${Hms2}px;
-  border: 0px;
-  border-style:hidden;
-  transform:scale(-1, 1);
-}
-  </style>
-</head>
 $Body
   <div id='BodySpecial'>
 END
-html_template::PrintHeader();
+    html_template::PrintHeader();
+}
+
+
+#----------------------------------------------------------------------
+# ヘッダプリント
+sub HeaderTagPring {
+
+    out(<<END);
+<html lang="ja">
+  <head>
+    <title>$Htitle</title>
+    <meta http-equiv="Content-Type" CONTENT="text/html; charset=EUC-JP">
+    <meta http-equiv="Expires" content="259200">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#99FF99">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="og:type" content="website">
+    <meta property="og:url" content="http://minimal97.mydns.jp:8123/hako/">
+    <meta property="og:title" content="minimal97の箱庭諸島">
+    <meta property="og:description" content="minimal97が運営する無料ブラウザゲームです。">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@minimal97">
+    <meta name="twitter:creator" content="@minimal97">
+    <meta name="twitter:title" content="minimal97の箱庭諸島">
+    <meta name="twitter:description" content="minimal97が運営する無料ブラウザゲームです。">
+    <meta property="og:image" content="http://graphics8.nytimes.com/images/2011/12/08/technology/bits-newtwitter/bits-newtwitter-tmagArticle.jpg">
+    <base href="${baseIMG}/${seasonIMG}">
+    <link rel="shortcut icon" href="./img/fav.ico">
+    <link rel="stylesheet" type="text/css" href="${baseSKIN}">
+  </head>
+END
 }
 
 
@@ -2494,13 +2489,13 @@ END
     #       open(POUT,">>cpu-h.log");
     #       print POUT "CPU($cpu) : user($uti) system($sti)\n";
     #       close(POUT);
+
+        my ($pstime) = system("/bin/ps -o rss -e -q $$");
+
         out(<<END);
 <small>CPU($cpu): user($uti) system($sti) /t:$timea
-(
-END
-system("/bin/ps -o rss -e -q $$");
-    out(<<END);
-kb)</small>
+($pstime kb)</small>
+</div>
 END
     }
 #####

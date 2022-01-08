@@ -41,7 +41,7 @@ $efileDir = "${HbaseDir}/${HcssDir}";
 $HefileDir = '.';
 
 # CSSファイルの名前
-our $HcssFile = 'style.css?v=1.2.7';
+our $HcssFile = 'style.css?v=1.2.8';
 
 # パスワードファイル名
 # マスタパスワードと特殊パスワードは暗号化されてパスワードファイルに記憶されています。
@@ -59,7 +59,8 @@ $HadminName = '管理者の名前';
 # 掲示板アドレス
 #$Hbbs = 'http://サーバー/掲示板.cgi';
 # 通常の掲示板もYY-BOARDを利用する場合
-$Hbbs = "${HbaseDir}/hako-yy-bbs.cgi";
+# $Hbbs = "${HbaseDir}/hako-yy-bbs.cgi";
+$Hbbs = '';
 
 # ホームページのアドレス
 $Htoppage = '';
