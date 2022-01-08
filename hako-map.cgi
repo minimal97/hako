@@ -26,24 +26,13 @@ require ('./server_config.pm');
 # ヘッダ
 sub tempHeaderJava {
 
+    $baseIMG = $server_config::HimageDir;
+    $baseSKIN = "${efileDir}/$HcssFile";
+    $seasonIMG = '';
+
     my ($mapsizeNumber) = $HidToNumber{$defaultID};
 
-    $Hms1 = 16;
-    $Hms2 = $Hms1 << 1; # x2
-
-    if (   (USE_GZIP == 1)
-        && ($ENV{'HTTP_ACCEPT_ENCODING'}=~/gzip/) ) {
-
-        print qq{Content-type: text/html; charset=EUC-JP\n};
-        print qq{Content-encoding: gzip\n\n};
-        open(STDOUT,"| $HpathGzip/gzip -1 -c");
-        print " " x 2048 if($ENV{HTTP_USER_AGENT}=~/MSIE/);
-        print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">\n\n};
-    }
-    else {
-        print qq{Content-type: text/html; charset=EUC-JP\n\n};
-        print qq{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">\n\n};
-    }
+    Print_MIMEtype();
 
     out(<<END);
 <html lang="en">
@@ -63,22 +52,16 @@ END
   <title>$Htitle $Htitle_sub</title>
   <base href="${baseIMG}/${seasonIMG}">
   <link rel="stylesheet" type="text/css" href="${baseSKIN}">
+<!-- 
   <style type="text/css">
 img.maptile {
-  width: ${Hms2}px;
-  height: ${Hms2}px;
+  width: 32px;
+  height: 32px;
   border: 0px;
   border-style:hidden;
 }
-
-img.maptile_ret {
-  width: ${Hms2}px;
-  height: ${Hms2}px;
-  border: 0px;
-  border-style:hidden;
-  transform:scale(-1, 1);
-}
-</style>
+  </style>
+-->
 </head>
 $Body<div id='BodySpecial'>
 END
@@ -142,17 +125,19 @@ sub tempOwnerJava {
     @click_com[1..7]  = ('', '', '', '', '', '', '');
     my ($All_listCom) = 0;
     my ($bai);
-    my ($cflag);
     my ($cmd_lp);
 
     $com_count = @HcommandDivido2;
+
+    my (@cmd);
+    my ($cmdsetnum);
 
     for ($m = 0; $m < $com_count; $m++) {
 
         $set_listcom .= "\[ ";
 
-        my (@cmd) = split(/,/,$HcommandDivido2[$m]);
-        my ($cmdsetnum) = ($#cmd) + 1;
+        @cmd = split(/,/,$HcommandDivido2[$m]);
+        $cmdsetnum = ($#cmd) + 1;
 
         for ($cmd_lp = 1 ; $cmd_lp < $cmdsetnum ; $cmd_lp++) {
             $l_kind = $cmd[$cmd_lp];
@@ -164,31 +149,9 @@ sub tempOwnerJava {
             next if(($l_kind == $HcomYakusho) && ($Hislands[$HcurrentNumber]->{'yaku'} > 0));
 
             # 値段算出
-            my ($temp_cost);
-            $temp_cost = $HcomCost[$l_kind];
-            if ($temp_cost =~ s/Pointx(.*)$//g) {
+            $l_cost = toCostDisplay($HcomCost[$l_kind] , $island);
 
-                $l_cost = $island->{'pts'} * int($1);
-            }
-            else {
-                $l_cost = $temp_cost;
-            }
-
-            if ($l_cost == 0) {
-
-                $l_cost = '無料';
-            }
-            elsif ($l_cost < 0) {
-
-                $l_cost = - $l_cost;
-                $l_cost .= $HunitFood;
-            }
-            else {
-
-                $l_cost .= $HunitMoney;
-            }
-
-            if (isCommandEnable($l_kind) ) {
+            if (isCommandEnable($l_kind)) {
                 $set_listcom .= "\[$l_kind\,\'$HcomName[$l_kind]\',\'$l_cost\'\]\,\n";
                 if (($m > 0) && ($m < 8)) {
                     $click_com[$m] .= "      <a title='$l_cost' href='javascript:void(0);' onClick='cominput(myForm,6,$l_kind)' style='text-decoration:none'>$HcomName[$l_kind]<font size='-1'>($l_cost)</font></a><br>\n";
@@ -218,7 +181,8 @@ sub tempOwnerJava {
     #島リストセット
     my ($set_island, $l_name, $l_id);
     $set_island = "";
-    foreach $i (0..$islandNumber) {
+    foreach my $i (0..$islandNumber) {
+
         $l_name = islandName($Hislands[$i]);
         $l_name =~ s/<[^<]*>//g;
         $l_name =~ s/'/\\'/g;
@@ -401,7 +365,7 @@ END
                       <option>　　　　　　　　　　</option>
                     </select>
 <hr>
-<b>コマンド入力</b><BR><b>
+<b>コマンド入力</b><br><b>
 <a href='javascript:void(0);' onClick="cominput(myForm,1)">挿入</a>
 　<a href='javascript:void(0);' onClick="cominput(myForm,2)">上書き</a>
 　<a href='javascript:void(0);' onClick="cominput(myForm,3)">削除</a>
@@ -410,19 +374,12 @@ END
 END
     PointPanel();
 
-    out(<<END);
-<b>数量</b>
-                    <select name='AMOUNT'>
-END
-
-    # 数量
-    command_arg();
+    Command_argPanel();
 
     my ($myislandID) = $defaultTarget;
     $myislandID = $island->{'id'} if ($myislandID eq '');
 
     out(<<END);
-                    </select>
 <hr>
 <b>目標の${AfterName}</b>：
 <b><a href='javascript:void(0);' onclick="jump(myForm, '$HjavaMode')"> 表示 </a></b>
@@ -604,6 +561,29 @@ sub commandJavaMain {
 
 
 #----------------------------------------------------------------------
+#
+#----------------------------------------------------------------------
+sub toCostDisplay {
+    my ($cost , $island) = @_;
+
+    my ($l_cost);
+
+    $l_cost = CalcCostbyPoint($cost , $island);
+
+    if ($l_cost == 0) {
+
+        $l_cost = '無料';
+    }
+    else {
+
+        $l_cost .= $HunitMoney;
+    }
+
+    return ($l_cost);
+}
+
+
+#----------------------------------------------------------------------
 # 観光モード
 #----------------------------------------------------------------------
 sub printIslandJava {
@@ -631,13 +611,15 @@ sub printIslandJava {
     my ($m);
     @click_com[8, 9]  = ('', '');
     if ($HjavaMode eq 'java') {
+
         $com_count = @HcommandDivido2;
-        my ($temp_cost);
         my ($l_cost);
 
         my ($tag_s_s,$tag_s_e);
         my ($flag);
         my ($cmd_lp);
+        my (@cmd);
+        my ($cmdsetnum);
 
         for ($m = 0; $m < $com_count; $m++) {
 
@@ -648,8 +630,8 @@ sub printIslandJava {
                 next;
             }
 
-            my (@cmd) = split(/,/,$HcommandDivido2[$m]);
-            my ($cmdsetnum) = ($#cmd) + 1;
+            @cmd = split(/,/,$HcommandDivido2[$m]);
+            $cmdsetnum = ($#cmd) + 1;
 
             for ($cmd_lp = 1 ; $cmd_lp < $cmdsetnum ; $cmd_lp++) {
 
@@ -660,24 +642,7 @@ sub printIslandJava {
                 if (isCommandEnable($l_kind) ) {
 
                     # 値段算出
-                    $temp_cost = $HcomCost[$l_kind];
-                    if ($temp_cost =~ s/Pointx(.*)$//g) {
-
-                        $l_cost = $island->{'pts'} * int($1);
-                    }
-                    else {
-
-                        $l_cost = $temp_cost;
-                    }
-
-                    if ($l_cost == 0) {
-                        $l_cost = '無料';
-
-                    }
-                    else {
-
-                        $l_cost .= $HunitMoney;
-                    }
+                    $l_cost = toCostDisplay($HcomCost[$l_kind] , $island);
 
                     if (   ($l_kind == $HcomEiseiLzr)
                         || ($l_kind == $HcomSendPirates)
@@ -691,7 +656,8 @@ sub printIslandJava {
                         || ($l_kind == $HcomMissileLD)
                                                         ) {
 
-                        if (   (($HcurrentID != $HmyislandID) && ($HcurrentID != 67))
+                        if (   (   ($HcurrentID != $HmyislandID)
+                                && ($HcurrentID != 67))
                             && ($island->{'pop'} < $HguardPop)) {
 
                             $tag_s_s = "<s $HcurrentID>";
@@ -864,8 +830,6 @@ END
         islandMap(0, 1);  # 島の地図、観光モード
     }
 
-    # 近況
-    tempRecent(0, $HuseHistory2);
     out('</div>');
 }
 
@@ -891,10 +855,10 @@ sub printIslandMain {
     $HcurrentName = islandName($Hislands[$HcurrentNumber]);
 
     # 観光画面
-    tempPrintIslandHead(); # ようこそ!!
+    tempPrintIslandHead();          # ようこそ!!
     MapCommonScript();
-    islandInfo(0); # 島の情報
-    islandMap($HadminMode, 0); # 島の地図、観光モード
+    islandInfo(0);                  # 島の情報
+    islandMap($HadminMode, 0);      # 島の地図、観光モード
 
     islandJamp();   # 島の移動
     islandData();   # 各種データ
@@ -1470,36 +1434,14 @@ END
     #コマンド
     my ($j, $i);
     my ($kind, $cost, $s);
-    my ($temp_cost);
     for ($i = 0; $i < $HcommandTotal; $i++) {
         $kind = $HcomList[$i];
         next if ((($kind == $HcomSave)||($kind == $HcomLoad))&& !($Hislands[$HcurrentNumber]->{'shr'}));
         next if (($kind == $HcomBettown) && ($Hislands[$HcurrentNumber]->{'shutomessage'} == 555));
 
         # 値段算出
-        $temp_cost = $HcomCost[$kind];
-        if ($temp_cost =~ s/Pointx(.*)$//g) {
+        $cost = toCostDisplay($HcomCost[$kind], $island);
 
-            $cost = $island->{'pts'} * int($1);
-        }
-        else {
-
-            $cost = $temp_cost;
-        }
-
-        if ($cost == 0) {
-
-            $cost = '無料';
-        }
-        elsif ($cost < 0) {
-
-            $cost = - $cost;
-            $cost .= $HunitFood;
-        }
-        else {
-
-            $cost .= $HunitMoney;
-        }
         $s = ($kind == $HdefaultKind) ? 'selected' : '';
         out("<option value='$kind' $s>$HcomName[$kind]($cost)\n");
     }
@@ -1510,15 +1452,10 @@ END
 END
 
     PointPanel();
-    out(<<END);
-<b>数量</b><select name=AMOUNT>
-END
 
-    # 数量 2ですすめてなんとか小さくする。
-    command_arg();
+    Command_argPanel();
 
     out(<<END);
-</select>
           <hr>
           <b>目標の${AfterName}</b>：
           <b><a href="javascript:void(0);" onclick="jump(myForm, '$HjavaMode')"> 表\示 </a></b><br>
@@ -1544,14 +1481,8 @@ END
 
     my ($totoyoso) = $Hislands[$HcurrentNumber]->{'totoyoso'}->[0];
     my ($mapsize) = $totoyoso;
-    if ($mapsize =~ /\(mapsize\@(\d+)\)/) {
 
-        if ($1 < 1) {$Hms1 = 1;} elsif ($1 > 32) { $Hms1 = 32;} else { $Hms1 = $1;}
-    }
-    else {
-
-        $Hms1 = 16;
-    }
+    $Hms1 = 16;
     $Hms2 = $Hms1*2;
     islandMap(1, 0); # 島の地図、所有者モード
 
@@ -1588,6 +1519,22 @@ END
     CommentForm($island);
 }
 
+#----------------------------------------------------------------------
+sub Command_argPanel {
+
+    out(<<END);
+          <b>数量</b>
+          <select name='AMOUNT'>
+END
+
+    # 数量 2ですすめてなんとか小さくする。
+    command_arg();
+
+    out(<<END);
+          </select>
+END
+}
+
 
 #----------------------------------------------------------------------
 sub PointPanel {
@@ -1595,12 +1542,11 @@ sub PointPanel {
 <b>座標(</b>
 <select name='POINTX'>
 END
-    my ($i);
-    foreach $i (0..$islandSize) {
+    foreach my $i (0..$islandSize) {
         if ($i == $HdefaultX) {
 
             out("<option value=$i selected>$i");
-            for ( ; $i > $islandSize ; $i++) { out("<OPTION VALUE=$i>$i"); }
+            for ( ; $i > $islandSize ; $i++) { out("<option value=$i>$i"); }
         }
         else {
 
@@ -1612,11 +1558,11 @@ END
 </select>, <select name=POINTY>
 END
 
-    foreach $i (0..$islandSize) {
+    foreach my $i (0..$islandSize) {
         if ($i == $HdefaultY) {
 
-            out("<option value=$i SELECTED>$i");
-            for ( ; $i > $islandSize ; $i++) { out("<OPTION VALUE=$i>$i"); }
+            out("<option value=$i selected>$i");
+            for ( ; $i > $islandSize ; $i++) { out("<option value=$i>$i"); }
         }
         else {
 
