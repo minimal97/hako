@@ -688,28 +688,30 @@ our @HProduct_Food_hash_table = (
 );
 
 our @HProduct_Name;
-$HProduct_Name{'kome'}      = 'コメ';
-$HProduct_Name{'yasai'}     = '野菜';
-$HProduct_Name{'kudamono'}  = 'くだもの';
-$HProduct_Name{'seafood'}   = '魚介類';
-$HProduct_Name{'sio'}       = '塩';
-$HProduct_Name{'toriniku'}  = '鶏肉';
-$HProduct_Name{'butaniku'}  = '豚肉';
-$HProduct_Name{'gyuniku'}   = '牛肉';
-$HProduct_Name{'nazoniku'}  = 'なぞ肉';
-$HProduct_Name{'tamago'}  = 'たまご';
-
 our @HProduct_unitName;
-$HProduct_unitName{'kome'}      = '00トン';
-$HProduct_unitName{'yasai'}     = '00トン';
-$HProduct_unitName{'kudamono'}  = '00トン';
-$HProduct_unitName{'seafood'}   = '00トン';
-$HProduct_unitName{'sio'}       = '00トン';
-$HProduct_unitName{'toriniku'}  = '00トン';
-$HProduct_unitName{'butaniku'}  = '00トン';
-$HProduct_unitName{'gyuniku'}   = '00トン';
-$HProduct_unitName{'nazoniku'}  = '00トン';
-$HProduct_unitName{'tamago'}  = '00トン';
+
+SetProductTable('kome'      , 'コメ'    , '00トン');
+SetProductTable('yasai'     , '野菜'    , '00トン');
+SetProductTable('kudamono'  , 'くだもの', '00トン');
+SetProductTable('seafood'   , '魚介類'  , '00トン');
+SetProductTable('sio'       , '塩'      , '00トン');
+SetProductTable('toriniku'  , '鶏肉'    , '00トン');
+SetProductTable('butaniku'  , '豚肉'    , '00トン');
+SetProductTable('gyuniku'   , '牛肉'    , '00トン');
+SetProductTable('nazoniku'  , 'なぞ肉'  , '00トン');
+SetProductTable('tamago'    , 'たまご'  , '00トン');
+
+
+
+#----------------------------------------------------------------------
+# 
+sub SetProductTable {
+    my ($hash , $name , $unit) = @_;
+
+    $HProduct_Name{$hash}       = $name;
+    $HProduct_unitName{$hash}   = $unit;
+}
+
 
 our @CivReqkind = ('none' , 'tax' , 'food', 'food');
 our @CivReqDisp = ('なし' , '税金' , 'コメ', '野菜');
@@ -773,6 +775,7 @@ our $HBF_MONSTER_HOUSE = 1;
 our $HBF_Point_Value = 170;
 our $HBF_Missile_Limit = 30;
 
+
 #----------------------------------------------------------------------
 # アイテムMAX
 #----------------------------------------------------------------------
@@ -784,6 +787,7 @@ our $HFiredept_cost = 3;
 our $HFiredept_guard = 1;       #0.1%
 our $HFiredept_save = 50;       # 50 %
 
+
 #----------------------------------------------------------------------
 # スペース、スペース、スペーーーース
 #----------------------------------------------------------------------
@@ -794,7 +798,6 @@ our $HSpaceDebri_meteo = 1000;
 our $HSpaceDebri_evapo = 3;
 
 
-
 #----------------------------------------------------------------------
 # 市民の要求
 #----------------------------------------------------------------------
@@ -803,15 +806,18 @@ our $HCivReq_TaxDown = 1;
 
 our $HCivReq_FailTurn = (12*8);
 
+
 #----------------------------------------------------------------------
 # 番号, 名前, 画像
 sub SetMonumentTable {
-    my ($no, $name, $image) = @_;
+    my ($no, $enable, $name, $image) = @_;
 
     $HmonumentName[$no] = $name;
     $HmonumentImage[$no] = $image;
+    $HmonumentEnable[$no] = $enable;
 }
 
+#----------------------------------------------------------------------
 # 番号, 画像, 画像2, 最低体力, 体力の幅, 特殊能力, 経験値, 死体の値段, 動物園許可
 sub SetMonsterTable {
     my ($no, $name, $image, $cureimage, $bhp, $dhp, $str , $sp, $exp, $money, $zoo, $zoo_mo) = @_;
