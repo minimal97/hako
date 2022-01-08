@@ -206,7 +206,20 @@ myIsland     { white-space : nowrap; } /* 自分の島へ */
 #RecentlyLog { white-space : nowrap; } /* 最近の出来事・各島の近況 */
 #menu        { white-space : nowrap; } /* ポップアップ・メニュー(コマンド) */
 #menu2       { white-space : nowrap; } /* ポップアップ・メニュー２(旗艦・怪獣操作) */
-#extInfo     { white-space : nowrap; text-align : center; } /* 拡張データ表示 */
+
+#extInfo
+    {
+        white-space : nowrap;
+        text-align : center;
+        overflow: hidden;
+    } /* 拡張データ表示 */
+
+.ExtContainer
+    {
+        display : inline-block;
+        float : Left;
+    }
+
 /* その他 */
 #BodySpecial { white-space : normal; } /* <BODY></BODY>内 */
 #newIsland   { white-space : nowrap; text-align : center; } /* 新しい島を探す */
@@ -454,7 +467,8 @@ span.HistoryTurnList { white-space : normal;}
   visibility: hidden;
   z-index:1;
   position:absolute;
-  background-color: #F0FFFF;
+/* background-color: #F0FFFF; */
+  background-color: rgba( 240, 255, 255, 0.70 );
   border: groove #4169E1;
   border-width: 3px;
   width:180px;
