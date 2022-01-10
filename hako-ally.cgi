@@ -853,10 +853,12 @@ sub tempAllyPactPage {
 <div align='center'>$HtempBack</div><br>
   <div id='changeInfo'>
     <h1>コメント変更（$ally->{'name'}）</H1>
-<table border="0" width="50%"><tr><td class="M">
+    <table border="0" width="50%">
+      <tr>
+        <td class="M">
           <form action="$HthisFile" method="POST">
             <b>盟主パスワードは？</b><br>
-<INPUT TYPE="password" NAME="Allypact" VALUE="$HdefaultPassword" SIZE=32 MAXLENGTH=32 class=f>
+            <input type="password" name="Allypact" value="$HdefaultPassword" size="32" maxlength="32" class="f">
             <input type="hidden"  name="ISLANDID" value="$ally->{'id'}">
             <input type="submit" value="送信" name="AllypactButton"><br>
             <b>コメント</b><small>(全角${HlengthAllyComment}字まで：トップページの「各同盟の状況」欄に表示されます)</small><br>
@@ -958,12 +960,13 @@ sub tempAmitySetupPage() {
 
     out(<<END);
 <div align='center'>$HtempBack</div><br>
-<div id='campInfo'>
+<div id='campinfo'>
   <h1>同盟(陣営)所属設定</H1>
   <form action="$HthisFile" method="POST">
     <input type="hidden" value="$HdefaultPassword" name="ASetup">
-<TABLE BORDER><TR>
-<TH $HbgTitleCell align="center" rowspan="2">${HtagTH_}設定${H_tagTH}<br><INPUT TYPE="submit" VALUE="変更" NAME="AmityChangeButton"></TD>
+    <table border>
+      <tr>
+          <th $HbgTitleCell align="center" rowspan="2">${HtagTH_}設定${H_tagTH}<br><input type="submit" value="変更" name="AmityChangeButton"></td>
 END
 
     foreach (0..$islandNumber) {

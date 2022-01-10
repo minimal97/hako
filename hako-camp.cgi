@@ -118,13 +118,15 @@ END
         my ($bbslinecnt) = 1;
         my ($bbsline);
         my (@bbsmsg);
+        my ($sNo);
+        my ($sName);
 
         while ($bbsline = <DATAFILE>) {
             @bbsmsg = split(/\,/,$bbsline);
             #unshift(@lines, "$sendto,$HcurrentCampID,$HcurrentID,$HlbbsName,$HlbbsMessage,$Hlbbsturn,$Hlbbssendisland,\n");
 
-            my ($sNo) = $HidToNumber{$bbsmsg[2]};
-            my ($sName) = $bbsmsg[6];
+            $sNo = $HidToNumber{$bbsmsg[2]};
+            $sName = $bbsmsg[6];
             $Hmsgtemp = $bbsmsg[4];
             $Hmsgtemp = htmlEscape($Hmsgtemp);
 
@@ -163,7 +165,9 @@ END
             out(<<END);
   <tr>
     <td align='center'>$HtagNumber_$bbslinecnt$H_tagNumber</td>
-    <td>$HtagLbbsSS_$bbsmsg[5]¡§$bbsmsg[3] ¡ä $Hmsgtemp<span class='lbbsST'><b><small>$speaker</small></b></span>$H_tagLbbsSS</td>
+    <td>$HtagLbbsSS_$bbsmsg[5]¡§$bbsmsg[3] ¡ä $Hmsgtemp<span class='lbbsST'>
+      <b><small>$speaker</small></b></span>$H_tagLbbsSS
+    </td>
   </tr>
 END
             $bbslinecnt ++;
@@ -179,7 +183,7 @@ END
     }
 
     out(<<END);
-</TD></TR></TABLE>
+</table>
 END
 }
 

@@ -420,8 +420,8 @@ END
     <div id='islandView'>
 END
 
-    my ($island, $j, $farm, $factory, $factoryHT, $mountain, $unemployed, $renae, $pts, $eisei1, $eisei2, $eisei2nd, $monsterlive,
-        $monsm, $hcturn, $name, $id, $prize, $ii, $num);
+    my ($island, $j, $farm, $factory, $factoryHT, $mountain, $unemployed, $renae, $pts, $eisei2, $eisei2nd,
+        $hcturn, $name, $id, $prize, $ii, $num);
     {
         my ($jj , $k);
 
@@ -510,16 +510,15 @@ END
     my ($ssss);             # スタジアム情報
     my ($areatag , $shutoname,$absent);
     my ($unique) = '';
-    my ($siaisu,$mspet,$top_shutomsg,$monslive,$BF_Flag);
+    my ($siaisu,$mspet,$monslive,$BF_Flag);
     my ($BF_Score) = '';
     my ($me_sat) = '';
     $msStr1 = '';
-    my ($sto, $std, $stk, $stwin, $stdrow, $stlose, $stwint, $stdrowt, $stloset, $styusho, $stshoka);
 
     my ($bumons,$hlv,$pop,$Farmcpc , $oStr);
     my ($uniNum) = $#uniName + 1;
 
-    $hcturn = int($HislandTurn/100)*100;
+    $hcturn = int($HislandTurn/100) * 100;
 
     for ($ii = $start; $ii < $end; $ii++) {
 
@@ -1068,7 +1067,7 @@ END
 sub AllyMakeButton() {
 
     if ($HallyNumber) {
- 
+
         allyInfo(-1);
         my ($aStr) = ($HarmisticeTurn) ? '陣営' : '同盟';
         my ($l_comment) = '';
