@@ -571,14 +571,15 @@ sub toCostDisplay {
     $l_cost = CalcCostbyPoint($cost , $island);
 
     if ($l_cost == 0) {
-
         $l_cost = 'л╣на';
     }
+    elsif ($l_cost < 0) {
+        $l_cost = - $l_cost;
+        $l_cost .= $HunitFood;
+    }
     else {
-
         $l_cost .= $HunitMoney;
     }
-
     return ($l_cost);
 }
 
