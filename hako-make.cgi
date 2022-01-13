@@ -97,11 +97,12 @@ sub newIslandMain {
 
     # IDの使い回し
     my ($safety) = 0;
+
     while (defined $HidToNumber{$HislandNextID}) {
         $HislandNextID ++;
-        $HislandNextID = 1 if($HislandNextID > 100);
+        $HislandNextID = 1 if ($HislandNextID > 100);
         $safety++;
-        last if($safety == 100);
+        last if ($safety == 100);
     }
 
     # 各種の値を設定
@@ -155,9 +156,11 @@ sub newIslandMain {
 
     if ($HeasyMode) {
         if (random(100) < 50) {
+
             $island->{'eis1'} = 200;
         }
         else {
+
             $island->{'eis2'} = 200;
         }
     }
@@ -346,9 +349,9 @@ sub makeNewLand {
         $y = random(4) + $center - 1;
 
         # そこが森か町か山でなければ、基地
-        if ( ($land[$x][$y] != $HlandTown) &&
-             ($land[$x][$y] != $HlandForest) &&
-             ($land[$x][$y] != $HlandMountain) ) {
+        if (   ($land[$x][$y] != $HlandTown)
+            && ($land[$x][$y] != $HlandForest)
+            && ($land[$x][$y] != $HlandMountain) ) {
 
             $land[$x][$y] = $HlandBase;
             $landValue[$x][$y] = 0;
@@ -356,7 +359,7 @@ sub makeNewLand {
         }
     }
 
-    return (\@land, \@landValue) if(!$HeasyMode);
+    return (\@land, \@landValue) if (!$HeasyMode);
 
     # ニュータウンを作る
     $count = 0;
@@ -385,11 +388,12 @@ sub makeNewLand {
         $y = random(4) + $center - 1;
 
         # そこが森か町か山でなければ、基地
-        if ( ($land[$x][$y] != $HlandTown) &&
-            ($land[$x][$y] != $HlandForest) &&
-            ($land[$x][$y] != $HlandBase) &&
-            ($land[$x][$y] != $HlandNewtown) &&
-            ($land[$x][$y] != $HlandMountain)) {
+        if (   ($land[$x][$y] != $HlandTown)
+            && ($land[$x][$y] != $HlandForest)
+            && ($land[$x][$y] != $HlandBase)
+            && ($land[$x][$y] != $HlandNewtown)
+            && ($land[$x][$y] != $HlandMountain)) {
+
             $land[$x][$y] = $HlandCollege;
             $landValue[$x][$y] = random(3);
 
@@ -445,25 +449,29 @@ sub changeMain {
             unlock();
             tempChange();
             return;
-        } elsif ($HcurrentName =~ /^無人$/) {
+        }
+        elsif ($HcurrentName =~ /^無人$/) {
             # 島削除モード
             deleteIsland(1);
             return;
-		} elsif ($HcurrentName =~ /^沈没$/) {
-			# 島削除モード
-			deleteIsland(0);
-			return;
-		} elsif (!checkMasterPassword($HoldPassword)) {
-			# 食糧/資金maxモード
-			$island->{'money'} = $HmaximumMoney;
-			$island->{'food'}  = $HmaximumFood;
-		}
-	} elsif (!checkPassword($island,$HoldPassword)) {
-		# password間違い
-		unlock();
-		tempWrongPassword();
-		return;
-	}
+        }
+        elsif ($HcurrentName =~ /^沈没$/) {
+            # 島削除モード
+            deleteIsland(0);
+            return;
+        }
+        elsif (!checkMasterPassword($HoldPassword)) {
+            # 食糧/資金maxモード
+            $island->{'money'} = $HmaximumMoney;
+            $island->{'food'}  = $HmaximumFood;
+        }
+    }
+    elsif (!checkPassword($island,$HoldPassword)) {
+        # password間違い
+        unlock();
+        tempWrongPassword();
+        return;
+    }
 
     # 確認用パスワード
     if ($HinputPassword2 ne $HinputPassword) {
@@ -499,7 +507,7 @@ sub changeMain {
         }
 
         # 代金
-        unless(checkSpecialPassword($HoldPassword)) {
+        unless (checkSpecialPassword($HoldPassword)) {
             $island->{'money'} -= $HcostChangeName;
         }
 
@@ -527,7 +535,7 @@ sub changeMain {
         }
 
         # 代金
-        unless(checkSpecialPassword($HoldPassword)) {
+        unless (checkSpecialPassword($HoldPassword)) {
             $island->{'money'} -= $HcostChangeName;
         }
 
@@ -587,42 +595,43 @@ sub logPrintHtml {
     my ($sss) = "${mon}月${date}日 ${hour}時${min}分${sec}秒";
 
     $html1 = <<_HEADER_;
-<html><head>
-<title>
-最近の出来事
-</title>
-<base href="$htmlDir/">
-<link rel="stylesheet" type="text/css" href="${efileDir}/$HcssFile">
+<html>
+<head>
+  <title>最近の出来事</title>
+  <base href="$htmlDir/">
+  <link rel="stylesheet" type="text/css" href="${efileDir}/$HcssFile">
 </head>
 <body $htmlBody><div id='BodySpecial'>
-<div id='RecentlyLog'>
-<h1>最近の出来事</h1>
-<form>
+  <div id='RecentlyLog'>
+    <h1>最近の出来事</h1>
+    <form>
 最新更新日：$sss・・
-<input type="button" value=" 再読込み" onClick="location.reload()">
-</form>
-<hr>
+      <input type="button" value=" 再読込み" onClick="location.reload()">
+    </form>
+    <hr>
 _HEADER_
 
 $html3=<<_FOOTER_;
 </div><hr></div></body></html>
 _FOOTER_
-    my($i);
-    for($i = 0; $i < $HhtmlLogTurn; $i++) {
+    my ($i);
+    for ($i = 0; $i < $HhtmlLogTurn; $i++) {
+
         $id =0;
         $mode = 0;
-        my($set_turn) = 0;
+        my ($set_turn) = 0;
         open(LIN, "${HdirName}/hakojima.log$i");
-        my($line, $m, $turn, $id1, $id2, $message);
-        while($line = <LIN>) {
+        my ($line, $m, $turn, $id1, $id2, $message);
+        while ($line = <LIN>) {
             $line =~ /^([0-9]*),([0-9]*),([0-9]*),([0-9]*),(.*)$/;
             ($m, $turn, $id1, $id2, $message) = ($1, $2, $3, $4, $5);
 
             # 機密関係
             if ($m) {
                 next if(!$mode || ($id1 != $id)); # 機密表示権利なし
-                $m = '<B>(機密)</B>';
-            } else {
+                $m = '<b>(機密)</b>';
+            }
+            else {
                 $m = '';
             }
 
@@ -634,7 +643,7 @@ _FOOTER_
             # 表示
             if (!$set_turn) {
 
-                $html2 .= "<B>=====[<span class=number><FONT SIZE=4> ターン$turn </FONT></span>]================================================</B><br>\n";
+                $html2 .= "<b>=====[<span class=number><font size='4'> ターン$turn </font></span>]================================================</b><br>\n";
                 $set_turn++;
             }
             $html2 .= "${HtagNumber_}★${H_tagNumber}:$message<br>\n";
@@ -809,8 +818,8 @@ END
     foreach $i (0..$islandNumber) {
 
         my $hcdata = $HCislands[$i]->{'hcdata'};
-        my($sto,$std,$stk,$stwin,$stdrow,$stlose,$stwint,$stdrowt,$stloset,$styusho,$stshoka) = @$hcdata;
-        next if($stshoka == 0);
+        my ($sto,$std,$stk,$stwin,$stdrow,$stlose,$stwint,$stdrowt,$stloset,$styusho,$stshoka) = @$hcdata;
+        next if ($stshoka == 0);
         next if ($HCislands[$i]->{'predelete'});
 #		next if($stwin + $stdrow + $stlose == 0);
         $n++;
@@ -993,29 +1002,32 @@ sub renameIslandMain {
     out(<<END);
 <center>$HtempBack</center><br>
 <div id='changeInfo'>
-<h1>${AfterName}の名前とパスワードの変更</h1>
-<table border=0 width=50%><tr><td class="M"><p>
-(注意)${AfterName}の名前の変更には$HcostChangeName${HunitMoney}かかります。(他は無料)
-</p>
-<form action="$HthisFile" method="POST">
+  <h1>${AfterName}の名前とパスワードの変更</h1>
+  <table border=0 width=50%>
+    <tr>
+      <td class="M">
+        <p>(注意)${AfterName}の名前の変更には$HcostChangeName${HunitMoney}かかります。(他は無料)</p>
+        <form action="$HthisFile" method="POST">
 どの${AfterName}ですか？<br>
-<select name="ISLANDID">
+          <select name="ISLANDID">
 $HislandList
-</select>
-<br>
+          </select><br>
 どんな名前に変えますか？(変更する場合のみ)<small>(全角${HlengthIslandName}字まで)</small><br>
-<input type="text" name="ISLANDNAME" size="32" maxlength="32">${AfterName}<br>
+          <input type="text" name="ISLANDNAME" size="32" maxlength="32">${AfterName}<br>
 あなたの名前を変えますか？(変更する場合のみ)<small>(全角${HlengthOwnerName}字まで)</small><br>
-<input type="text" NAME="OWNERNAME" size="32" maxlength="32"><br>
+          <input type="text" NAME="OWNERNAME" size="32" maxlength="32"><br>
 パスワードは？(必須)<br>
-<input type="password" name="OLDPASS" size="32" maxlength="32"><br>
+          <input type="password" name="OLDPASS" size="32" maxlength="32"><br>
 新しいパスワードは？(変更する時のみ)<br>
-<input type="password" name="PASSWORD" size="32" maxlength="32"><br>
+          <input type="password" name="PASSWORD" size="32" maxlength="32"><br>
 念のためパスワードをもう一回(変更する時のみ)<br>
-<input type="password" name="PASSWORD2" size="32" maxlength="32"><br>
-<input type="submit" value="変更する" name="ChangeInfoButton">
-</form>
-</td></tr></table></div>
+          <input type="password" name="PASSWORD2" size="32" maxlength="32"><br>
+          <input type="submit" value="変更する" name="ChangeInfoButton">
+        </form>
+      </td>
+    </tr>
+  </table>
+</div>
 END
 }
 
@@ -1033,17 +1045,20 @@ sub estimate {
     my ($landValue) = $island->{'landValue'};
 
     # 数える
-    my($x, $y, $kind, $value);
+    my ($x, $y, $kind, $value);
     foreach $y (0..$islandSize) {
         foreach $x (0..$islandSize) {
             $kind = $land->[$x][$y];
             $value = $landValue->[$x][$y];
-            if($kind != $HlandSea) {
+            if ($kind != $HlandSea) {
+
                 $area++;
-                if($kind == $HlandTown) {
+                if ($kind == $HlandTown) {
                     # 町
                     $pop += $value;
-                } elsif($kind == $HlandForest) {
+                }
+                elsif ($kind == $HlandForest) {
+
                     $fore += $value;
                 }
             }
@@ -1055,16 +1070,16 @@ sub estimate {
     }
 
     # 代入
-    $island->{'pop'}		= $pop;
-    $island->{'area'}		= $area;
-    $island->{'missiles'}	= $missiles; # ミサイル発射可能数
-    $island->{'fore'}		= $fore;
+    $island->{'pop'} = $pop;
+    $island->{'area'} = $area;
+    $island->{'missiles'} = $missiles; # ミサイル発射可能数
+    $island->{'fore'} = $fore;
 
     # 失業者数
     $island->{'unemployed'} = $pop;
 
     # 総合Point
-    $island->{'pts'} = int($pop + $island->{'money'}/100 + $island->{'food'}/100 + $area*5);
+    $island->{'pts'} = int($pop + $island->{'money'} / 100 + $island->{'food'} / 100 + $area * 5);
 
 }
 
