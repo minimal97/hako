@@ -95,6 +95,44 @@ END
 
 
 #----------------------------------------------------------------------
+# サイトメニュー
+#----------------------------------------------------------------------
+sub TopSiteMenu {
+
+    my (@URL_Table) = (
+        [ "miniverse" , "../frm/viewforum.php?f=4"],
+        [ "マニュアル", "http://minimal97.com/wiki/"],
+    );
+
+    my ($tbl_cnt) = (@URL_Table >> 1) + 1;        # table / 2 する
+    my ($i);
+    my ($adr , $title);
+
+    if ($tbl_cnt) {
+
+        my ($outtext) = '';
+
+        $outtext =<<END;
+    <h2>
+      <small>
+END
+        for ($i = 0 ; $i < $tbl_cnt ; $i++) {
+
+            $title = $URL_Table[$i][0];
+            $adr = $URL_Table[$i][1];
+            $outtext .= "<a title='$title' href='$adr' target='_blank' class='Nret'>$title</a>　";
+        }
+
+        $outtext .=<<END;
+      </small>
+    </h2>
+END
+        out($outtext);
+    }
+}
+
+
+#----------------------------------------------------------------------
 sub tempNewsspace {
 
     my ($news_rand) = random(100);
@@ -130,9 +168,9 @@ sub Login_space {
     }
 
     out(<<END);
-<div class="topblock">
+<div class='topblock'>
   <div class='myIsland'>
-    <h2 class="subtitle">自分の${AfterName}へ</h2>
+    <h2 class='subtitle'>自分の${AfterName}へ</h2>
     <form name="Island" action="$HthisFile" method="post">
       あなたの${AfterName}の名前は？<br>
       <select name="ISLANDID">
@@ -232,14 +270,8 @@ END
         $HlastTurnS = '　（ゲームは終了しました）';
     }
 
-        out(<<END);
-    <h2>
-      <small>
-        <a href="../wiki/" class='Nret'>マニュアル</a>　
-        <a title="miniverse" href="../frm/viewforum.php?f=4" target="_blank" class='Nret'>miniverse</a>　
-      </small>
-    </h2>
-END
+    TopSiteMenu();
+
     # <a title="箱庭共通マップＮ" href="../hako_k" target="_blank" class='Nret'>箱庭共通マップN</a>
 
     # 現在のターンを表示
@@ -358,7 +390,7 @@ END
     }
     else {
 
-        out("<div class=timer>$rtStr</div>");
+        out("<div class='timer'>$rtStr</div>");
     }
     # フォーム
     out(<<END);
@@ -533,8 +565,10 @@ END
         $mountain   = $island->{'mountain'};
         $BF_Flag    = $island->{'BF_Flag'};
         $pop        = $island->{'pop'};
-        $unemployed = ($pop - ($farm + $factory +$factoryHT+ $mountain) * 10) / $pop * 100 if($pop);
-        $unemployed = '<span class="' . ($unemployed < 0 ? 'unemploy1' : 'unemploy2') . '">' . sprintf("%.2f%%", $unemployed) . '</span>' if($pop);
+        if ($pop) {
+            $unemployed = ($pop - ($farm + $factory +$factoryHT+ $mountain) * 10) / $pop * 100;
+            $unemployed = '<span class="' . ($unemployed < 0 ? 'unemploy1' : 'unemploy2') . '">' . sprintf("%.2f%%", $unemployed) . '</span>';
+        }
         $farm       = (!$farm) ? "保有せず" : ${farm}.'0'.$HunitPop;
         $factory    = (!$factory) ? "保有せず" : "${factory}0$HunitPop";
         $factoryHT  = (!$factoryHT) ? "保有せず" : "${factoryHT}0$HunitPop";
@@ -593,7 +627,7 @@ END
             $unique = '';
             if ($island->{'uni'}) {
 
-                $unique = "<span class='shuto'><IMG SRC=\"./img/prize/prize10.svg\" alt='' TITLE=\"入手の難しいユニーク地形：$rt${unilist}／全$uniNum種類\" ";
+                $unique = "<span class='shuto'><img src=\"./img/prize/prize10.svg\" alt='' title=\"入手の難しいユニーク地形：$rt${unilist}／全$uniNum種類\" ";
                 $unilist =~ s/$rt//g;
                 $unique .= "class='landinfoIcon'> $island->{'tuni'}ヶ所 </span>";
             }
@@ -613,7 +647,7 @@ END
 
                 if ($stshoka >= 1) {
 
-                    $ssss = "<img src=\"./img/sc.gif\" title=\"".$nn.' 攻('.$sto.')守('.$std.')KP('.$stk.')'.$rt.'チーム成績 勝点' . $island->{'kachiten'} .'/ '.$stwin.'勝'.$stlose.'敗'.$stdrow.'分'.$rt." / 通算$stwint勝$stloset敗$stdrowt分 / 優勝$styusho回\" alt='' class='landinfoIcon'> "
+                    $ssss = "<img src='./img/sc.gif' title=\"".$nn.' 攻('.$sto.')守('.$std.')KP('.$stk.')'.$rt.'チーム成績 勝点' . $island->{'kachiten'} .'/ '.$stwin.'勝'.$stlose.'敗'.$stdrow.'分'.$rt." / 通算$stwint勝$stloset敗$stdrowt分 / 優勝$styusho回\" alt='' class='landinfoIcon'> "
                 }
                 elsif ($stshoka == 0) {
 
@@ -651,22 +685,22 @@ END
         # 資金
         my ($mStr1) = '';
         if (INIT_HIDE_MONEY_MODE == 1) {
-            $mStr1 = "<td class=TopInfoCell align=right>".$island->{'money'}.$HunitMoney.'</td>';
+            $mStr1 = "<td class='TopInfoCell' align='right'>".$island->{'money'}.$HunitMoney.'</td>';
         }
         elsif (   (INIT_HIDE_MONEY_MODE == 2)
                || (INIT_HIDE_MONEY_MODE == 3)) {
 
             my ($mTmp) = aboutMoney($island->{'money'});
-            $mStr1 = "  <td class=TopInfoCell align=right>$mTmp</td>";
+            $mStr1 = "  <td class='TopInfoCell' align='right'>$mTmp</td>";
         }
 
         # ミサイル発射可能数
         $msStr1 = '';
         if (INIT_HIDE_MISSILE_MODE) {
-            $msStr1 = "<td class=TopInfoCell align=right>$island->{'missiles'}${HunitMissile}";
+            $msStr1 = "<td class='TopInfoCell' align='right'>$island->{'missiles'}${HunitMissile}";
             if (INIT_HIDE_MISSILE_MODE == 2) {
                 my ($mTmp) = aboutMissile($island->{'missiles'});
-                $msStr1 = "<td class=TopInfoCell align=right>${mTmp}</td>";
+                $msStr1 = "<td class='TopInfoCell' align='right'>${mTmp}</td>";
             }
             elsif (INIT_USE_ARM_SUPPLY) {
 
@@ -686,7 +720,7 @@ END
             else {
                 $comment_tag = "${HtagLbbsSS_}$island->{'onm'} : ${H_tagLbbsSS}";
             }
-            $oStr = "<td $HbgTotoCell COLSPAN=$col1 align='left'>${comment_tag}$island->{'comment'}</td>";
+            $oStr = "<td $HbgTotoCell colspan='$col1' align='left'>${comment_tag}$island->{'comment'}</td>";
         }
 
         my ($house) = '';
@@ -752,8 +786,8 @@ END
         }
         else {
 
-            $msStr1 = "<td ${HbgInfoCell} align=right>−</td>" if (INIT_HIDE_MISSILE_MODE);
-            $oStr = "<td $HbgTotoCell COLSPAN=$col1 align=left>${HtagLbbsSS_}$server_config::HadminName${H_tagLbbsSS} : $island->{'comment'}</td>";
+            $msStr1 = "<td ${HbgInfoCell} align='right'>−</td>" if (INIT_HIDE_MISSILE_MODE);
+            $oStr = "<td $HbgTotoCell colspan='$col1' align='left'>${HtagLbbsSS_}$server_config::HadminName${H_tagLbbsSS} : $island->{'comment'}</td>";
             out(<<END);
 <th $HbgNameCell rowspan="4" align="left">
   <div class="t_center">
@@ -944,8 +978,8 @@ END
     if ($ally->{'message'} ne '') {
 
         my ($allyTitle) = $ally->{'title'};
-        $allyTitle = '盟主からのメッセージ' if($allyTitle eq '');
         my ($allyMessage) = $ally->{'message'};
+        $allyTitle = '盟主からのメッセージ' if ($allyTitle eq '');
         $allyMessage =~ s/([^=^\"]|^)(http\:[\w\.\~\-\/\?\&\+\=\:\@\%\;\#\%]+)/$1<a href=\"$2\" target='_top'>$2<\/a>/g;
         out(<<END);
 <hr>
@@ -959,17 +993,17 @@ END
     out(<<END);
 <hr>
 <table border><tr>
-  <th $HbgTitleCell align=center>${HtagTH_}順位${H_tagTH}</th>
-  <th $HbgTitleCell align=center>${HtagTH_}${AfterName}${H_tagTH}</th>
-  <th $HbgTitleCell align=center>${HtagTH_}ポイント${H_tagTH}</th>
-  <th $HbgTitleCell align=center>${HtagTH_}人口${H_tagTH}</th>
-  <th $HbgTitleCell align=center>${HtagTH_}面積${H_tagTH}</th>
+  <th $HbgTitleCell align='center'>${HtagTH_}順位${H_tagTH}</th>
+  <th $HbgTitleCell align='center'>${HtagTH_}${AfterName}${H_tagTH}</th>
+  <th $HbgTitleCell align='center'>${HtagTH_}ポイント${H_tagTH}</th>
+  <th $HbgTitleCell align='center'>${HtagTH_}人口${H_tagTH}</th>
+  <th $HbgTitleCell align='center'>${HtagTH_}面積${H_tagTH}</th>
   $mStr1
-  <th $HbgTitleCell align=center>${HtagTH_}食料${H_tagTH}</th>
-  <th $HbgTitleCell align=center>${HtagTH_}農場規模${H_tagTH}</th>
-  <th $HbgTitleCell align=center>${HtagTH_}工場規模${H_tagTH}</th>
-  <th $HbgTitleCell align=center>${HtagTH_}採掘場規模${H_tagTH}</th>
-  <th $HbgTitleCell align=center>${HtagTH_}軍事技術${H_tagTH}</th>
+  <th $HbgTitleCell align='center'>${HtagTH_}食料${H_tagTH}</th>
+  <th $HbgTitleCell align='center'>${HtagTH_}農場規模${H_tagTH}</th>
+  <th $HbgTitleCell align='center'>${HtagTH_}工場規模${H_tagTH}</th>
+  <th $HbgTitleCell align='center'>${HtagTH_}採掘場規模${H_tagTH}</th>
+  <th $HbgTitleCell align='center'>${HtagTH_}軍事技術${H_tagTH}</th>
   $msStr1
 </tr>
 END
@@ -1100,15 +1134,15 @@ END
   <table class="top_ary" border>
     <thead class="sc">
       <tr>
-        <th class='TitleCell nm' align=center>${HtagTH_}順<br>位${H_tagTH}</th>
-        <th class='TitleCell dd' align=center>${HtagTH_}${aStr}${H_tagTH}</th>
-        <th class='TitleCell ee' align=center>${HtagTH_}マーク${H_tagTH}</th>
-        <th class='TitleCell ee' align=center>${HtagTH_}${AfterName}の数${H_tagTH}</th>
-        <th class='TitleCell ee' align=center>${HtagTH_}ポイント${H_tagTH}</th>
-        <th class='TitleCell ee' align=center>${HtagTH_}占有率${H_tagTH}</th>
-        <th class='TitleCell ee' align=center>${HtagTH_}弾発射${H_tagTH}</th>
-        <th class='TitleCell ee' align=center>${HtagTH_}弾飛来${H_tagTH}</th>
-        <th class='TitleCell dd' align=center>${HtagTH_}GNP${H_tagTH}</th>
+        <th class='TitleCell nm' align='center'>${HtagTH_}順<br>位${H_tagTH}</th>
+        <th class='TitleCell dd' align='center'>${HtagTH_}${aStr}${H_tagTH}</th>
+        <th class='TitleCell ee' align='center'>${HtagTH_}マーク${H_tagTH}</th>
+        <th class='TitleCell ee' align='center'>${HtagTH_}${AfterName}の数${H_tagTH}</th>
+        <th class='TitleCell ee' align='center'>${HtagTH_}ポイント${H_tagTH}</th>
+        <th class='TitleCell ee' align='center'>${HtagTH_}占有率${H_tagTH}</th>
+        <th class='TitleCell ee' align='center'>${HtagTH_}弾発射${H_tagTH}</th>
+        <th class='TitleCell ee' align='center'>${HtagTH_}弾飛来${H_tagTH}</th>
+        <th class='TitleCell dd' align='center'>${HtagTH_}GNP${H_tagTH}</th>
       </tr>
     </thead>
     <tbody class="sb">
@@ -1143,7 +1177,7 @@ END
 
         if ($num == -1) {
 
-            $name = "<A style=\"text-decoration:none\" href=\"$HthisFile?AmiOfAlly=$ally->{'id'}\">$ally->{'name'}</A>";
+            $name = "<A style='text-decoration:none' href=\"$HthisFile?AmiOfAlly=$ally->{'id'}\">$ally->{'name'}</A>";
         }
         else {
 
@@ -1152,22 +1186,21 @@ END
         $comment = $ally->{'comment'};
         out(<<END);
   <tr>
-    <td class='NumberCell nm' rowspan=$row align=center>${HtagNumber_}$n${H_tagNumber}</td>
-    <td class='InfoCell dd' rowspan=$row align=center>$name</td>
-    <td class='InfoCell ee' align=center><b><font color="$ally->{'color'}">$ally->{'mark'}</font></b></td>
-    <td class='InfoCell ee' align=right>$ally->{'number'}${AfterName}</td>
-    <td class='InfoCell ee' align=right>$ally->{'score'}</td>
-    <td class='InfoCell ee' align=right>$ally->{'occupation'}\%</td>
-    <td class='InfoCell ee' align=right>$missileOut</td>
-    <td class='InfoCell ee' align=right>$missileIn</td>
-    <td class='InfoCell dd' align=right>$gnp</td>
+    <td class='NumberCell nm' rowspan='$row' align='center'>${HtagNumber_}$n${H_tagNumber}</td>
+    <td class='InfoCell dd' rowspan='$row' align='center'>$name</td>
+    <td class='InfoCell ee' align='center'><b><font color="$ally->{'color'}">$ally->{'mark'}</font></b></td>
+    <td class='InfoCell ee' align='right'>$ally->{'number'}${AfterName}</td>
+    <td class='InfoCell ee' align='right'>$ally->{'score'}</td>
+    <td class='InfoCell ee' align='right'>$ally->{'occupation'}\%</td>
+    <td class='InfoCell ee' align='right'>$missileOut</td>
+    <td class='InfoCell ee' align='right'>$missileIn</td>
+    <td class='InfoCell dd' align='right'>$gnp</td>
   </tr>
 END
-        out(<<END) if($row == 2);
+        out(<<END) if ($row == 2);
   <tr>
     <td $HbgCommentCell colspan="7"><a style="text-decoration:none" href="$HthisFile?Allypact=$ally->{'id'}">${owner}</a>：$comment</td>
   </tr>
-
 END
     }
 
