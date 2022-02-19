@@ -311,7 +311,7 @@ SetMonumentTable( 56 , 0, '¤´¤ßÈ¢',    'monument21.gif');
 SetMonumentTable( 57 , 0, '¤´¤ßÈ¢',    'monument21.gif');
 SetMonumentTable( 58 , 0, '¤´¤ßÈ¢',    'monument21.gif');
 SetMonumentTable( 59 , 0, '¤´¤ßÈ¢',    'monument21.gif');
-SetMonumentTable( 60 , 0, '¤´¤ßÈ¢',    'monument21.gif');
+SetMonumentTable( 60 , 0, 'ÍëÀÐ',      'thunderstone.png');
 SetMonumentTable( 61 , 0, '¤´¤ßÈ¢',    'monument21.gif');
 SetMonumentTable( 62 , 0, '¤´¤ßÈ¢',    'monument21.gif');
 SetMonumentTable( 63 , 0, '¤´¤ßÈ¢',    'monument21.gif');
