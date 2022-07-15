@@ -56,6 +56,7 @@ our $Mons_Retro_inora = 34;     # レトロいのら
 our $Mons_hime_inora = 35;      # ひめいのら
 our $Mons_Kisinhei   = 36;      # きしんへい
 our $Mons_EnderInora = 37;      # エンダーいのら
+our $Mons_KaminariInora = 38;      # かみなりいのら
 
 $HmonsterDefence = 100; # 怪獣がミサイルを叩き落す確率 random(1000) < 無効
 
@@ -110,7 +111,7 @@ our @HmonsterZooMoney;  # 動物園の価値
     SetMonsterTable($Mons_KingInora,    '怪獣キングいのら', 'monster3.gif', '',             7,       2,    8,     0,    30,     5555,    100, 1);
     SetMonsterTable($Mons_Omu,          '古獣王蟲',         'monster18.gif','',             6,       0,    9,     1,    45,     2500,    0,   0);
     SetMonsterTable(26,                'ワープいのらキング','ghostking.gif','',             8,       4,   10,     14,   30,     10000,   25,  1);
-    SetMonsterTable(27,                 'ビッグウンババ',   'monster27.png','',             7,       2,    8,     2,    30,     0,       0,   0);
+    SetMonsterTable($Mons_Unbaba,       'ビッグウンババ',   'monster27.png','',             7,       2,    8,     2,    30,     0,       0,   0);
 
     SetMonsterTable($Mons_MetaHamu,     '硬獣めたはむ',     'monster25.gif','monster25.gif',5,       2,   10,     8,    40,     3500,    100, 1);
     SetMonsterTable($Mons_Barimoa,      '怪獣バリモア',     'monster13.gif','',             7,       2,   11,     5,    35,     3000,    100, 1);
@@ -138,13 +139,14 @@ our @HmonsterZooMoney;  # 動物園の価値
     SetMonsterTable($Mons_Wario,        'ワリオ',           'wario.png',    '',             32,      32,  25,     1,    120,    200000,  0,   0);
 
     SetMonsterTable($Mons_Kisinhei,     'きしんへい',       'kisinhei.png','kisinhei_curing.png', 8, 2,   36,     2,    90,     100000,  0,   0);
-    SetMonsterTable(35,                 'ひめいのら',       'queen.gif',    '',             65530,   0,   35,     20,   0,      0,       0,   0);
+    SetMonsterTable($Mons_hime_inora,   'ひめいのら',       'queen.gif',    '',             65530,   0,   35,     20,   0,      0,       0,   0);
 
-    SetMonsterTable(28,                 'マスコットいのら', 'monster30.gif','',             0,       0,   28,     0,    0,      1,       0,   0);
-    SetMonsterTable(29,                 '神獣テトラ',       'monster10.gif','',             5,       0,   29,     6,    7,      2000,    0,   0);
+    SetMonsterTable($Mons_Mascot_inora, 'マスコットいのら', 'monster30.gif','',             0,       0,   28,     0,    0,      1,       0,   0);
+    SetMonsterTable($Mons_Tetra,        '神獣テトラ',       'monster10.gif','',             5,       0,   29,     6,    7,      2000,    0,   0);
     SetMonsterTable($Mons_SuperTetra,   '超神獣テトラ',     'monster28.gif','',             11,      0,   30,     0,    99,     200000,  0,   0);
 
-    SetMonsterTable(37,                 '番兵',             'monster28.gif','',             32,      0,   99,     0,    0,      2,       0,   0);
+    SetMonsterTable($Mons_EnderInora,   'エンダーいのら',   'xxxxxxxxx.png','',             99999,   5,   11,     0,    35,     3000,    100, 1);
+    SetMonsterTable($Mons_KaminariInora,'かみなりいのら',   'kaminariinora.png','',         7,       5,   11,     0,    35,     3000,    0,   1);
 
 our @HmonsterTABLE = (0);
 our $HmonsterLevel1TABLE_NUM;
@@ -712,10 +714,30 @@ sub SetProductTable {
     $HProduct_unitName{$hash}   = $unit;
 }
 
+sub SetCivReqTable {
+    my ($no , $Name , $kind , $Disp , $DispUnit) = @_;
 
-our @CivReqkind = ('none' , 'tax' , 'food', 'food');
-our @CivReqDisp = ('なし' , '税金' , 'コメ', '野菜');
-our @CivReqDispUnit = ('なし' , '%' , $HunitFood, $HunitFood);
+    $CivReqName[$no] = $Name;
+    $CivReqkind[$no] = $kind;
+    $CivReqDisp[$no] = $Disp;
+    $CivReqDispUnit[$no] = $DispUnit;
+}
+
+our @CivReqName;
+our @CivReqkind;
+our @CivReqDisp;
+our @CivReqDispUnit;
+
+SetCivReqTable(0 , 'none'     , 'none' , 'なし'   , 'なし');
+SetCivReqTable(1 , 'tax'      , 'tax'  , '税金'   , '%');
+SetCivReqTable(2 , 'kome'     , 'food' , 'コメ'   , $HunitFood);
+SetCivReqTable(3 , 'yasai'    , 'food' , '野菜'   , $HunitFood);
+SetCivReqTable(4 , 'seafood'  , 'food' , '魚介類' , $HunitFood);
+SetCivReqTable(5 , 'gyuniku'  , 'food' , '牛肉'   , $HunitFood);
+SetCivReqTable(6 , 'butaniku' , 'food' , '豚肉'   , $HunitFood);
+
+
+
 our $CivReqNum = $#CivReqkind + 1;
 
 

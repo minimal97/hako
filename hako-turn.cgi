@@ -64,6 +64,7 @@ require ('./hako-turn_monster.cgi'); # スパゲッティ 怪獣処理を引っ越してゆく
 require ('./hako-turn_food.cgi');
 require ('./hako-turn_land.cgi');
 require ('./hako-trade.cgi');
+require ('./hako-turn_thunder.cgi');
 
 #use strict;
 #use warnings;
@@ -637,7 +638,7 @@ sub CivReqestEvent {
 
         if (   ($island->{'predelete'})
             || (   ($island->{'id'} > $HPlayableIslandMaxID)
-                && ($island->{'BF_Flag'}))) {
+                || ($island->{'BF_Flag'}))) {
 
             CivReqestEventReset($island);
             next;
@@ -1583,6 +1584,7 @@ sub doCommand {
     }
     elsif (   ($cost < 0)
            && ($island->{'food'} < (-$cost) ) ) {# 食料の場合
+
         logNoAny($id, $name, $comName, '備蓄食料不足の');
         return 0;
     }
@@ -1614,6 +1616,7 @@ sub doCommand {
                 food_product_plus($island , 'tamago' ,20000);
             }
             elsif ((73 < $lv) && ($lv < 80)) {
+
                 $island->{'money'} += 20000; # 宝石会社売却
             }
         }
@@ -1622,6 +1625,7 @@ sub doCommand {
             food_product_plus($island , 'tamago' ,20000);
         }
         elsif ( $landKind == $HlandTown ) {
+
             logTownDel($id, $name, $landName ,'整地', $point , $lv);
         }
 
@@ -1663,12 +1667,14 @@ sub doCommand {
             $island->{'seichi'}++;
 
             if ($HlogOmit2 == 1) {
+
                 my ($seichipnt);
                 ($seichipnt->{x}, $seichipnt->{y}) = ($x, $y);
                 $island->{'seichipnt'}->[$sno] = $seichipnt;
             }
         }
         else {
+
             logLandSuc($id, $name, '整地', $point);
         }
 
@@ -1700,8 +1706,8 @@ sub doCommand {
         # 埋め立て、遠距離埋め立て、港、関所
 
         my ($flag) = 1;
-        # 周りに陸があるかチェック
-        my ($seaCount) = countAround($land, $x, $y, 7, @Hseas);
+
+        my ($seaCount) = countAround($land, $x, $y, 7, @Hseas);         # 周りに陸があるかチェック
         if (   ($seaCount == 7)
             && ($kind != $HcomReclaim2)
             && ($kind != $HcomSeki)) {
@@ -1745,8 +1751,8 @@ sub doCommand {
                     # 平地、荒地なら、目的の場所を山にする
                     SetMountain_Normal($island,$x,$y);
                     $flag = 0;
-
-                } else {
+                }
+                else {
                     # 海、油田、養殖場、海あみゅ、海底基地、海底都市、海底新都市なら、
                     # 目的の場所を荒地にする
                     SetWasteLand_Normal($island,$x,$y);     # $HlandWaste
@@ -1757,26 +1763,29 @@ sub doCommand {
                 if ( ($landKind == $HlandSea) && ($lv == 1) ) {
                     # 浅瀬の場合
                     # 目的の場所を荒地にする
-                    SetWasteLand_Normal($island,$x,$y);     # $HlandWaste
-
-                } elsif(   ($landKind == $HlandPlains)
+                    SetWasteLand_Normal($island,$x,$y);
+                }
+                elsif (   ($landKind == $HlandPlains)
                         || ($landKind == $HlandWaste) ) {
                     # 平地、荒地なら、目的の場所を山にする
                     SetMountain_Normal($island,$x,$y);
                     $cost = $HcomCost[$HcomReclaim]; #コストを埋めてたに変える
                     $flag = 0;
-                } else {
+                }
+                else {
                     # 海、油田、養殖場、海あみゅ、海底基地、海底都市、海底新都市なら、目的の場所を浅瀬にする
                     SetSeaShallowLand($island , $x , $y);
                     $flag = 0;
                 }
 
                 if ($kind == $HcomReclaim_spd) {
+
                     $comName = $HcomName[$HcomReclaim];
                 }
             }
 
-        } elsif ($kind == $HcomMinato) {
+        }
+        elsif ($kind == $HcomMinato) {
             # 港
             unless (   ($landKind == $HlandSea)
                     && ($lv == 1) ){
@@ -1784,13 +1793,14 @@ sub doCommand {
                 logLandFail($id, $name, $comName, $landName, $point);
                 return 0;
             }
-            # 目的の場所を港にする
-            $land->[$x][$y] = $HlandMinato;
+
+            $land->[$x][$y] = $HlandMinato;                                 # 目的の場所を港にする
             $landValue->[$x][$y] = 0;
             $landValue2->[$x][$y] = 0;
             $landValue3->[$x][$y] = 0;
 
-        } elsif ($kind == $HcomSeki) {
+        }
+        elsif ($kind == $HcomSeki) {
             # 関所
             if (($landKind != $HlandSea) || ($lv != 1)) {
                 # 浅瀬しか関所にできない
@@ -1813,10 +1823,9 @@ sub doCommand {
                 for ($i = 1; $i < 7; $i++) {
                     $sx = $x + $ax[$i];
                     $sy = $y + $ay[$i];
-                    # 行による位置調整
-                    $sx-- if (!($sy % 2) && ($y % 2));
-                    # 範囲内の場合
-                    if (   ($sx >= 0) && ($sx < $HislandSize)
+                    $sx-- if (!($sy % 2) && ($y % 2));                      # 行による位置調整
+
+                    if (   ($sx >= 0) && ($sx < $HislandSize)               # 範囲内の場合
                         && ($sy >= 0) && ($sy < $HislandSize)
                         && ($land->[$sx][$sy] == $HlandSea)) {
                         $landValue->[$sx][$sy] = 1;
@@ -1824,16 +1833,16 @@ sub doCommand {
                 }
             }
         }
-        # 金を差し引く
-        $island->{'money'} -= $cost;
+
+        $island->{'money'} -= $cost;                                        # 金を差し引く
         if ($kind == $HcomReclaim_spd) {
             $island->{'prepare2'}++;
             return 0;
         }
         else {
+
             return 1;
         }
-
     }
     elsif ($kind == $HcomPropaganda) {             # 誘致活動
 
@@ -1852,7 +1861,6 @@ sub doCommand {
             };
         }
         return 1;
-
     }
     elsif ($kind == $HcomFune) {
         # 造船・出航
@@ -1871,6 +1879,7 @@ sub doCommand {
         # コストチェック
         my ($value) = ($arg * $cost);
         if ($island->{'money'} < $value) {
+
             logNoAny($id, $name, $comName, "資金不足の");
             return 0;
         }
@@ -1920,7 +1929,8 @@ sub doCommand {
         if (($landKind == $HlandSea) && !$lv) {
             # 海なら、油田探し
             # 投資額決定
-            if ($HarmisticeTurn && ($HislandTurn <= $HgameLimitTurn)) {
+            if (   ($HarmisticeTurn)
+                && ($HislandTurn <= $HgameLimitTurn)) {
                 # 開発期間中は油田禁止
                 logNotAvail($id, $name, $comName);
                 return 0;
@@ -1930,8 +1940,8 @@ sub doCommand {
             $p = ($arg * $cost > $island->{'money'}) ? int($island->{'money'} / $cost) : $arg;
             $value = $p * $cost;
             $island->{'money'} -= $value;
-            # 見つかるか判定
-            if ($p > random(100) + $island->{'oil'} * 25) {
+
+            if ($p > random(100) + $island->{'oil'} * 25) {                     # 見つかるか判定
                 # 油田見つかる
                 if ($arg == 1) {
 
@@ -2031,7 +2041,6 @@ sub doCommand {
         $island->{'money'} -= $cost;
         $island->{'prepare2'}++;
         return 0;
-
     }
     elsif ($kind == $HcomOnsen) {# 温泉掘削
 
@@ -2049,6 +2058,7 @@ sub doCommand {
 
             # 見つかるか判定
             if (random(10000) < $p * 15) {
+
                 my ($v) = 1000 + random(2001);
                 $island->{'money'} += $v;
                 $land->[$x][$y] = $HlandGold;
@@ -2057,12 +2067,8 @@ sub doCommand {
                 $landValue3->[$x][$y] = 0;
                 logGold($id, $name, $comName, $v);
 
-                # 神殿
-                Sinden_Omaturi($island , 0 , 1001);
-
-                # 神社
-                Jinja_Omaturi($island , 0 , 1001);
-
+                Sinden_Omaturi($island , 0 , 1001);                 # 神殿
+                Jinja_Omaturi($island , 0 , 1001);                  # 神社
             }
             elsif (random(1000) < 50) {
 
@@ -2115,8 +2121,11 @@ sub doCommand {
         # 目的の場所を平地にする
         $land->[$x][$y] = $HlandPlains;
         if ( $lv == 0 ) {
+
             $landValue->[$x][$y] = 1;
-        }else{
+        }
+        else {
+
             $landValue->[$x][$y] = 0;
         }
         $landValue2->[$x][$y] = 0;
@@ -2338,8 +2347,9 @@ sub doCommand {
 
                         if ( ($sx < 0) || ($sx >= $HislandSize) ||
                              ($sy < 0) || ($sy >= $HislandSize)) {
-
-                        } else {
+                            #nop
+                        }
+                        else {
                             # 範囲内の場合
                             $la_Kind = $land->[$sx][$sy];
                             $mlv = $landValue->[$sx][$sy];
@@ -2650,7 +2660,7 @@ sub doCommand {
                 logLandSuc($id, $name, $comName, $point);
                 return 0;
 
-            } elsif(($landKind == $HlandCollege) && (($lv == 97) || ($lv == 98))) {
+            } elsif (($landKind == $HlandCollege) && (($lv == 97) || ($lv == 98))) {
                 $landValue->[$x][$y] = 195 - $lv;
                 logLandSuc($id, $name, $comName, $point);
                 return 0;
@@ -6023,6 +6033,15 @@ sub doEachHex {
 
         } elsif( ($landKind == $HlandSea) ) {
 
+            if (isBattleField($island)) {
+                my ($par) = 25;
+
+                if (random(100) < $par) {
+
+                    $landValue->[$x][$y] = 1;
+                }
+            }
+
             if ( ($lv == 1) ) {
                 # 浅瀬
 
@@ -6051,9 +6070,18 @@ sub doEachHex {
                     $land->[$x][$y] = $HlandIce;
                     $landValue->[$x][$y] = 0;
                 }
-            }
 
-        } elsif($landKind == $HlandBeachPark) {
+                if (isBattleField($island)) {
+                    my ($par) = 25;
+
+                    if (random(100) < $par) {
+
+                        SetPlains_Normal($island , $x , $y);
+                    }
+                }
+            }
+        }
+        elsif ($landKind == $HlandBeachPark) {
 
             if ($island->{'temperature'} >= 22) {
                 if ($island->{'weather'} != $HWeather_Rain) {
@@ -6067,20 +6095,22 @@ sub doEachHex {
                 }
             }
 
-            SunahamaToSea($island,$x,$y);
-
-        } elsif($landKind == $HlandSunahama) {
+            SunahamaToSea($island, $x, $y);
+        }
+        elsif ($landKind == $HlandSunahama) {
             # 砂浜
-            if ( !$landValue->[$x][$y] ){
+            if ( !$landValue->[$x][$y] ) {
 
-                SunahamaToSea($island,$x,$y);
+                SunahamaToSea($island, $x, $y);
             }
-
-        } elsif($landKind == $HlandIce) {
-            # 氷河
-            my($lv) = $landValue->[$x][$y];
+        }
+        elsif ($landKind == $HlandIce) {
+                                                                            # 氷河
+            my ($lv) = $landValue->[$x][$y];
             if ($lv > 0) {
+
                 if ($island->{'weather'} != $HWeather_Rain) {
+
                     my $value = $lv * 25 + random(501);
                     $island->{'money'} += $value;
                     # 収入ログ
@@ -6089,67 +6119,79 @@ sub doEachHex {
             }
 
             if (random(100) < $Ice_To_Sea_par) {
-                logSkateDown($island, $lName, $x, $y) if ($lv > 0);        #スケート場のみ
+
+                logSkateDown($island, $lName, $x, $y) if ($lv > 0);         #スケート場のみ
                 $land->[$x][$y] = $HlandSea;
                 $landValue->[$x][$y] = 1;
                 $landValue2->[$x][$y] = 0;
             }
-
-        } elsif($landKind == $HlandForest) {
-            # 森
+        }
+        elsif ($landKind == $HlandForest) {
+                                                                            # 森
             ForestEvent($island,$x,$y);
 
             my ($happy) = Calc_Happiness_Town($island,$x,$y,7);
             $island->{'happy'} += $happy;
-
-        } elsif(   ($landKind == $HlandFarmchi)
-                || ($landKind == $HlandFarmpic)
-                || ($landKind == $HlandFarmcow) ){
-            # 養鶏場、養豚場、牧場
-            my($FarmCount) = countAround($land, $x, $y, 7, $HlandFarm,$HlandInaka);
-            my(@rflag);
+        }
+        elsif (   ($landKind == $HlandFarmchi)
+               || ($landKind == $HlandFarmpic)
+               || ($landKind == $HlandFarmcow) ) {
+                                                                            # 養鶏場、養豚場、牧場
+            my ($FarmCount) = countAround($land, $x, $y, 7, $HlandFarm,$HlandInaka);
+            my (@rflag);
 
             if ($landKind == $HlandFarmchi) {
+
                 @rflag = (1, 8 + $FarmCount * 2, 5);
-            } elsif($landKind == $HlandFarmpic){
+            }
+            elsif ($landKind == $HlandFarmpic) {
+
                 @rflag = (2, 4 + $FarmCount * 2, 3);
-            } else {
+            }
+            else {
+
                 @rflag = (3, 4 + $FarmCount, 1);
             }
 
             my ($value) = $lv * $rflag[0];
             if ($landKind == $HlandFarmchi) {
+
                 my ($egg , $niku) ;
                 $egg = int($value / 4);
                 $niku = $value - $egg;
                 if ($egg) {
+
                     food_product_plus($island , 'tamago' , $egg);
                 }
                 food_product_plus($island , 'toriniku' , $niku);
+            }
+            elsif ($landKind == $HlandFarmpic) {
 
-            } elsif($landKind == $HlandFarmpic){
                 food_product_plus($island , 'butaniku' , $value);
+            }
+            else {
 
-            } else {
                 food_product_plus($island , 'gyuniku' , $value);
             }
 
             $lv += random($rflag[1]) + $rflag[2];
             $landValue->[$x][$y] = min($lv , $HLivestock_limit);
 
-        } elsif($landKind == $HlandDefence) { # 防衛施設イベント
+        }
+        elsif ($landKind == $HlandDefence) {                            # 防衛施設イベント
+
             my ($deflv);
             $deflv = $lv & $HDefenceLevelMask;
 
             if ( $deflv == 0 ) {
 
-            }elsif ($deflv == 2) {
+            }
+            elsif ($deflv == 2) {
                 $island->{'money'} -= $HDefenceTurnCost;
                 $island->{'money'} = 0 if ( $island->{'money'} < 0 );
             }
-
-
-        } elsif($landKind == $HlandOilCity) {       # 油田都市 イベント
+        }
+        elsif ($landKind == $HlandOilCity) {                            # 油田都市 イベント
 
             $monsterCount = CityAttack($island, $x, $y);
             $lv = $landValue->[$x][$y];
@@ -6157,10 +6199,11 @@ sub doEachHex {
             if ($monsterCount > 0) {
                 if ($lv <= 0) {
                     # 壊される
-                    SetSeaLand_Normal($island, $x, $y);     # 海に戻す
+                    SetSeaLand_Normal($island, $x, $y);                 # 海に戻す
                     next;
                 }
-            }else{
+            }
+            else {
                 if ($addpop < 0) {
                     # 不足
                     $lv -= (random(-$addpop) + 1);
@@ -6169,7 +6212,8 @@ sub doEachHex {
                         SetSeaLand_Normal($island, $x, $y);     # 海に戻す
                         next;
                     }
-                } else {
+                }
+                else {
                     # 成長
                     $lv = Town_Growup( $lv , $addpop , $addpop2 , 2000 );
                 }
@@ -6178,7 +6222,7 @@ sub doEachHex {
                 }
                 $landValue->[$x][$y] = $lv;
 
-                if (!random(5)){
+                if (!random(5)) {
                     my ($value) = 1 + random(1200);
                     $island->{'oilincome'} += $value if ($HlogOmit1);
                     # 収入ログ
@@ -6186,8 +6230,8 @@ sub doEachHex {
                 }
             }
 
-        } elsif($landKind == $HlandOil) {       # 海底油田　イベント
-            my($value, $str);
+        } elsif ($landKind == $HlandOil) {                              # 海底油田
+            my ($value, $str);
             $value = $HoilMoney + random(1001);
             $island->{'money'} += $value;
 
@@ -6201,8 +6245,8 @@ sub doEachHex {
                 logDamageAny($id, $name, $lName, $this_pos, "枯渇したようです。");
                 SetSeaLand_Normal($island, $x, $y);     # 海に戻す
             }
-
-        } elsif($landKind == $HlandSeki) {
+        }
+        elsif ($landKind == $HlandSeki) {
             # 関所
             if (random(1000) < 7) {
                 my $value = $HoilMoney + random(1001);
@@ -6212,12 +6256,12 @@ sub doEachHex {
                 logOilMoney($id, $name, $lName, $this_pos, "$value$HunitMoney", '関税収益');
             }
 
-        } elsif(   ($landKind == $HlandPark)
-                || ($landKind == $HlandInoraLand)
-                || ($landKind == $HlandKyujo)
-                || ($landKind == $HlandUmiamu) ) {
-            # 遊園地、野球場、海あみゅ、いのらランド
-
+        }
+        elsif (   ($landKind == $HlandPark)
+               || ($landKind == $HlandInoraLand)
+               || ($landKind == $HlandKyujo)
+               || ($landKind == $HlandUmiamu) ) {
+                                                                        # 遊園地、野球場、海あみゅ、いのらランド
             my ($value, $event, $closed) = (0, 0, 0);
             my ($inoraevent) = 0;
 
@@ -6440,15 +6484,15 @@ sub doEachHex {
                     }
                 }
             }
-
-        } elsif($landKind == $HlandMountain) {          # 山　イベント
+        }
+        elsif ($landKind == $HlandMountain) {          # 山　イベント
 
             if ($lv > 0) {
                 my ($happy) = Calc_Happiness_Town($island,$x,$y,7);
                 $island->{'happy'} -= $happy;
             }
-
-        } elsif($landKind == $HlandKyujokai) {
+        }
+        elsif ($landKind == $HlandKyujokai) {
 
             {
                 $island->{'happy'} += 10;
@@ -6476,8 +6520,8 @@ sub doEachHex {
                 $sx = $x + $ax[$i];
                 $sy = $y + $ay[$i];
 
-                # 行による位置調整
-                $sx-- if (!($sy % 2) && ($y % 2));
+
+                $sx-- if (!($sy % 2) && ($y % 2));                  # 行による位置調整
                 # 範囲外
                 next if (($sx < 0) || ($sx > $islandSize) || ($sy < 0) || ($sy > $islandSize));
 
@@ -6498,6 +6542,7 @@ sub doEachHex {
                         $escape++;
                         $landValue->[$sx][$sy]--;
                         if ($landValue->[$sx][$sy] <= 0 ) {
+
                             SetPlains_Normal($island , $sx , $sy);
 
                             if (   ($tkind == $HlandFrocity)
@@ -6508,7 +6553,6 @@ sub doEachHex {
                         }
                     }
                 }
-
             }
             logSouon($id, $name, $this_pos, $lName ,$escape) if ($escape);
 
@@ -6516,22 +6560,23 @@ sub doEachHex {
             $HflagKai = 1;
 
             # 収入の算出
-            unless(($island->{'kyu'} > 1) || ($island->{'amu'} > 1)) {
+            unless (   ($island->{'kyu'} > 1)
+                    || ($island->{'amu'} > 1)) {
 
                 my ($Guest) = 20 + random(10);
                 $Guest -= (random(10)) if ($island->{'weather'} == $HWeather_Sunny);
                 $Guest = (30 + random(10)) if ($island->{'weather'} == $HWeather_Rain);
 
-                my($nt) = (countAround($land, $x, $y, 19, @Htowns) - 6);
-                my($ns) = ( 1 + 2 * countAround($land, $x, $y, 19, $HlandPark));
-                my($nr) = ( 1 + 3 * countAround($land, $x, $y, 19, $HlandUmiamu, $HlandInoraLand));
-                my($nu) = ( 10 + random(10));
-                my($value);
+                my ($nt) = (countAround($land, $x, $y, 19, @Htowns) - 6);
+                my ($ns) = ( 1 + 2 * countAround($land, $x, $y, 19, $HlandPark));
+                my ($nr) = ( 1 + 3 * countAround($land, $x, $y, 19, $HlandUmiamu, $HlandInoraLand));
+                my ($nu) = ( 10 + random(10));
+                my ($value);
                 $value = ($nt * $nu * $ns * $nr + int($island->{'pop'} / $Guest));
                 if ($value > 0) {
+
                     $island->{'money'} += $value;
-                    # 収入ログ
-                    logOilMoney($id, $name, $lName, $this_pos, "$value$HunitMoney", "収益");
+                    logOilMoney($id, $name, $lName, $this_pos, "$value$HunitMoney", "収益");            # 収入ログ
                 }
             }
 
@@ -6544,24 +6589,28 @@ sub doEachHex {
             my ($turn1, $goal, $tgoal);
 
             if ((0 < $turn) && ($turn < 41)) {                  # 予選
+
                 $turn1 = int(($turn + 9) / 10);
                 $hcgameseigen = 3 unless($HislandNumber < 21);
                 $otry = 5;
+            }
+            elsif ((41 < $turn) && ($turn < 47)) {              # 準々決勝戦
 
-            } elsif((41 < $turn) && ($turn < 47)) {             # 準々決勝戦
                 $turn1 = 6;
+            }
+            elsif ((46 < $turn) && ($turn < 50)) {              # 準決勝戦
 
-            } elsif((46 < $turn) && ($turn < 50)) {             # 準決勝戦
                 $turn1 = 7;
+            }
+            elsif ((49 < $turn) && ($turn < 52)) {              # 決勝戦
 
-            } elsif((49 < $turn) && ($turn < 52)) {             # 決勝戦
                 $turn1 = 8;
-
-            } elsif($turn == 0) {                               # 初期化
+            }
+            elsif ($turn == 0) {                                # 初期化
 
                 HakoCup_TeamReset($island);
                 $Hstsanka++;
-                # 100ターン初の多目的で開催が行われる。
+                                                                # 100ターン初の多目的で開催が行われる。
                 if ($Hstsanka == 1) {
                     $island->{'stsankahantei'}++;
                 }
@@ -6586,12 +6635,12 @@ sub doEachHex {
             }
 
             if (   ($stshoka == $turn1)
-                && ($Hyosengameend < $hcgameseigen)  ) {
+                && ($Hyosengameend < $hcgameseigen) ) {
 
-                my($tIsland);
-                my($i);
+                my ($tIsland);
+                my ($i);
 
-                my(@order) = randomArray($HislandNumber);
+                my (@order) = randomArray($HislandNumber);
 
                 foreach $i (0..$islandNumber) {
 
@@ -6601,16 +6650,17 @@ sub doEachHex {
                     next if ($island->{'id'} == $tIsland->{'id'});  #自分とは戦わない
                     next if ($tIsland->{'predelete'});              #預かりの場合は除外
 
-                    my($tSto, $tStd, $tStk, $tStwin, $tStdrow, $tStlose, $tStwint, $tStdrowt, $tStloset, $tStyusho, $tStshoka) = split(/,/, $tIsland->{'eisei4'});
+                    my ($tSto, $tStd, $tStk, $tStwin, $tStdrow, $tStlose, $tStwint, $tStdrowt, $tStloset, $tStyusho, $tStshoka) = split(/,/, $tIsland->{'eisei4'});
 
                     next if (($tStshoka != $turn1) || ($Hyosengameend >= $hcgameseigen));
 
-                    my($uphey, $tuphey, $uppoint, $tuppoint, $value, $str, $str1, $str2);
+                    my ($uphey, $tuphey, $uppoint, $tuppoint, $value, $str, $str1, $str2);
 
                     $goal = 0;
                     $tgoal = 0;
 
                     foreach (1..$otry) {
+
                         if (   (random($sto) > random($tStd))            # 自 攻撃 > 相手 守り
                             && (random($sto) > random($tStk)) ) {        # 自 攻撃 > 相手 KP
                             $goal++;                                     # 自 得点++
@@ -6627,8 +6677,11 @@ sub doEachHex {
                         && ($goal == $tgoal) ) {                         # 同点
 
                         if (random(100) < 60) {                          # 60 %
+
                             $goal++;                                    # 自 得点++
-                        } else {
+                        }
+                        else {
+
                             $tgoal++;                                   # 相手 得点++
                         }
                     }
@@ -6661,7 +6714,7 @@ sub doEachHex {
                         $str2 = '勝利';
                     }
 
-                    my($stup) = random(3);          # 0 - 2
+                    my ($stup) = random(3);          # 0 - 2
 
                     $Hyosengameend++;
                     $yosengameendm++;
@@ -6692,15 +6745,16 @@ sub doEachHex {
                             $tStk += $tuppoint;
                             $tSto += $tuppoint if ($turn1 < 5);
                         }
+                    }
+                    elsif ($goal < $tgoal) {
 
-                    } elsif($goal < $tgoal) {
                         $tStwin++;
                         $tStwint++;
                         $tStyusho++ if ($turn1 == 8);
                         $stlose++;
                         $stloset++;
                         $stshoka = $turn1 + 6 if ($turn1 > 5);
-                        my($value);
+                        my ($value);
                         $value = (($tStwin * 3 + $tStdrow) * 1000);
                         $value *= 2 if ($turn1 == 8);
                         $tIsland->{'money'} += $value;
@@ -6745,21 +6799,25 @@ sub doEachHex {
                 $stwint++;
                 $stshoka++;
             }
+
             if (($turn1 == 6) && ($stshoka < 6)) {
                 $stshoka = 11;
             }
+
             if (($turn == 46) && ($stshoka == 6)) {
                 $stwin++;
                 $stwint++;
                 $stshoka++;
                 logHCantiwin($id, $name, '準々決勝戦');
             }
+
             if (($turn == 49) && ($stshoka == 7)) {
                 $stwin++;
                 $stwint++;
                 $stshoka++;
                 logHCantiwin($id, $name, '準決勝戦');
             }
+
             if (($turn == 51) && ($stshoka == 8)) {
                 $stwin++;
                 $stwint++;
@@ -6789,18 +6847,16 @@ sub doEachHex {
                 }
             }
             $island->{'eisei4'} = "$sto,$std,$stk,$stwin,$stdrow,$stlose,$stwint,$stdrowt,$stloset,$styusho,$stshoka";
-
-        } elsif ($landKind == $HlandGold) {
-            # 金山
+        }
+        elsif ($landKind == $HlandGold) {
+                                                                                                # 金山
             my $DepletionPar = 7;
             my $value = $lv * 25 + random(501);
             $island->{'money'} += $value;
 
-            # 収入ログ
-            logOilMoney($id, $name, $lName, $this_pos, "$value$HunitMoney", '収益');
+            logOilMoney($id, $name, $lName, $this_pos, "$value$HunitMoney", '収益');            # 収入ログ
 
-            # 枯渇判定
-            if (random(100) < $DepletionPar) {
+            if (random(100) < $DepletionPar) {                                                  # 枯渇判定
                 # 枯渇
                 logGoldEnd($id, $name, $lName, $this_pos);
                 $land->[$x][$y] = $HlandMountain;
@@ -6904,8 +6960,8 @@ sub doEachHex {
 
             my ($happy) = Calc_Happiness_Town($island,$x,$y,7);
             $island->{'happy'} += $happy;
-
-        } elsif ($landKind == $HlandCollege) {
+        }
+        elsif ($landKind == $HlandCollege) {
             # 大学
             # 各要素の取り出し
             my ($clv) = $landValue->[$x][$y];
@@ -6945,8 +7001,8 @@ sub doEachHex {
 
                         }
                         else {
-                            my($ssx, $ssy, $i, $landKind, $lv, $point);
-                            for($i = 1; $i < 7; $i++) {
+                            my ($ssx, $ssy, $i, $landKind, $lv, $point);
+                            for ($i = 1; $i < 7; $i++) {
                                 $ssx = $sx + $ax[$i];
                                 $ssy = $sy + $ay[$i];
                                 # 行による位置調整
@@ -6957,7 +7013,7 @@ sub doEachHex {
                                 if (   (!$take)
                                     && ($land->[$ssx][$ssy] == $HlandWaste)
                                     && (!$island->{'c28'})) {
-                                    my($mshp, $msap, $msdp, $mssp, $mswin, $msexe, $tet) = split(/,/, $island->{'eisei5'});
+                                    my ($mshp, $msap, $msdp, $mssp, $mswin, $msexe, $tet) = split(/,/, $island->{'eisei5'});
                                     my $kind = 28;
                                     $landValue->[$ssx][$ssy] = ($kind << $Mons_Kind_Shift) + $mshp;
                                     $land->[$ssx][$ssy] = $HlandMonster;
@@ -7022,7 +7078,8 @@ sub doEachHex {
                 }
             }
 
-        } elsif ($landKind == $HlandShrine) {
+        }
+        elsif ($landKind == $HlandShrine) {
             # 時の神殿
             if ($landValue->[$x][$y]) {
                 # サーバートラブルなどでデータがなくなっていれば値を０に
@@ -7040,7 +7097,8 @@ sub doEachHex {
                 $landValue2->[$x][$y] = 0;
             }
 
-        } elsif($landKind == $HlandEgg) {
+        }
+        elsif ($landKind == $HlandEgg) {
             # 卵復活
             my ($molv) = $landValue->[$x][$y];
             my @rflag = (5, 3, 3, 5);
@@ -7781,7 +7839,7 @@ sub doEachHex {
             # ----------------------------------------- #
 
             if ($mKind == 35) { # ひめいのら
-                my($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
+                my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
                 $mon += 1;
 
                 if (   ($mon != 3)
@@ -7978,7 +8036,7 @@ sub doEachHex {
                     $nLv = ($nKind << $Mons_Kind_Shift) + $HmonsterBHP[$nKind] + random($HmonsterDHP[$nKind]);
 
                     # どこに現れるか決める
-                    my($bx, $by, $i);
+                    my ($bx, $by, $i);
                     my ($check);
                     my ($tar_land);
                     foreach $i (0..$pointNumber) {
@@ -8034,7 +8092,7 @@ sub doEachHex {
                 # 硬化中
                 next;
 
-            } elsif(   ($mKind == $Mons_Queen_inora) 
+            } elsif(   ($mKind == $Mons_Queen_inora)
                     && (   ($HislandTurn % 2) == 0)
                         && ($mHp < 4)
                         && (random(100) < 70) ) { # 魔獣クイーンいのら
@@ -8046,7 +8104,7 @@ sub doEachHex {
                     $landValue->[$x][$y] = 78;
                 }
 
-            } elsif($mKind == $Mons_f20) { # 人造怪獣f02
+            } elsif ($mKind == $Mons_f20) { # 人造怪獣f02
                 my($tx, $ty, $tL, $tLv, $tLv2);
                 # 発射
                 $tx = random($HislandSize);
@@ -8811,6 +8869,12 @@ sub doEachHex {
                         }
                     }
                 }
+            }
+            elsif ($mKind == $Mons_KaminariInora) {
+
+                my ($num) = random(3) + 1;
+                logKaminariCall($id, $name, $mName, "($x, $y)");
+                ThunderAttack($island , $num);
             }
 
             if (   ($special == 6)
@@ -9662,22 +9726,23 @@ sub doEachHex {
 
                 # 怪獣は荒地に
                 MonsterDown( $island , $sx , $sy , $mKind , 1 );
-
-            } else {
+            }
+            else {
                 # 移動ログ
                 if ( $mKind == $Mons_Unbaba){
                     logMonsMove($id, $name, $sName, $point, $mName , "に飲み込まれてしまいました。") if (($sL != $HlandSea)&&($sLv != 0));
 
-                } elsif($mKind == 32) {
+                }
+                elsif($mKind == 32) {
 
-                } else {
+                }
+                else {
                     if (   ( ($sL != $HlandWaste) && ($sL != $HlandPlains) )
                         && (!$island->{'BF_Flag'}) ) {
                         logMonsMove($id, $name, $sName, $point, $mName , "に踏み荒らされました。");
                     }
                 }
             }
-
         }
 
         # 火災判定
@@ -9737,11 +9802,11 @@ sub doEachHex {
                 my $fw = countAround($land, $x, $y, 7, $HlandForest, $HlandProcity, $HlandHouse, $HlandMonument);
                 $fw += countAround($land, $x, $y, 19, $HlandFiredept);
                 $fw = 0 if ($landKind == $HlandFiredept);
-                unless($fw) {
+                unless ($fw) {
                     # 無かった場合、火災で壊滅
-                    my($l) = $land->[$x][$y];
-                    my($lv) = $landValue->[$x][$y];
-                    my($point) = "($x, $y)";
+                    my ($l) = $land->[$x][$y];
+                    my ($lv) = $landValue->[$x][$y];
+                    my ($point) = "($x, $y)";
 
                     if ($fflag == 2) {
                         logFirenot($id, $name, $lName, $point);
@@ -10018,10 +10083,11 @@ sub HakoCup_TeamReset {
 # 砂浜
 # ---------------------------------------------------------------------
 sub SunahamaToSea {
-    my($island, $x ,$y) = @_;
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
+    my ($island, $x ,$y) = @_;
+
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
 
 
     my ($par) = $Sunahama_To_Sea_par;
@@ -10501,22 +10567,25 @@ sub FactoryEvent {
 # 荒地のイベント
 #----------------------------------------------------------------------
 sub WastelandEvent {
-    my($island , $x , $y) = @_;
+    my ($island , $x , $y) = @_;
 
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
-    my($id) = $island->{'id'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
+    my ($id) = $island->{'id'};
 
     # 荒れ地(BattleField)
     if (   (   ($id > 100)
-            || (   ($land->[0][0] == $HlandMonument ) 
+            || (   ($land->[0][0] == $HlandMonument)
                 && ($landValue->[0][0] == 70) ))
         && (!random(8) )) {
 
         if (!$landValue->[$x][$y]) {
+
             SetPlains_Normal($island, $x ,$y);
-        } else {
+        }
+        else {
+
             $landValue->[$x][$y]--;
         }
     }
@@ -11642,6 +11711,8 @@ sub doIslandProcess {
 
     Satellite_Irregular_Attack($island);
 
+    ThunderProc($island);
+
     # 役所の掃除を始める
     if ($island->{'yaku'}){
         Yakusyo_clean($island);
@@ -11735,22 +11806,23 @@ sub Satellite_Irregular_Attack {
 
     if ($island->{'eis6'}) {
         my ($i, $sx, $sy);
+        my ($tlv);
         for ($i = 0; $i < $HpointNumber; $i++){
             $sx = $Hrpx[$i];
             $sy = $Hrpy[$i];
             if ($land->[$sx][$sy] == $HlandMonster){
                 # 怪獣がいる場合、その怪獣を攻撃する
                 # 対象となる怪獣の各要素取り出し
-                my($tKind, $tName, $tHp) = monsterSpec($landValue->[$sx][$sy]);
-                my($tlv) = $landValue->[$sx][$sy];
+                my ($tKind, $tName, $tHp) = monsterSpec($landValue->[$sx][$sy]);
+                $tlv = $landValue->[$sx][$sy];
                 #my($tspecial) = $HmonsterSpecial[$tKind];
                 $point = int($island->{'rena'}/1000);
                 logIreAttackt($id, $name, "イレギュラー", $point, $tName, $tPoint);
 
                 $island->{'eis6'} -= 10;
 
-                $tHp -= int($island->{'rena'}/1000);
-                $tlv -= int($island->{'rena'}/1000);
+                $tHp -= int($island->{'rena'} / 1000);
+                $tlv -= int($island->{'rena'} / 1000);
                 $landValue->[$sx][$sy] = $tlv;
                 if ($tHp < 1) {
                     # 対象の怪獣が倒れて荒地になる
@@ -12069,13 +12141,13 @@ sub Flood {
 # 噴火判定
 #----------------------------------------------------------------------
 sub Volcano {
-    my($island, $x,$y) = @_;
+    my ($island, $x,$y) = @_;
 
-    my($name) = islandName($island);
-    my($id) = $island->{'id'};
-    my($land) = $island->{'land'};
-    my($landValue) = $island->{'landValue'};
-    my($landValue2) = $island->{'landValue2'};
+    my ($name) = islandName($island);
+    my ($id) = $island->{'id'};
+    my ($land) = $island->{'land'};
+    my ($landValue) = $island->{'landValue'};
+    my ($landValue2) = $island->{'landValue2'};
 
     {
         my($sx, $sy, $i, $landKind, $lv, $point);
@@ -13381,7 +13453,7 @@ sub estimate {
 
             } elsif($kind == $HlandCollege) {
                 $area++;
-                if ($value2 == 0) {
+                if ($value2 == 0) {         # 復興中は反応なし
                     if ($value == 0) {
                         $co0++;             #農業大学
                     } elsif($value == 1) {
@@ -13401,15 +13473,16 @@ sub estimate {
                 # 生物大学(空き)
                 if ($value == 99) {
                     $co99++;
-                } elsif(($value == 98) || ($value == 97)){
+                }
+                elsif (($value == 98) || ($value == 97)) {
                         $co4++;
                         $tet++;
-
-                } elsif(($value == 4) || ($value == 96)) {
+                }
+                elsif (($value == 4) || ($value == 96)) {
                         $co4++;             # 生物大学
                 }
-
-            } elsif ($kind == $HlandMonster) {
+            }
+            elsif ($kind == $HlandMonster) {
                 $area++;
                 my ($special) = $HmonsterSpecial[$mKind];
                 if ($mKind == 11) {
@@ -13476,14 +13549,14 @@ sub estimate {
             }else{
                 $area++;
             }
-
-        } elsif($kind == $HlandNursery) {
+        }
+        elsif ($kind == $HlandNursery) {
             # 養殖場は農場の一種
             $farm += $value;
             $seafood_work += $value;
             $foodkind[6] = 1;
-
-        } elsif($kind == $HlandUmicity) {
+        }
+        elsif ($kind == $HlandUmicity) {
             # 海都市
             $pop += $value;
             $mwork =  int($value/30);
@@ -13492,8 +13565,8 @@ sub estimate {
             $factoryHT += $hwork;
             $factory += $mwork;
             $sea_build++;
-
-        } elsif($kind == $HlandOilCity) {
+        }
+        elsif ($kind == $HlandOilCity) {
             # 油田都市
             $pop += $value;
             $mwork =  int($value/40);

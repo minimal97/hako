@@ -91,6 +91,8 @@ our @HflexTime = (3, 3, 3, 3, 9, 3);
 our $HmaxIsland = 40;
 use constant REG_MAX_ISLAND    => 40;
 
+our $HPlayableIslandMaxID = 100;
+
 # 島の大きさ(変更できないかも)
 our $HislandSize = 20;
 use constant ISLAND_SIZE    => 20;
