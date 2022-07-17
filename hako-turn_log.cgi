@@ -703,6 +703,12 @@ sub logMgDrain { #1
 	logOut("${HtagName_}${name}$point${H_tagName}の<b>$mName</b>は<b>$tName</b>に対して${HtagDisaster_}ドレイン${H_tagDisaster}を唱えました。",$id);
 }
 
+# かみなりいのらのかみなり
+sub logKaminariCall { #1
+    my ($id, $name, $mName, $point) = @_;
+    logOut("${HtagName_}${name}$point${H_tagName}の<b>$mName</b>は<b>かみなり</b>を呼び起こしました。",$id);
+}
+
 # 召喚
 sub logShoukan { #1
 	my ($id, $name, $nName, $mName, $point) = @_;
