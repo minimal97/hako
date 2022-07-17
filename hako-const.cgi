@@ -56,7 +56,7 @@ our $Mons_Retro_inora = 34;     # レトロいのら
 our $Mons_hime_inora = 35;      # ひめいのら
 our $Mons_Kisinhei   = 36;      # きしんへい
 our $Mons_EnderInora = 37;      # エンダーいのら
-our $Mons_KaminariInora = 38;      # かみなりいのら
+our $Mons_KaminariInora = 38;   # かみなりいのら
 
 $HmonsterDefence = 100; # 怪獣がミサイルを叩き落す確率 random(1000) < 無効
 
@@ -110,7 +110,7 @@ our @HmonsterZooMoney;  # 動物園の価値
     SetMonsterTable($Mons_Met,          'メット',           'met.png',      'met_kouka.png',4,       2,    7,     4,    20,     1500,    100, 1);
     SetMonsterTable($Mons_KingInora,    '怪獣キングいのら', 'monster3.gif', '',             7,       2,    8,     0,    30,     5555,    100, 1);
     SetMonsterTable($Mons_Omu,          '古獣王蟲',         'monster18.gif','',             6,       0,    9,     1,    45,     2500,    0,   0);
-    SetMonsterTable(26,                'ワープいのらキング','ghostking.gif','',             8,       4,   10,     14,   30,     10000,   25,  1);
+    SetMonsterTable(26,                 'ワープいのらキング','ghostking.gif','',            8,       4,   10,     14,   30,     10000,   25,  1);
     SetMonsterTable($Mons_Unbaba,       'ビッグウンババ',   'monster27.png','',             7,       2,    8,     2,    30,     0,       0,   0);
 
     SetMonsterTable($Mons_MetaHamu,     '硬獣めたはむ',     'monster25.gif','monster25.gif',5,       2,   10,     8,    40,     3500,    100, 1);
@@ -163,7 +163,7 @@ our @DebugMonster = (37);
         my @HmonsterLevel1Table = ( $Mons_Inora,  2,  3,  4, $Mons_Pirates,$Mons_Pirates,$Mons_Pirates);
         my @HmonsterLevel2Table = (  5,  6,  7,  8, 27, 25);
         my @HmonsterLevel3Table = (  9, 10, 11, 12);
-        my @HmonsterLevel4Table = ( 13, 14, 15, 16, 17, 18, 19, 20, 22, 26 ,$Mons_Volgenom,$Mons_Retro_inora);
+        my @HmonsterLevel4Table = ( 13, 14, 15, 16, 17, 18, 19, 20, 22, 26 ,$Mons_Volgenom,$Mons_Retro_inora,$Mons_KaminariInora);
         my @HmonsterLevel5Table = ( 23, 24, 31 ,$Mons_Kisinhei );
 
         # このテーブルからひいてくるようにする。
