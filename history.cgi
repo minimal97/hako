@@ -109,14 +109,9 @@ $server_config::HbaseDir / $ENV{HTTP_REFERER} / $HcurrentID
 END
         exit(0);
     }
-if (-e $HpasswordFile) {
-    # パスワードファイルがある
-    open(PIN, "<$HpasswordFile") || die $!;
-    chomp($HmasterPassword  = <PIN>); # マスタパスワードを読み込む
-    chomp($HspecialPassword = <PIN>); # 特殊パスワードを読み込む
-    close(PIN);
-}
-if ($HhtmlLogMake && ($HcurrentID == 0)) {
+    if (   ($HhtmlLogMake)
+        && ($HcurrentID == 0)) {
+
         unless (-e "${HhtmlDir}/hakolog.html") {
             # 最近の出来事ＨＴＭＬ出力
             logPrintHtml();
