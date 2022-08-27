@@ -994,8 +994,8 @@ sub landString {
         } else {
             $image = 'land39_up.gif';
         }
-        $alt = "³¤¾åÅÔ»Ô¥á¥¬¥Õ¥í¡¼¥È(${lv}$HunitPop)";
-        $naviTitle  = '³¤¾åÅÔ»Ô¥á¥¬¥Õ¥í¡¼¥È';
+        $alt = "¥á¥¬¥Õ¥í¡¼¥È(${lv}$HunitPop)";
+        $naviTitle  = '¥á¥¬¥Õ¥í¡¼¥È';
         $naviText  = "${lv}${HunitPop}";
 
     } elsif ($l == $HlandMinato) {
@@ -1227,8 +1227,8 @@ sub landString {
         $image = 'monument27.gif';
         $naviTitle  = '¥í¥±¥Ã¥È';
         $alt = "¥í¥±¥Ã¥È";
-
-    } elsif($l == $HlandUmishuto) {
+    }
+    elsif ($l == $HlandUmishuto) {
         # ³¤¼óÅÔ
         if($mode == 0) {
             # ´Ñ¸÷¼Ô¤Î¾ì¹ç¤Ï³¤¤Î¤Õ¤ê
@@ -1241,15 +1241,15 @@ sub landString {
             $naviTitle  = '³¤Äì¼óÅÔ';
             $naviText  = "(${lv}$HunitPop)";
         }
-
-    } elsif($l == $HlandGold) {
+    }
+    elsif ($l == $HlandGold) {
         # ¶â»³
         $image = 'land15.gif';
         $alt = "¶â»³(ºÎ·¡¾ì${lv}0${HunitPop}µ¬ÌÏ)";
         $naviTitle  = '¶â»³';
         $naviText  = "¶â»³${lv}0${HunitPop}µ¬ÌÏ";
-
-    } elsif ($l == $HlandSeatown) {
+    }
+    elsif ($l == $HlandSeatown) {
         # ³¤Äì¿·ÅÔ»Ô
         if ($mode == 1) {
             my $owork =  int($lv/40);
@@ -1257,26 +1257,27 @@ sub landString {
             $alt = "³¤Äì¿·ÅÔ»Ô(${lv}$HunitPop/¿¦¾ì${owork}0$HunitPop/ÇÀ¾ì${owork}0$HunitPop)";
             $naviTitle  = '³¤Äì¿·ÅÔ»Ô';
             $naviText  = "(${lv}$HunitPop/¿¦¾ì${owork}0$HunitPop/ÇÀ¾ì${owork}0$HunitPop)";
-        } else {
+        }
+        else {
             # ´Ñ¸÷¼Ô¤Î¾ì¹ç¤Ï³¤¤Î¤Õ¤ê
             $image = Sea_Img_Gen($id, $x, $y);
             $alt = '³¤';
             $naviTitle  = '³¤';
         }
-
-    } elsif ($l == $HlandYougan) {
+    }
+    elsif ($l == $HlandYougan) {
         # ÍÏ´äÃÏÂÓ
         $image = 'land60.gif';
         $alt = 'ÍÏ´äÃÏÂÓ';
         $naviTitle  = 'ÍÏ´äÃÏÂÓ';
-
-    } elsif ($l == $HlandStation) {
+    }
+    elsif ($l == $HlandStation) {
         # ±Ø
         $image = 'station.gif';
         $alt = '±Ø';
         $naviTitle  = '±Ø';
-
-    } elsif ($l == $HlandHouse) {
+    }
+    elsif ($l == $HlandHouse) {
         # Åç¼ç¤Î²È
         my ($n) = $onm;
         my ($hlv) = Calc_HouseLevel($island->{'pts'});
@@ -1284,8 +1285,8 @@ sub landString {
         $image = "house${hlv}.gif";
         $alt = "$n";
         $naviTitle = $n;
-
-    } elsif ($l == $HlandKyujo) {
+    }
+    elsif ($l == $HlandKyujo) {
         # Ìîµå¾ì
         $image = 'land23.gif';
         $alt = 'Ìîµå¾ì';
