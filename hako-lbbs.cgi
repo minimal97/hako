@@ -315,46 +315,54 @@ END
     # out("<b>※</b>${AfterName}を持っている方は名前を変更しても所有者名が使われます。");
 
     out(<<END);
-<table border>
-<tr>
-<th>名前<small>(全角${HlengthLbbsName}字まで)</small></th>
-<th $col>内容<small>(全角${HlengthLbbsMessage}字まで)</small></th>
-<th>通信方法</th>
-</tr>
-<tr>
-<TD><INPUT type="text" size="30" MAXLENGTH="30" name="LBBSNAME" value="$HdefaultName"></TD>
-<TD $col><INPUT type="text" SIZE="70" name="LBBSMESSAGE"></TD>
-<td>
-<input type="radio" name="LBBSTYPE" value="PUBLIC" CHECKED>公開<br>
-<input type="radio" name="LBBSTYPE" value="SECRET">極秘
-</td>
-</tr>
-<tr>
-<TH>パスワード</TH>
-<TH>${AfterName}名</TH>
-<TH $col>動作</TH>
-</tr>
-<tr>
-<td><input type="password" size="16" maxlength=16 name="PASSWORD" value="$HdefaultPassword"></td>
-<td>
-<select name="ISLANDID2">$HislandList</SELECT>
+  <table border>
+    <tr>
+      <th>名前<small>(全角${HlengthLbbsName}字まで)</small></th>
+      <th $col>内容<small>(全角${HlengthLbbsMessage}字まで)</small></th>
+      <th>通信方法</th>
+    </tr>
+    <tr>
+      <td>
+        <input type="text" size="30" MAXLENGTH="30" name="LBBSNAME" value="$HdefaultName">
+      </td>
+      <td $col>
+        <input type="text" size="70" name="LBBSMESSAGE">
+      </td>
+      <td>
+        <input type="radio" name="LBBSTYPE" value="PUBLIC" checked>公開<br>
+        <input type="radio" name="LBBSTYPE" value="SECRET">極秘
+      </td>
+    </tr>
+    <tr>
+      <th>パスワード</th>
+      <th>${AfterName}名</th>
+      <th $col>動作</th>
+    </tr>
+    <tr>
+      <td>
+        <input type="password" size="16" maxlength='16' name="PASSWORD" value="$HdefaultPassword">
+      </td>
+      <td>
+        <select name="ISLANDID2">$HislandList</select>
 END
     out(<<END) if ($HlbbsAnon);
-<INPUT type="radio" name="LBBSTYPE" value="ANON">観光客
+        <input type="radio" name="LBBSTYPE" value="ANON">観光客
 END
 
     out(<<END);
-</TD>
-<TD><DIV align='center'>
-<INPUT type="submit" value="記帳する" name="LbbsButtonSS$HcurrentID">
-<INPUT type="submit" value="極秘確認" name="LbbsButtonCK$HcurrentID">
-</DIV></TD>
+      </td>
+      <td>
+        <div align='center'>
+          <input type="submit" value="記帳する" name="LbbsButtonSS$HcurrentID">
+          <input type="submit" value="極秘確認" name="LbbsButtonCK$HcurrentID">
+        </div>
+      </td>
 END
     if (!$HlbbsAnon) {
         out(<<END);
-<TD align="right">
+      <td align="right">
 番号
-<SELECT name="NUMBER">
+        <select name="NUMBER">
 END
         {
             # 発言番号
@@ -453,39 +461,48 @@ END
             ($sName, $sID) = split(/,/, $2);
             $sNo = $HidToNumber{$sID} if (defined $sID);
             $speaker = '';
-            if ($HlbbsSpeaker && ($sName)) {
+            if (   ($HlbbsSpeaker)
+                && ($sName)) {
+
                 if (defined $sNo) {
-                    $speaker = "<span class='lbbsST'><b><small>(<a style=\"text-decoration:none\" href=\"$HthisFile?Sight=$sID\">$sName</a>)</small></b></span>";
-                } else {
-                    $speaker = "<span class='lbbsST'><b><small>($sName)</small></b></span>";
+                    $speaker = "\n      <span class='lbbsST'><b><small>(<a style=\"text-decoration:none\" href=\"$HthisFile?Sight=$sID\">$sName</a>)</small></b></span>\n";
+                }
+                else {
+                    $speaker = "\n      <span class='lbbsST'><b><small>($sName)</small></b></span>\n";
                 }
             }
+            out("    <td>\n");
             if ($3 == 0) {
                 # 観光者
                 if ($1 == 0) {
                     # 公開
-                    out("<td>$HtagLbbsSS_$4 &gt; $5$H_tagLbbsSS $speaker</td></tr>");
-                } else {
+                    out("      $HtagLbbsSS_$4 &gt; $5$H_tagLbbsSS $speaker\n");
+                }
+                else {
                     # 極秘
-                    if (($HmainMode ne 'owner') &&(($HspeakerID eq '') || ($sID != $HspeakerID))) {
+                    if (   ($HmainMode ne 'owner')
+                        && (($HspeakerID eq '') || ($sID != $HspeakerID))) {
                         # 観光客
-                        out("<td><div class='t_center'><span class='lbbsST'>- 極秘 -</span></div></td></tr>");
-                    } else {
+                        out("<div class='t_center'><span class='lbbsST'>- 極秘 -</span></div>");
+                    }
+                    else {
                         # オーナー
-                        out("<td>$HtagLbbsSS_$4 &gt;(秘) $5$H_tagLbbsSS $speaker</td></tr>");
+                        out("      $HtagLbbsSS_$4 &gt;(秘) $5$H_tagLbbsSS $speaker\n");
                     }
                 }
             }
             else {
                 # 島主
-                out("<td>$HtagLbbsOW_$4 &gt; $5$H_tagLbbsOW $speaker</td></tr>");
+                out("      $HtagLbbsOW_$4 &gt; $5$H_tagLbbsOW $speaker\n");
             }
+            out(<<END);
+    </td>
+  </tr>
+END
         }
     }
 
     out(<<END);
-    </td>
-  </tr>
 </table>
 END
 }

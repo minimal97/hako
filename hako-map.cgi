@@ -72,9 +72,9 @@ END
                                          ) {
 
     out(<<END);
-<p align='center'>
+<div align='center' style="postion: -webkit-sticky;position: sticky;top: 0;background-color: #EEFFEE;">
   <a href=\"#\" onclick=\"window.close()\">${HtagBig_}[閉じる]${H_tagBig}</a>
-</p>
+</div>
 END
     }
     else {
@@ -143,17 +143,19 @@ sub tempOwnerJava {
             $l_kind = $cmd[$cmd_lp];
 
             # 必要な条件がなければコマンドから除外する
-            next if((($l_kind == $HcomSave)||($l_kind == $HcomLoad))&& !($island->{'shr'}));
-            next if(($l_kind == $HcomBettown) && ($Hislands[$HcurrentNumber]->{'shutomessage'} == 555));
-            next if(($l_kind == $HcomYakusho) && ($Hislands[$HcurrentNumber]->{'shutomessage'} == 555));
-            next if(($l_kind == $HcomYakusho) && ($Hislands[$HcurrentNumber]->{'yaku'} > 0));
+            next if ((($l_kind == $HcomSave) || ($l_kind == $HcomLoad)) && !($island->{'shr'}));
+            next if (($l_kind == $HcomBettown) && ($Hislands[$HcurrentNumber]->{'shutomessage'} == 555));
+            next if (($l_kind == $HcomYakusho) && ($Hislands[$HcurrentNumber]->{'shutomessage'} == 555));
+            next if (($l_kind == $HcomYakusho) && ($Hislands[$HcurrentNumber]->{'yaku'} > 0));
 
             # 値段算出
             $l_cost = toCostDisplay($HcomCost[$l_kind] , $island);
 
             if (isCommandEnable($l_kind)) {
+
                 $set_listcom .= "\[$l_kind\,\'$HcomName[$l_kind]\',\'$l_cost\'\]\,\n";
                 if (($m > 0) && ($m < 8)) {
+
                     $click_com[$m] .= "      <a title='$l_cost' href='javascript:void(0);' onClick='cominput(myForm,6,$l_kind)' style='text-decoration:none'>$HcomName[$l_kind]<font size='-1'>($l_cost)</font></a><br>\n";
 #                   $click_com[$m] .= "<a title='$l_cost' href='javascript:void(0);' onClick='cominput(myForm,6,$l_kind)' style='text-decoration:none'>$HcomName[$l_kind]($l_cost)</a><br>\n";
                 }
@@ -162,7 +164,7 @@ sub tempOwnerJava {
 #           next if($l_kind < $ff+1);
         }
         $bai = length($set_listcom);
-        $set_listcom = substr($set_listcom, 0,$bai-2);
+        $set_listcom = substr($set_listcom, 0, $bai - 2);
         $set_listcom .= " \],\n";
     }
 
@@ -180,6 +182,7 @@ sub tempOwnerJava {
 
     #島リストセット
     my ($set_island, $l_name, $l_id);
+
     $set_island = "";
     foreach my $i (0..$islandNumber) {
 
@@ -335,7 +338,7 @@ END
 <hr>
 <b>開発計画</b>
                     <input type="checkbox" name="MENUOPEN"onClick="check_menu()" $open>非表示<br>
-                    <select name=menu onchange="SelectList(myForm)">
+                    <select name='menu' onchange="SelectList(myForm)">
                       <option value=>全種類
 END
     }
@@ -807,7 +810,7 @@ END
     <td class='T'>
       <form name='POPUP'>
         <img alt='' name="NAVIIMG" src="" width="32" height="32" align="left">
-        <textarea name="COMSTATUS" rows="2" class="popupnavi"></textarea>
+        <textarea name="COMSTATUS" rows="3" class="popupnavi"></textarea>
       </form>
     </td>
   </tr>
@@ -1034,10 +1037,15 @@ sub commandMain {
         my ($i) = 0;
         my ($j) = 0;
         while (($j < $HpointNumber) && ($i < $HcommandMax)) {
+
             my ($x) = $Hrpx[$j];
             my ($y) = $Hrpy[$j];
-            if (($land->[$x][$y] == $HlandForest) && ($landValue->[$x][$y] > $HcommandArg * 2)) {
+
+            if (   ($land->[$x][$y] == $HlandForest)
+                && ($landValue->[$x][$y] > $HcommandArg * 2)) {
+
                 if ($kind) {
+
                     slideBack($command, $HcommandPlanNumber);
                     $command->[$HcommandPlanNumber] = {
                         'kind' => $HcomPlant,
@@ -1066,12 +1074,15 @@ sub commandMain {
         # 全消し
         my ($i);
         for ($i = 0; $i < $HcommandMax; $i++) {
+
             slideFront($command, $HcommandPlanNumber);
         }
         tempCommandDelete();
     }
     else {
+
         if ($HcommandMode eq 'insert') {
+
             slideBack($command, $HcommandPlanNumber);
         }
         tempCommandAdd();
@@ -1100,6 +1111,7 @@ sub commandMain {
 #----------------------------------------------------------------------
 # メイン
 sub commentMain {
+
     # idから島を取得
     $HcurrentNumber = $HidToNumber{$HcurrentID};
     my ($island) = $Hislands[$HcurrentNumber];
@@ -1201,7 +1213,6 @@ sub WorkChangeMain {
     $HcurrentNumber = $HidToNumber{$HcurrentID};
     my ($island) = $Hislands[$HcurrentNumber];
 
-
     # パスワード
     if (!checkPassword($island,$HinputPassword)) {
         # password間違い
@@ -1275,6 +1286,7 @@ sub TeamMain {
 #----------------------------------------------------------------------
 sub seqnum2 {
     my ($seed,$seed2) = @_;
+
     my ($v) = sin($seed + 33 + $seed2); # 33 は任意の整数、乱数の系列を変える
 
     return (int(substr($v, -4, 3)));
@@ -1302,8 +1314,10 @@ sub Sea_Img_Gen {
 # 個別ログ表示
 sub logPrintLocal {
     my ($mode) = @_;
+
     my ($i);
     for ($i = 0; $i < $HlogMax; $i++) {
+
         logFilePrint($i, $HcurrentID, $mode);
     }
 }
@@ -1326,6 +1340,7 @@ END
 #----------------------------------------------------------------------
 # ○○島開発計画
 sub tempOwner {
+
     $HcurrentNumber = $HidToNumber{$HcurrentID};
     my($island) = $Hislands[$HcurrentNumber];
 
@@ -1539,15 +1554,20 @@ END
 
 #----------------------------------------------------------------------
 sub PointPanel {
+
     out(<<END);
 <b>座標(</b>
 <select name='POINTX'>
 END
     foreach my $i (0..$islandSize) {
+
         if ($i == $HdefaultX) {
 
             out("<option value=$i selected>$i");
-            for ( ; $i > $islandSize ; $i++) { out("<option value=$i>$i"); }
+            for ( ; $i > $islandSize ; $i++) {
+
+                out("<option value=$i>$i");
+            }
         }
         else {
 
@@ -1560,6 +1580,7 @@ END
 END
 
     foreach my $i (0..$islandSize) {
+
         if ($i == $HdefaultY) {
 
             out("<option value=$i selected>$i");
@@ -1581,6 +1602,7 @@ END
 #----------------------------------------------------------------------
 sub CommentForm {
     my ($island) = @_;
+
     my ($id) = $island->{'id'};
     out(<<END);
 <div id='CommentBox' align='center'>
@@ -1662,7 +1684,7 @@ sub TeamNameChangeForm {
         out(<<END);
 <tr>
   <th>チーム名変更<br><small>(全角${HlengthTeam}字まで)</small></th>
-  <td><INPUT TYPE=text NAME=TEAMMESSAGE SIZE=32 VALUE="$teammessage">
+  <td><input type='text' name='TEAMMESSAGE' SIZE='32' value="$teammessage">
     <input type="submit" value="チーム名変更" name=TeamButton$Hislands[$HcurrentNumber]->{'id'}>
   </td>
 </tr>
@@ -1681,6 +1703,7 @@ sub YakusyoChangeForm {
     my ($id) = $island->{'id'};
 
     if ($island->{'yaku_work'} > 0 ) {
+
         my ($temp_yotei , $temp_narasi);
 
         if ($Hislands[$HcurrentNumber]->{'yaku_work'} & $HYakushoWorkYotei) {
@@ -1720,8 +1743,8 @@ sub ShutoChangeForm {
     <tr>
       <th>首都名変更<br><small>(全角${HlengthShuto}字まで)</small></th>
       <td>
-        <input type="text" name=SHUTOMESSAGE size=32 value="$shutomessage">
-        <input type="submit" value="首都名変更" name=ShutoButton$Hislands[$HcurrentNumber]->{'id'}>
+        <input type='text' name='SHUTOMESSAGE' size='32' value='$shutomessage'>
+        <input type='submit' value='首都名変更' name='ShutoButton$Hislands[$HcurrentNumber]->{'id'}'>
       </td>
     </tr>
 END
@@ -1741,19 +1764,28 @@ sub tempCommand {
             $command->{'y'},
             $command->{'arg'}
         );
+
     $HcomName[$kind] = '' if ((($kind == $HcomSave)||($kind == $HcomLoad))&& !$shr);
 
-    if ($HcomName[$kind] eq '') { $HcomName[$kind] = "このコマンドは使えなくなりました($kind)"; }
+    if ($HcomName[$kind] eq '') {
+
+        $HcomName[$kind] = "このコマンドは使えなくなりました($kind)";
+    }
+
     my ($name) = "$HtagComName_${HcomName[$kind]}$H_tagComName";
     my ($point) = "$HtagName_($x,$y)$H_tagName";
+
     $target = islandName($Hislands[$HidToNumber{$target}]);
+
     if ($target eq '') {
         $target = '無人';
     }
     $target = "$HtagName_${target}$H_tagName";
 
     my ($value) = $arg * $HcomCost[$kind];
+
     $value = $HcomCost[$kind] if (!$value);
+
     if ($value < 0) {
 
         $value = -$value;
@@ -1767,7 +1799,7 @@ sub tempCommand {
 
     my ($j) = sprintf("%02d：", $number + 1);
 
-    out("<a style=\"text-decoration:none\" href=\"javascript:void(0);\" onClick=\"ns($number);cmdsl();return true;\">") if($mode);
+    out("<a style=\"text-decoration:none\" href=\"javascript:void(0);\" onClick=\"ns($number);cmdsl();return true;\">") if ($mode);
     out("$HtagNumber_<span id=\"CMD_$number\">○</span>$j$H_tagNumber$HnormalColor_");
 
     my ($command_msg) = '';
@@ -1997,7 +2029,7 @@ END
     out(<<END);
 <div>ここには、退治した怪獣が載ります。$zookazus<br>
 <div align='center'>
-<table border><tr>
+  <table border><tr>
     <th $HbgTitleCell>${HtagTH_}番号${H_tagTH}</th>
     <th $HbgTitleCell>${HtagTH_}怪獣${H_tagTH}</th>
     <th $HbgTitleCell>${HtagTH_}名前${H_tagTH}</th>
@@ -2013,7 +2045,7 @@ END
     my ($mkind) = 0;
     my ($zonum) = 0;
 
-    for ($block = 0 ; $block < 5; $block++ ) {
+    for ($block = 0 ; $block < 5; $block++) {
 
         $zoo_list = '';
         $mbase = $block * 32;   #32bit
@@ -2039,7 +2071,7 @@ END
 
                     $maxHP = $HmonsterBHP[$mkind] + $HmonsterDHP[$mkind];
         out(<<END);
-<tr><td $HbgTitleCell>$mkind</td><td><img src='./${HMapImgDir}$HmonsterImage[$mkind]'></td><td>$HmonsterName[$mkind]</TD><TD>$HmonsterBHP[$mkind]〜$maxHP</TD><TD>$HmonsterValue[$mkind]</TD><TD>$HmonsterExp[$mkind]</TD>$zoo_list</TR>
+<tr><td $HbgTitleCell>$mkind</td><td><img src='./${HMapImgDir}$HmonsterImage[$mkind]'></td><td>$HmonsterName[$mkind]</td><td>$HmonsterBHP[$mkind]〜$maxHP</TD><TD>$HmonsterValue[$mkind]</TD><TD>$HmonsterExp[$mkind]</TD>$zoo_list</TR>
 END
                 }
             }
@@ -2050,7 +2082,7 @@ END
         }
     }
     out(<<END);
-</TABLE>
+  </table>
 </div>
 END
 
@@ -2143,8 +2175,9 @@ sub tempRecent {
     my ($mode, $mode2) = @_;
 
     if ($mode2) {
+
         my ($enPass) = $HdefaultPassword;
-        my ($pass) = $mode ? "<INPUT type=hidden name=PASSWORD value=$enPass size=16 maxlength=16>" : '';
+        my ($pass) = $mode ? "<input type='hidden' name='PASSWORD' value='$enPass' size='16' maxlength='16'>" : '';
         out(<<END);
 <script type="text/javascript">
 <!--
@@ -2176,7 +2209,7 @@ END
 <h2>${HtagName_}${HcurrentName}${H_tagName}の近況</h2>
 END
         logPrintLocal($mode);
-        out("</DIV>");
+        out("</div>");
     }
 }
 
@@ -2185,9 +2218,10 @@ END
 # 島の移動
 sub islandJamp {
     my ($wmode) = @_;
+
     $HtargetList = getIslandList($HcurrentID, 1);
 
-    my $jumptag;
+    my ($jumptag);
     if ($wmode) {
         $jumptag = "if (url != \"\" ) window.open(\"$HthisFile?SightC=\"+url);";
     }
@@ -2209,7 +2243,7 @@ function jump(theForm) {
       <td>
         <select name="urlsel">
 $HtargetList
-        </select><BR>
+        </select><br>
       </td>
       <td>
         <input type="button" value=" GO " onClick="jump(this.form)">
@@ -2227,13 +2261,16 @@ sub exLbbs {
     my ($bbsID, $mode) = @_;
 
     my ($admin, $id) = ('', '');
+
     if ($mode == 1) {
 
         $mode = 'yes';
         $id = $bbsID;
+
         my ($island) = $Hislands[$HidToNumber{$bbsID}];
         my ($onm) = $island->{'onm'};
-        $onm = "$island->{'name'}$AfterName" if($onm eq '');
+
+        $onm = "$island->{'name'}$AfterName" if ($onm eq '');
         $admin =<<"END";
 <input type='hidden' name='name' value='$onm'>
 <input type='hidden' name='title' value='$island->{'name'}$AfterName観光掲示板'>
@@ -2246,6 +2283,7 @@ END
         $id = $defaultID;
     }
     else {
+
         $mode = '';
     }
 
@@ -2259,8 +2297,8 @@ function Exlbbs(){
 }
 //-->
 </script>
-<DIV ID='localBBS'>
-<HR>
+<div id='localBBS'>
+<hr>
 <h2><span class='Nret'>${HtagName_}${HcurrentName}${AfterName}${H_tagName}</span><span class='Nret'>観光者通信</span></h2>
 <form name="exLbbs" action="${HlbbsDir}/lbbs.cgi" method=POST encType=multipart/form-data>
   <input type="hidden" name="mode" value='view'>

@@ -50,12 +50,14 @@ sub PrintTopMenuLink {
     $output = "<div class='TopMenuLink'>\n";
 
     if (!(ADMIN_JOIN_ONLY)) {
+
         $output .= "[<a class='Nret' href='$HthisFile?Join=0'>新しい${AfterName}を探す</a>] \n";
     }
     else {
+
         $output .= (qq|<b>※</b>新しい${AfterName}を探したい方は「<b>${AfterName}名、あなたの名前、パスワード</b>」を管理人までメールしてください。<br>|);
     }
-    $output .= (qq|<span class='Nret'>[<A href="$HthisFile?Rename=0">${AfterName}の名前とパスワードの変更</A>]</span> |);
+    $output .= (qq|<span class='Nret'>[<a href="$HthisFile?Rename=0">${AfterName}の名前とパスワードの変更</a>]</span> |);
 
     #out(qq|[<A href="$HthisFile?JoinA=0">同盟の設定</A>] |) if(($HallyUse == 1) );
     if (   (USE_GZIP)
@@ -135,12 +137,13 @@ END
 #----------------------------------------------------------------------
 sub tempNewsspace {
 
-    my ($news_rand) = random(100);
+    my ($news_rand) = random(100);      # キャッシュ用
+
     out(<<END);
-  <div class="topblock">
-    <h2 class="subtitle">ニュース用</h2>まずは、要望があれば、miniverseに記載してください。<span class='Nret'><a target="_blank" href="../wiki/index.php?%BD%A4%C0%B5%B3%D0%BD%F13">さらに細かいメモ</a></span><br>
-    <div class="ifrm-container">
-      <iframe class="ifrm" scrolling="auto" src="news.html?no-cache=$news_rand"></iframe>
+  <div class='topblock'>
+    <h2 class='subtitle'>ニュース用</h2>まずは、要望があれば、miniverseに記載してください。<span class='Nret'><a target='_blank' href='http://minimal97.com/wiki/index.php?%BD%A4%C0%B5%B3%D0%BD%F13'>さらに細かいメモ</a></span><br>
+    <div class='ifrm-container'>
+      <iframe class='ifrm' scrolling='auto' src='news.html?no-cache=$news_rand'></iframe>
     </div>
   </div>
 END
@@ -157,9 +160,11 @@ sub Login_space {
 
     # java モードか、 cgiモードか
     if ($HjavaModeSet eq 'java') {
+
         $radio2 = 'checked';
     }
     elsif ($HjavaModeSet eq 'cgi') {
+
         $radio = 'checked';
     }
     else {
@@ -223,7 +228,7 @@ END
             my ($all) = 0;
             my ($tsn, $ten);
 
-            foreach (@HflexTime) { $all += $_;  }
+            foreach (@HflexTime) {$all += $_;}
             $tsn = $HislandTurn % @HflexTime;
             {
                 my ($ts, $te);
@@ -354,8 +359,8 @@ END
 
 # リアルタイマー
     if (INIT_REAL_TIMER) {
-        out(<<END) if (defined $HleftTime);
 
+        out(<<END) if (defined $HleftTime);
     <form name="frm_TIME" style="margin  : 2px 0px;">
       <input type="text" name="TIME" size="50" readonly class="timer">
     </form>
@@ -448,7 +453,7 @@ END
   <div>
     <h2 class="subtitle">諸${AfterName}の状況</h2>
     <span class='Nret'>${AfterName}の名前をクリックすると、</span>
-    <span class='Nret'><B>観光</B>することができます。</span>
+    <span class='Nret'><b>観光</b>することができます。</span>
     <div id='islandView'>
 END
 
@@ -550,14 +555,16 @@ END
     my ($bumons,$hlv,$pop,$Farmcpc , $oStr);
     my ($uniNum) = $#uniName + 1;
 
-    $hcturn = int($HislandTurn/100) * 100;
+    $hcturn = int($HislandTurn / 100) * 100;
 
     for ($ii = $start; $ii < $end; $ii++) {
 
         $j = $ii + 1 - $HbfieldNumber;
         $island = $Hislands[$ii];
-        out("<tr><th></th></tr><tr><th></th></tr>$head") if (($HbfieldNumber && $j == 1) || ($ii == $start));
+        if (($HbfieldNumber && $j == 1) || ($ii == $start)) {
 
+            out("<tr><th></th></tr><tr><th></th></tr>$head");
+        }
         $id         = $island->{'id'};
         $farm       = $island->{'farm'};
         $factory    = $island->{'factory'};
@@ -615,6 +622,7 @@ END
             $island->{'tuni'} = 0;
 
             foreach (0..$#uniName) {
+
                 $unilist .= " $uniName[$_]\n" if ($uniData[$_] > 0);
                 $island->{'tuni'} += $uniData[$_];
                 $island->{'uni'}++ if($uniData[$_] > 0);
@@ -685,7 +693,8 @@ END
         # 資金
         my ($mStr1) = '';
         if (INIT_HIDE_MONEY_MODE == 1) {
-            $mStr1 = "<td class='TopInfoCell' align='right'>".$island->{'money'}.$HunitMoney.'</td>';
+
+            $mStr1 = "<td class=TopInfoCell align=right>".$island->{'money'}.$HunitMoney.'</td>';
         }
         elsif (   (INIT_HIDE_MONEY_MODE == 2)
                || (INIT_HIDE_MONEY_MODE == 3)) {
@@ -697,8 +706,10 @@ END
         # ミサイル発射可能数
         $msStr1 = '';
         if (INIT_HIDE_MISSILE_MODE) {
+
             $msStr1 = "<td class='TopInfoCell' align='right'>$island->{'missiles'}${HunitMissile}";
             if (INIT_HIDE_MISSILE_MODE == 2) {
+
                 my ($mTmp) = aboutMissile($island->{'missiles'});
                 $msStr1 = "<td class='TopInfoCell' align='right'>${mTmp}</td>";
             }
@@ -715,9 +726,11 @@ END
         {
             my ($comment_tag);
             if ($island->{'onm'} eq '') {
+
                 $comment_tag = "${HtagTH_}コメント : ${H_tagTH}";
             }
             else {
+
                 $comment_tag = "${HtagLbbsSS_}$island->{'onm'} : ${H_tagLbbsSS}";
             }
             $oStr = "<td $HbgTotoCell colspan='$col1' align='left'>${comment_tag}$island->{'comment'}</td>";
@@ -727,10 +740,9 @@ END
 
         $Farmcpc = '';
         if (!$BF_Flag) {
-            # 牧場系
+                                                                        # 牧場系
             $Farmcpc = ScoreBoard_Farm($island);
-
-            # 家
+                                                                        # 家
             {
                 my ($eisei1) = $island->{'eisei1'};
 
@@ -748,12 +760,9 @@ END
                     $house = '';
                 }
             }
-
             # 首都名
-            {
-                my ($top_shutomsg) = $island->{'shutomessage'};
-                $shutoname = ($top_shutomsg == 555) ? '' : "<font size='-1'><span class='shuto'>首都：".$top_shutomsg.'</span></font><br>';
-            }
+            my ($top_shutomsg) = $island->{'shutomessage'};
+            $shutoname = ($top_shutomsg == 555) ? '' : "<font size='-1'><span class='shuto'>首都：".$top_shutomsg.'</span></font><br>';
         }
 
         # 出現中の怪獣リスト
@@ -835,7 +844,6 @@ END
 }
 
 
-
 #----------------------------------------------------------------------
 #
 #   同盟操作、管理人のみ
@@ -853,6 +861,7 @@ sub JoinAllyforAdmin {
 END
 }
 
+
 #----------------------------------------------------------------------
 sub PrintWorldStat {
 
@@ -862,6 +871,7 @@ sub PrintWorldStat {
 <hr>
 END
 }
+
 
 #----------------------------------------------------------------------
 # Hakoniwa Cupログ表示
@@ -1041,6 +1051,7 @@ END
 
         $mStr2 = '';
         if (INIT_HIDE_MONEY_MODE == 1) {
+
             $mStr2 = "<td $HbgInfoCell align=right>$island->{'money'}$HunitMoney</td>";
         }
         elsif (   (INIT_HIDE_MONEY_MODE == 2)
@@ -1057,7 +1068,7 @@ END
             $msStr2 = "<td $HbgInfoCell align=right>$island->{'missiles'}${HunitMissile}";
             if (INIT_HIDE_MISSILE_MODE == 2) {
 
-                my($mTmp) = aboutMissile($island->{'missiles'});
+                my ($mTmp) = aboutMissile($island->{'missiles'});
                 $msStr2 = "<td $HbgInfoCell align=right>${mTmp}</td>";
             }
             elsif (INIT_USE_ARM_SUPPLY) {
@@ -1114,11 +1125,13 @@ END
     }
 }
 
+
 #----------------------------------------------------------------------
 # 同盟の状況
 #----------------------------------------------------------------------
 sub allyInfo() {
     my ($num) = @_;
+
     my ($aStr) = ($HarmisticeTurn) ? '陣営' : '同盟';
 
     if ($num == -1) {
@@ -1156,7 +1169,10 @@ END
 
     foreach (0..($HallyNumber - 1)) {
 
-        next if (($num != -1) && ($_ != $HidToAllyNumber{$num}));
+        if (   ($num != -1)
+            && ($_ != $HidToAllyNumber{$num})) {
+            next;
+        }
 
         $n = $_ + 1;
         $ally = $Hally[$_];
@@ -1177,7 +1193,7 @@ END
 
         if ($num == -1) {
 
-            $name = "<A style='text-decoration:none' href=\"$HthisFile?AmiOfAlly=$ally->{'id'}\">$ally->{'name'}</A>";
+            $name = "<A style=\"text-decoration:none\" href=\"$HthisFile?AmiOfAlly=$ally->{'id'}\">$ally->{'name'}</A>";
         }
         else {
 
@@ -1199,8 +1215,9 @@ END
 END
         out(<<END) if ($row == 2);
   <tr>
-    <td $HbgCommentCell colspan="7"><a style="text-decoration:none" href="$HthisFile?Allypact=$ally->{'id'}">${owner}</a>：$comment</td>
+    <td $HbgCommentCell colspan='7'><a style='text-decoration:none' href='$HthisFile?Allypact=$ally->{'id'}'>${owner}</a>：$comment</td>
   </tr>
+
 END
     }
 

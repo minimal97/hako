@@ -543,6 +543,7 @@ sub newAllyTop {
     my ($jsIslandList, $name, $id, $i);
 
     foreach $i (0..$islandNumber) {
+
         $name = htmlEscape($Hislands[$i]->{'name'});
         $id = $Hislands[$i]->{'id'};
         $jsIslandList .= "island[$id] = \"$name\"\;\n";
@@ -553,30 +554,40 @@ sub newAllyTop {
     my ($defaultMark, $defaultAllyId);
     my ($n) = $HidToAllyNumber{$defaultID};
     if ($n eq '') {
+
         $allyname = '';
         $defaultMark = $Hally[0];
         $defaultAllyId= '';
-    } else {
+    }
+    else {
         $allyname = $Hally[$n]->{'name'};
         $defaultMark = $Hally[$n]->{'mark'};
         $defaultAllyId = $Hally[$n]->{'id'};
     }
 
+    my ($s);
     foreach (0..$#HallyMark) {
-        my ($s) = '';
-        $s = ' selected' if($HallyMark[$_] eq $defaultMark);
+
+        $s = '';
+        $s = ' selected' if ($HallyMark[$_] eq $defaultMark);
         $markList .= "<option value=\"$HallyMark[$_]\"$s>$HallyMark[$_]\n"
     }
 
     foreach $i (1..6) {
+
         if ($n eq '') {
+
             $allycolor[$i] = 0;
-        } else {
+        }
+        else {
+
             $allycolor[$i] = substr($Hally[$n]->{'color'}, $i, 1);
         }
+
         foreach (0..9,A..F) {
-            my ($s) = '';
-            $s = ' selected' if($_ eq $allycolor[$i]);
+
+            $s = '';
+            $s = ' selected' if ($_ eq $allycolor[$i]);
             $colorList[$i] .= "<option value=\"$_\"$s>$_\n"
         }
     }
@@ -584,13 +595,16 @@ sub newAllyTop {
     my ($max) = 201;
 
     if ($HallyNumber) {
+
         $jsAllyList = "ally = [";
         $jsAllyIdList = "allyID = [";
         $jsAllyMarkList = "allyMark = [";
         $jsAllyColorList = "allyColor = [";
 
+        my ($s);
         foreach (0..$#Hally) {
-            my ($s) = '';
+
+            $s = '';
             $s = ' selected' if ($Hally[$_]->{'id'} == $defaultAllyId);
             $allyList .= "<option value=\"$_\"$s>$Hally[$_]->{'name'}\n";
             $jsAllyList .= "'$Hally[$_]->{'name'}'";
@@ -599,18 +613,20 @@ sub newAllyTop {
             $jsAllyColorList .= "[";
 
             foreach $i (1..6) {
+
                 $jsAllyColorList .= '\'' . substr($Hally[$_]->{'color'}, $i, 1) . '\'';
-                $jsAllyColorList .= ',' if($i < 6);
+                $jsAllyColorList .= ',' if ($i < 6);
             }
 
             $jsAllyColorList .= "]";
             if ($_ < $#Hally) {
+
                 $jsAllyList .= ",\n";
                 $jsAllyIdList .= ",\n";
                 $jsAllyMarkList .= ",\n";
                 $jsAllyColorList .= ",\n";
             }
-            $max = $Hally[$_]->{'id'} + 1 if($max <= $Hally[$_]->{'id'});
+            $max = $Hally[$_]->{'id'} + 1 if ($max <= $Hally[$_]->{'id'});
         }
         $jsAllyList .= "];\n";
         $jsAllyIdList .= "];\n";
@@ -639,24 +655,25 @@ $HislandList
 <p align='center'>$HtempBack</p>
 <div id='changeInfo'>
 <h1>同盟の結成・変更・解散${str1}</h1>
-<table border=0 width="50%"><tr><td class="M"><p>
-<form name="AcForm" action="$HthisFile" method="POST">
+<table border='0' width='50%'><tr><td class='M'><p>
+<form name='AcForm' action='$HthisFile' method='POST'>
 $str3のパスワードは？（必須）<br>
-<input type="text" name="PASSWORD" size="32" value="$HdefaultPassword" maxlength="32" class="f">
+<input type='text' name='PASSWORD' size='32' value='$HdefaultPassword' maxlength='32' class='f'>
 END
 
     if ($HallyNumber) {
+
         my $str4 = $adminMode ? '・結成・変更' : $HallyJoinComUse ? '' : '・加盟・脱退';
         my $str5 = ($adminMode || $HallyJoinComUse) ? '' : '<INPUT TYPE="submit" VALUE="加盟・脱退" NAME="JoinAllyButton">';
         out(<<END);
 <br>
 <br><b><font size='4'>［解散${str4}］</font></b>
 <br>どの同盟ですか？<br>
-<select name="ALLYNUMBER" onChange=allyPack() onClick=allyPack()>
+<select name='ALLYNUMBER' onChange=allyPack() onClick=allyPack()>
 $allyList
 </select>
 <br>
-<input type="submit" value="解散" name="DeleteAllyButton">
+<input type='submit' value='解散' name='DeleteAllyButton'>
 $str5
 <br>
 END
@@ -667,14 +684,14 @@ END
 <br>
 $str7
 同盟の名前（変更）<small>(全角${HlengthAllyName}字まで)</small><br>
-<input type="text" name="ALLYNAME" value="$allyname" size="32" maxlength="32"><br>
+<input type='text' name='ALLYNAME' value='$allyname' size='32' maxlength='32'><br>
 マーク（変更）<br>
-<select name="MARK" onChange=colorPack() onClick=colorPack()>
+<select name='MARK' onChange=colorPack() onClick=colorPack()>
 $markList
 </select>
-<ilayer name="PARENT_CTBL" width="100%" height="100%">
-   <layer name="CTBL" width="200"></layer>
-   <span id="CTBL"></span>
+<ilayer name='PARENT_CTBL' width='100%' height='100%'>
+   <layer name='CTBL' width='200'></layer>
+   <span id='CTBL'></span>
 </ilayer>
 <br>
 マークの色コード（変更）<br><table border="0"><tr>
@@ -699,35 +716,35 @@ END
     if (!$adminMode) {
         out(<<END);
 function colorPack() {
-	var island = new Array(128);
+    var island = new Array(128);
 $jsIslandList
-	a = document.AcForm.COLOR1.value;
-	b = document.AcForm.COLOR2.value;
-	c = document.AcForm.COLOR3.value;
-	d = document.AcForm.COLOR4.value;
-	e = document.AcForm.COLOR5.value;
-	f = document.AcForm.COLOR6.value;
-	mark = document.AcForm.MARK.value;
-	number = document.AcForm.ISLANDID.value;
+    a = document.AcForm.COLOR1.value;
+    b = document.AcForm.COLOR2.value;
+    c = document.AcForm.COLOR3.value;
+    d = document.AcForm.COLOR4.value;
+    e = document.AcForm.COLOR5.value;
+    f = document.AcForm.COLOR6.value;
+    mark = document.AcForm.MARK.value;
+    number = document.AcForm.ISLANDID.value;
 
-	str = "#" + a + b + c + d + e + f;
-//	document.AcForm.AcColorValue.value = str;
-	str = '表示サンプル：『<B><span class="number"><FONT color="' + str +'">' + mark + '</FONT></B>'
-	  + island[number] + '${AfterName}</span>』';
-	
-	if(document.getElementById){
-		document.getElementById("CTBL").innerHTML = str;
-	} else if(document.all){
-		el = document.all("CTBL");
-		el.innerHTML = str;
-	} else if(document.layers) {
-		lay = document.layers["PARENT_CTBL"].document.layers["CTBL"];
-		lay.document.open();
-		lay.document.write(str);
-		lay.document.close(); 
-	}
+    str = "#" + a + b + c + d + e + f;
+//  document.AcForm.AcColorValue.value = str;
+    str = '表示サンプル：『<B><span class="number"><FONT color="' + str +'">' + mark + '</FONT></B>'
+        + island[number] + '${AfterName}</span>』';
+    
+    if(document.getElementById){
+        document.getElementById("CTBL").innerHTML = str;
+    } else if(document.all){
+        el = document.all("CTBL");
+        el.innerHTML = str;
+    } else if(document.layers) {
+        lay = document.layers["PARENT_CTBL"].document.layers["CTBL"];
+        lay.document.open();
+        lay.document.write(str);
+        lay.document.close(); 
+    }
 
-	return true;
+    return true;
 }
 function allyPack() {
 $jsAllyList
@@ -748,34 +765,34 @@ END
     } else {
         out(<<END);
 function colorPack() {
-	var island = new Array(128);
+    var island = new Array(128);
 $jsIslandList
-	a = document.AcForm.COLOR1.value;
-	b = document.AcForm.COLOR2.value;
-	c = document.AcForm.COLOR3.value;
-	d = document.AcForm.COLOR4.value;
-	e = document.AcForm.COLOR5.value;
-	f = document.AcForm.COLOR6.value;
-	mark = document.AcForm.MARK.value;
+    a = document.AcForm.COLOR1.value;
+    b = document.AcForm.COLOR2.value;
+    c = document.AcForm.COLOR3.value;
+    d = document.AcForm.COLOR4.value;
+    e = document.AcForm.COLOR5.value;
+    f = document.AcForm.COLOR6.value;
+    mark = document.AcForm.MARK.value;
 
-	str = "#" + a + b + c + d + e + f;
+    str = "#" + a + b + c + d + e + f;
 // document.AcForm.AcColorValue.value = str;
-	str = '表示サンプル：『<b><span class="number"><font color="' + str +'">' + mark + '</font></b>'
-	  + 'さんぷる${AfterName}</span>』';
-	
-	if(document.getElementById){
-		document.getElementById("CTBL").innerHTML = str;
-	} else if(document.all){
-		el = document.all("CTBL");
-		el.innerHTML = str;
-	} else if(document.layers) {
-		lay = document.layers["PARENT_CTBL"].document.layers["CTBL"];
-		lay.document.open();
-		lay.document.write(str);
-		lay.document.close(); 
-	}
+    str = '表示サンプル：『<b><span class="number"><font color="' + str +'">' + mark + '</font></b>'
+        + 'さんぷる${AfterName}</span>』';
 
-	return true;
+    if(document.getElementById){
+        document.getElementById("CTBL").innerHTML = str;
+    } else if(document.all){
+        el = document.all("CTBL");
+        el.innerHTML = str;
+    } else if(document.layers) {
+        lay = document.layers["PARENT_CTBL"].document.layers["CTBL"];
+        lay.document.open();
+        lay.document.write(str);
+        lay.document.close(); 
+    }
+
+    return true;
 }
 function allyPack() {
 $jsAllyList
@@ -810,12 +827,12 @@ END
 # 盟主コメントモード
 sub allyPactMain {
     if (!$HallyPactMode) {
-        # 開放
-        unlock();
-        # テンプレート出力
-        tempAllyPactPage();
-    } else {
-        # パスワードチェック
+
+        unlock();                                           # 開放
+        tempAllyPactPage();                                 # テンプレート出力
+    }
+    else {
+                                                            # パスワードチェック
         my $ally = $Hally[$HidToAllyNumber{$HcurrentID}];
         if (checkPassword($ally, $HdefaultPassword)) {
 
@@ -828,7 +845,8 @@ sub allyPactMain {
             unlock();
             # 変更成功
             tempAllyPactOK($ally->{'name'});
-        } else {
+        }
+        else {
             # password間違い
             unlock();
             tempWrongPassword();
@@ -841,6 +859,7 @@ sub allyPactMain {
 #----------------------------------------------------------------------
 # 盟主コメントモードのトップページ
 sub tempAllyPactPage {
+
     my $ally = $Hally[$HidToAllyNumber{$HcurrentID}];
     my $allyMessage = $ally->{'message'};
     $allyMessage =~ s/<br>/\n/g;
@@ -853,22 +872,22 @@ sub tempAllyPactPage {
 <div align='center'>$HtempBack</div><br>
   <div id='changeInfo'>
     <h1>コメント変更（$ally->{'name'}）</H1>
-    <table border="0" width="50%">
+    <table border='0' width='50%'>
       <tr>
-        <td class="M">
-          <form action="$HthisFile" method="POST">
+        <td class='M'>
+          <form action='$HthisFile' method='POST'>
             <b>盟主パスワードは？</b><br>
-            <input type="password" name="Allypact" value="$HdefaultPassword" size="32" maxlength="32" class="f">
-            <input type="hidden"  name="ISLANDID" value="$ally->{'id'}">
-            <input type="submit" value="送信" name="AllypactButton"><br>
+            <input type='password' name='Allypact' value='$HdefaultPassword' size='32' maxlength='32' class='f'>
+            <input type='hidden'  name='ISLANDID' value='$ally->{'id'}'>
+            <input type='submit' value='送信' name='AllypactButton'><br>
             <b>コメント</b><small>(全角${HlengthAllyComment}字まで：トップページの「各同盟の状況」欄に表示されます)</small><br>
-            <input type="text" name="ALLYCOMMENT"  value="$ally->{'comment'}" size="100" maxlength="50"><br>
+            <input type='text' name='ALLYCOMMENT'  value='$ally->{'comment'}' size='100' maxlength='50'><br>
             <br>
             <b>メッセージ・盟約など</b>(「同盟の情報」欄の上に表示されます)<br>
 タイトル<small>(全角${HlengthAllyTitle}字まで)</small><br>
-            <input type="text" name="ALLYTITLE"  value="$ally->{'title'}" size="100" maxlength="50"><br>
+            <input type='text' name='ALLYTITLE'  value='$ally->{'title'}' size='100' maxlength='50'><br>
 メッセージ<small>(全角${HlengthAllyMessage}字まで)</small><br>
-            <textarea cols="50" rows="16" name="ALLYMESSAGE" wrap="soft">$allyMessage</textarea>
+            <textarea cols='50' rows='16' name='ALLYMESSAGE' wrap='soft'>$allyMessage</textarea>
 <br>
 「タイトル」を空欄にすると『盟主からのメッセージ』というタイトルになります。<br>
 「メッセージ」を空欄にすると「同盟の情報」欄には何も表示されなくなります。
@@ -897,11 +916,9 @@ END
 sub amitySetupMain() {
 
     if (!$HasetupMode) {
-        # 開放
-        unlock();
 
-        # テンプレート出力
-        tempAmitySetupPage();
+        unlock();                       # 開放
+        tempAmitySetupPage();           # テンプレート出力
     }
     else {
         # パスワードチェック
@@ -925,6 +942,7 @@ sub amitySetupMain() {
             }
 
             foreach (@HallyChange) {
+
                 ($id, $aId) = split(/-/, $_);
                 $Hally[$HidToAllyNumber{$aId}]->{'score'} += $Hislands[$HidToNumber{$id}]->{'pts'};
                 next if ($id == $aId);
@@ -933,17 +951,18 @@ sub amitySetupMain() {
             }
 
             foreach (0..($HallyNumber - 1)) {
+
                 $Hally[$_]->{'number'} = @{$Hally[$_]->{'memberId'}};
             }
             allyOccupy();
             allySort();
             writeIslandsFile();
             unlock();
-            # 変更成功
-            tempAmitySetupPage();
+
+            tempAmitySetupPage();                       # 変更成功
         }
         else {
-            # password間違い
+                                                        # password間違い
             unlock();
             tempWrongPassword();
             return;

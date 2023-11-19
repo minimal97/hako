@@ -90,9 +90,9 @@ sub rankIslandMain {
     out(<<END);
 <div id='Ranking'  style='display=inline-block;'>
   <h1>各部門別NO.1</h1>
-  <div width="100%"  style='display=inline-block;'>
-    <span class='Nret'>目指せ<b>ALL NO.1</b></span>
-    <span class='Nret'>！！クリックすると、<b>観光</b>することができます。</span>
+  <div style='display=block;'>
+    <span class='Nret'>目指せ<b>ALL NO.1</b>！！</span>
+    <span class='Nret'>クリックすると、<b>観光</b>することができます。</span>
   </div>
 END
     my ($tag);

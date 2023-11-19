@@ -107,7 +107,7 @@ sub readIslandsFile {
     # ファイルを閉じる
     close(IN);
 
-    if (   (!$HplayNow) 
+    if (   (!$HplayNow)
         || ($HitemComplete)
         || ($HsurvivalTurn && ($islandNumber == $HbfieldNumber) && ($HislandTurn > $HsurvivalTurn))
        ) {
@@ -1134,40 +1134,40 @@ function init(){
 function SelectList(theForm){
 }
 //-->
-</SCRIPT>
+</script>
 <span class="big">パスワードが違います。</span>
-<A HREF=\"$HthisFile\"><span class="big">トップへ戻る</span></A>
+<a href=\"$HthisFile\"><span class="big">トップへ戻る</span></a>
 END
-	if($HpassError) {
-		my $agent   = $ENV{'HTTP_USER_AGENT'};
-		my $addr    = $ENV{'REMOTE_ADDR'};
-		my $host    = $ENV{'REMOTE_HOST'};
-		if ($gethostbyaddr && (($host eq '') || ($host eq $addr))) {
-			$host = gethostbyaddr(pack("C4", split(/\./, $addr)), 2) || $addr;
-		} elsif($host eq '') {
-			$host = $addr;
-		}
-		my($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time + $Hjst);
-		my $day = ('日','月','火','水','木','金','土')[$wday];
-		$year = $year + 1900;
-		$mon = $mon + 1;
-		my $date = sprintf("%04d/%02d/%02d(%s) %02d:%02d:%02d",$year,$mon,$mday,$day,$hour,$min,$sec);
-		out(<<END);
+    if ($HpassError) {
+        my $agent   = $ENV{'HTTP_USER_AGENT'};
+        my $addr    = $ENV{'REMOTE_ADDR'};
+        my $host    = $ENV{'REMOTE_HOST'};
+        if ($gethostbyaddr && (($host eq '') || ($host eq $addr))) {
+            $host = gethostbyaddr(pack("C4", split(/\./, $addr)), 2) || $addr;
+        } elsif($host eq '') {
+            $host = $addr;
+        }
+        my($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time + $Hjst);
+        my $day = ('日','月','火','水','木','金','土')[$wday];
+        $year = $year + 1900;
+        $mon = $mon + 1;
+        my $date = sprintf("%04d/%02d/%02d(%s) %02d:%02d:%02d",$year,$mon,$mday,$day,$hour,$min,$sec);
+        out(<<END);
 <hr>
 <table><tr><th><span class="big">【<span class='attention'>！警告！</span>】</span></th></tr>
-<TR><TD>あなたの情報を記録させていただきました。
-　$date<BR>　<B>$host - $addr - $agent</B>
-</TD></TR>
-<TR><TD class='N'>
-<BR>　<A HREF='http://www.ipa.go.jp/security/ciadr/law199908.html' target='_blank'><B>不正アクセス行為の禁止等に関する法律</B></A>が2001年2月13日に施行されました。
-<BR><BR>　この法律は、ハイテク犯罪の防止と高度情報通信社会の健全な発展を目的としたもので、刑法で処罰できない部分を対象とする法律です。
-<BR><BR>　刑法では、何らかの被害が出ないと罰することはできなかったのですが、不正アクセス禁止法では、
+<tr><td>あなたの情報を記録させていただきました。
+　$date<br>　<b>$host - $addr - $agent</b>
+</td></tr>
+<tr><td class='N'>
+<br>　<a href='http://www.ipa.go.jp/security/ciadr/law199908.html' target='_blank'><b>不正アクセス行為の禁止等に関する法律</b></a>が2001年2月13日に施行されました。
+<br><br>　この法律は、ハイテク犯罪の防止と高度情報通信社会の健全な発展を目的としたもので、刑法で処罰できない部分を対象とする法律です。
+<br><br>　刑法では、何らかの被害が出ないと罰することはできなかったのですが、不正アクセス禁止法では、
 <span class='attention'>不正アクセスを行った時点で処罰の対象となります。</span>
-<BR><BR>　実際の法律を噛み砕いて説明すると、
+<br><br>　実際の法律を噛み砕いて説明すると、
 『<a href='http://www.ipa.go.jp/security/ciadr/law199908.html#不正アクセス行為' target='_blank'><b>不正アクセス</b></a>とは、<b>パスワード等で保護された領域に、権限のないものが勝手にアクセスすること</b>』で、
 これに違反した場合、『<span class='attention'>懲役１年以下、又は、５０万円以下の罰金</span>』が科せられることになります。
-<BR><BR>　単なる「パスワードの入力ミス」であればよいのですが、あまりにも頻繁であれば、<B>管理者として相応の措置をとらざるを得ません。</B>
-<BR><BR>　${HtagTH_}繰り返しパスワードエラーが発生した場合、何か特別な理由があるのでしたら、この下にあるリンクの「掲示板」もしくは「メール」にてご連絡くださいますようお願いいたします。${H_tagTH}
+<br><br>　単なる「パスワードの入力ミス」であればよいのですが、あまりにも頻繁であれば、<B>管理者として相応の措置をとらざるを得ません。</b>
+<br><br>　${HtagTH_}繰り返しパスワードエラーが発生した場合、何か特別な理由があるのでしたら、この下にあるリンクの「掲示板」もしくは「メール」にてご連絡くださいますようお願いいたします。${H_tagTH}
 </td></tr></table>
 END
     }
@@ -1182,12 +1182,14 @@ sub axeslog {
     my ($addr) = $ENV{'REMOTE_ADDR'};
 
     if ( $addr ne "192.168.24.53" ) {
-        my $host    = $ENV{'REMOTE_HOST'};
+        my ($host)    = $ENV{'REMOTE_HOST'};
         my @lines;
-        my $agent   = $ENV{'HTTP_USER_AGENT'};
-        my $referer = $ENV{'HTTP_REFERER'} if(!$mode);
+        my ($agent)   = $ENV{'HTTP_USER_AGENT'};
+        my ($referer) = $ENV{'HTTP_REFERER'} if (!$mode);
 
-        if (($host eq $addr) || ($host eq '')) {
+        if (   ($host eq $addr)
+            || ($host eq '')) {
+
             $host = gethostbyaddr(pack('C4',split(/\./,$addr)),2) || $addr;
         }
 
@@ -1200,17 +1202,18 @@ sub axeslog {
         @lines = <IN>;
         close(IN);
 
-        my $island_name = $Hislands[$HidToNumber{$HcurrentID}]->{'name'};
+        my ($island_name) = $Hislands[$HidToNumber{$HcurrentID}]->{'name'};
 
-        while ($HaxesMax <= @lines) { pop @lines; }
         my ($id);
+        my ($pass);
+        while ($HaxesMax <= @lines) { pop @lines; }
         if ($mode) {
             $id = ($defaultID eq $HcurrentID) ? $defaultID : "$defaultID=>$HcurrentID";
         }
         else {
             $id = $defaultID;
         }
-        my ($pass) = $HinputPassword if(($error =~ /error/) || ($HtopAxes > 4));
+        $pass = $HinputPassword if (($error =~ /error/) || ($HtopAxes > 4));
         unshift(@lines, "[$date] - $referer - $host - $addr - $agent - $id($rqID) - $island_name - $pass - $error\n");
 
         if (open(OUT, ">$HaxesLogfile") ){
