@@ -73,7 +73,7 @@ use constant MAIN_WIIU_AXES_FILE    => 'ipfile.dat';
 
 our ($Hakoniwa_start_time);
 if (USE_PERFORMANCE) {
-    use Time::HiRes;  
+    use Time::HiRes;
     $Hakoniwa_start_time = Time::HiRes::time;
 }
 
@@ -206,8 +206,6 @@ our $HcomZoo        = 114;  # 動物園建設
 our $HcomMax = 114; #コマンド表示用の上限
 
 
-
-
 # 自動入力系
 our $HcomAutoPrepare    = 200; # 51 フル整地
 our $HcomAutoPrepare2    = 201; # 52 フル地ならし
@@ -259,7 +257,7 @@ our $HcommandTotal = $#HcomList + 1; # コマンドの種類
 
 # コマンド分割
 # このコマンド分割だけは、自動入力系のコマンドは設定しないで下さい。
-# our @HcommandDivido = 
+# our @HcommandDivido =
 #    (
 #    '運営,41,50',   # 計画番号41〜50
 #    '整地,0,5',     # 計画番号00〜05
@@ -276,7 +274,7 @@ our $HcommandTotal = $#HcomList + 1; # コマンドの種類
 # コマンド分割
 # 自信ないけど、ひとまずコマンドを管理できる。
 # 表示は、mapのプログラムで管理。。。
-our @HcommandDivido2 = 
+our @HcommandDivido2 =
     (
     "運営,$HcomDoNothing,$HcomSell,$HcomMoney,$HcomFood"
        .",$HcomPropaganda,$HcomGiveup,$HcomSave,$HcomLoad"
@@ -343,98 +341,98 @@ our @Hcommand_Auto =
 our @HcomName;
 our @HcomCost;
 
-SetCommandData($HcomHouse       , '自宅建設/税率変更' , 'Pointx3');
-SetCommandData($HcomBettown     , '輝ける都市計画'    , 'Pointx1');
-SetCommandData($HcomKai         , '改装・強化'        , 'Pointx1');
-SetCommandData($HcomPrepare     , '整地'              , 5);
-SetCommandData($HcomYotei       , '予定地確保/解除'   , 0);
+SetCommandData($HcomHouse       , '自宅建設/税率変更'   , 'Pointx3');
+SetCommandData($HcomBettown     , '輝ける都市計画'      , 'Pointx1');
+SetCommandData($HcomKai         , '改装・強化'          , 'Pointx1');
+SetCommandData($HcomPrepare     , '整地'                , 5);
+SetCommandData($HcomYotei       , '予定地確保/解除'     , 0);
 
-SetCommandData($HcomPrepare2    , '地ならし'          , 100);
-SetCommandData($HcomReclaim     , '埋め立て'          , 150);
-SetCommandData($HcomReclaim2    , '遠距離埋め立て'    , 3000);
-SetCommandData($HcomReclaim2dan , '2段埋め立て'       , 2000);
-SetCommandData($HcomReclaim_spd , '高速埋め立て'      , 2450);
-SetCommandData($HcomDestroy     , '掘削'              , 200);
-SetCommandData($HcomDestroy2    , '高速掘削'          , 2000);
+SetCommandData($HcomPrepare2    , '地ならし'            , 100);
+SetCommandData($HcomReclaim     , '埋め立て'            , 150);
+SetCommandData($HcomReclaim2    , '遠距離埋め立て'      , 3000);
+SetCommandData($HcomReclaim2dan , '2段埋め立て'         , 2000);
+SetCommandData($HcomReclaim_spd , '高速埋め立て'        , 2450);
+SetCommandData($HcomDestroy     , '掘削'                , 200);
+SetCommandData($HcomDestroy2    , '高速掘削'            , 2000);
 
-SetCommandData($HcomMinato      , '港町開発'          , 550);
-SetCommandData($HcomOnsen       , '温泉掘削'          , 50);
-SetCommandData($HcomFune        , '造船・出航'        , 300);
+SetCommandData($HcomMinato      , '港町開発'            , 550);
+SetCommandData($HcomOnsen       , '温泉掘削'            , 50);
+SetCommandData($HcomFune        , '造船・出航'          , 300);
 
-SetCommandData($HcomSeki        , '関所建設'          , 200);
-SetCommandData($HcomSellTree    , '伐採'              , 0);
-SetCommandData($HcomPlant       , '植林'              , 50);
-SetCommandData($HcomFarm        , '農場整備'          , 20);
-SetCommandData($HcomFoodim      , '食物研究所建設'    , 2500);
+SetCommandData($HcomSeki        , '関所建設'            , 200);
+SetCommandData($HcomSellTree    , '伐採'                , 0);
+SetCommandData($HcomPlant       , '植林'                , 50);
+SetCommandData($HcomFarm        , '農場整備'            , 20);
+SetCommandData($HcomFoodim      , '食物研究所建設'      , 2500);
 
-SetCommandData($HcomFarmcpc     , '牧場建設/家畜販売' , 1500);
-SetCommandData($HcomCollege     , '大学建設'          , 500);
-SetCommandData($HcomFactory     , '工場建設'          , 100);
-SetCommandData($HcomHTget       , 'ハイテク技術誘致'  , 10000);
+SetCommandData($HcomFarmcpc     , '牧場建設/家畜販売'   , 1500);
+SetCommandData($HcomCollege     , '大学建設'            , 500);
+SetCommandData($HcomFactory     , '工場建設'            , 100);
+SetCommandData($HcomHTget       , 'ハイテク技術誘致'    , 10000);
 
-SetCommandData($HcomMountain    , '採掘場整備'        , 300);
-SetCommandData($HcomBase        , 'ミサイル基地建設'  , 300);
-SetCommandData($HcomDbase       , '防衛施設建設'      , 800);
-SetCommandData($HcomSbase       , '海底基地建設'      , 8000);
-SetCommandData($HcomSeacity     , '海底都市建設'      , 77777);
-SetCommandData($HcomMonument    , '記念碑建造'        , 9999);
-SetCommandData($HcomMonbuy      , '怪獣の購入/配置'   , 3980);
-SetCommandData($HcomMonbuyt     , 'テトラの購入/配置' , 10000);
-SetCommandData($HcomHaribote    , 'ハリボテ設置'      , 1);
+SetCommandData($HcomMountain    , '採掘場整備'          , 300);
+SetCommandData($HcomBase        , 'ミサイル基地建設'    , 300);
+SetCommandData($HcomDbase       , '防衛施設建設'        , 800);
+SetCommandData($HcomSbase       , '海底基地建設'        , 8000);
+SetCommandData($HcomSeacity     , '海底都市建設'        , 77777);
+SetCommandData($HcomMonument    , '記念碑建造'          , 9999);
+SetCommandData($HcomMonbuy      , '怪獣の購入/配置'     , 3980);
+SetCommandData($HcomMonbuyt     , 'テトラの購入/配置'   , 10000);
+SetCommandData($HcomHaribote    , 'ハリボテ設置'        , 1);
 
-SetCommandData($HcomMine        , '地雷設置'          , 100);
-SetCommandData($HcomPark        , '遊園地建設'        , 1000);
-SetCommandData($HcomNursery     , '養殖場設置'        , 50);
-SetCommandData($HcomKyujo       , '野球場建設'        , 1000);
-SetCommandData($HcomUmiamu      , '海あみゅ建設'      , 15000);
-SetCommandData($HcomRizort      , 'リゾート地開発'    , 40000);
+SetCommandData($HcomMine        , '地雷設置'            , 100);
+SetCommandData($HcomPark        , '遊園地建設'          , 1000);
+SetCommandData($HcomNursery     , '養殖場設置'          , 50);
+SetCommandData($HcomKyujo       , '野球場建設'          , 1000);
+SetCommandData($HcomUmiamu      , '海あみゅ建設'        , 15000);
+SetCommandData($HcomRizort      , 'リゾート地開発'      , 40000);
 
-SetCommandData($HcomProcity     , '防災都市化'        , 25000);
-SetCommandData($HcomNewtown     , 'ニュータウン建設'  , 950);
-SetCommandData($HcomBigtown     , '現代都市建設'      , 45000);
-SetCommandData($HcomSeatown     , '海底新都市建設'    , 69800);
-SetCommandData($HcomBoku        , '僕の引越し'        , 1000);
-SetCommandData($HcomBoku2       , '僕の引越し2'       , 'Pointx4');
+SetCommandData($HcomProcity     , '防災都市化'          , 25000);
+SetCommandData($HcomNewtown     , 'ニュータウン建設'    , 950);
+SetCommandData($HcomBigtown     , '現代都市建設'        , 45000);
+SetCommandData($HcomSeatown     , '海底新都市建設'      , 69800);
+SetCommandData($HcomBoku        , '僕の引越し'          , 1000);
+SetCommandData($HcomBoku2       , '僕の引越し2'         , 'Pointx4');
 
-SetCommandData($HcomEisei       , '人工衛星打ち上げ'  , 9999);
-SetCommandData($HcomEiseimente  , '人工衛星修復'      , 5000);
-SetCommandData($HcomEiseiAtt    , '衛星破壊砲発射'    , 49999);
-SetCommandData($HcomEiseiLzr    , '衛星レーザー発射'  , 39999);
+SetCommandData($HcomEisei       , '人工衛星打ち上げ'    , 9999);
+SetCommandData($HcomEiseimente  , '人工衛星修復'        , 5000);
+SetCommandData($HcomEiseiAtt    , '衛星破壊砲発射'      , 49999);
+SetCommandData($HcomEiseiLzr    , '衛星レーザー発射'    , 39999);
 
-SetCommandData($HcomMissileNM   , 'ミサイル発射'      , 20);
-SetCommandData($HcomMissilePP   , 'PPミサイル発射'    , 50);
-SetCommandData($HcomMissileSPP  , 'SPPミサイル発射'   , 1000);
-SetCommandData($HcomMissileST   , 'STミサイル発射'    , 50);
-SetCommandData($HcomMissileLD   , '陸地破壊弾発射'    , 100000);
-SetCommandData($HcomMissileLR   , '地形隆起弾発射'     , 50000);
-SetCommandData($HcomMissileSS   , '核ミサイル発射'     , 100000);
+SetCommandData($HcomMissileNM   , 'ミサイル発射'        , 20);
+SetCommandData($HcomMissilePP   , 'PPミサイル発射'      , 50);
+SetCommandData($HcomMissileSPP  , 'SPPミサイル発射'     , 1000);
+SetCommandData($HcomMissileST   , 'STミサイル発射'      , 50);
+SetCommandData($HcomMissileLD   , '陸地破壊弾発射'      , 100000);
+SetCommandData($HcomMissileLR   , '地形隆起弾発射'      , 50000);
+SetCommandData($HcomMissileSS   , '核ミサイル発射'      , 100000);
 
-SetCommandData($HcomSendMonster , '怪獣派遣'           , 500);
-SetCommandData($HcomSendPirates , '海賊派遣'           , 1500);
+SetCommandData($HcomSendMonster , '怪獣派遣'            , 500);
+SetCommandData($HcomSendPirates , '海賊派遣'            , 1500);
 
-SetCommandData($HcomDoNothing   , '資金繰り'           , 0);
-SetCommandData($HcomSell        , '食料輸出'           , -100);
-SetCommandData($HcomMoney       , '資金援助'           , 100);
-SetCommandData($HcomFood        , '食料援助'           , -100);
+SetCommandData($HcomDoNothing   , '資金繰り'            , 0);
+SetCommandData($HcomSell        , '食料輸出'            , -100);
+SetCommandData($HcomMoney       , '資金援助'            , 100);
+SetCommandData($HcomFood        , '食料援助'            , -100);
 
-SetCommandData($HcomPropaganda  , '誘致活動'           , 1000);
-SetCommandData($HcomGiveup      , "${AfterName}の放棄" , 0);
-SetCommandData($HcomGivefood    , 'エサをあげる'       , -50000);
-SetCommandData($HcomYakusho     , '島役所建設'         , 30000);
-SetCommandData($HcomFire        , '消防署建設'         , 600);
+SetCommandData($HcomPropaganda  , '誘致活動'            , 1000);
+SetCommandData($HcomGiveup      , "${AfterName}の放棄"  , 0);
+SetCommandData($HcomGivefood    , 'エサをあげる'        , -50000);
+SetCommandData($HcomYakusho     , '島役所建設'          , 30000);
+SetCommandData($HcomFire        , '消防署建設'          , 600);
 
-SetCommandData($HcomItemThrow   , 'アイテム捨てる'     , 0);
-SetCommandData($HcomItemUse     , 'アイテムおく'       , 0);
+SetCommandData($HcomItemThrow   , 'アイテム捨てる'      , 0);
+SetCommandData($HcomItemUse     , 'アイテムおく'        , 0);
 
-SetCommandData($HcomZoo         , '動物園建設'         , 100000);
+SetCommandData($HcomZoo         , '動物園建設'          , 100000);
 #- - - - - - - - - - - - - - - - - - - - - - - -
-SetCommandData($HcomAutoPrepare  , '整地自動入力'         , 0);
-SetCommandData($HcomAutoPrepare2 , '地ならし自動入力'     , 0);
-SetCommandData($HcomAutoDelete   , '全計画を白紙撤回'     , 0);
-SetCommandData($HcomAutoReclaim  , '浅瀬埋め立て自動入力' , 0);
-SetCommandData($HcomAutoDestroy  , '浅瀬掘削自動入力'     , 0);
-SetCommandData($HcomAutoSellTree , '伐採自動入力'         , 0);
-SetCommandData($HcomAutoForestry , '伐採＆植林自動入力'   , 0);
+SetCommandData($HcomAutoPrepare  , '整地自動入力'           , 0);
+SetCommandData($HcomAutoPrepare2 , '地ならし自動入力'       , 0);
+SetCommandData($HcomAutoDelete   , '全計画を白紙撤回'       , 0);
+SetCommandData($HcomAutoReclaim  , '浅瀬埋め立て自動入力'   , 0);
+SetCommandData($HcomAutoDestroy  , '浅瀬掘削自動入力'       , 0);
+SetCommandData($HcomAutoSellTree , '伐採自動入力'           , 0);
+SetCommandData($HcomAutoForestry , '伐採＆植林自動入力'     , 0);
 
 #- - - - - - - - - - - - - - - - - - - - - - - -
 SetCommandData($HcomAlly , '同盟へ加盟・脱退' , 0);
@@ -577,11 +575,11 @@ our ($Body) = '<body>';
     # COOKIEによるIDチェック
     if ($HmainMode eq 'owner') {
         # アクセス・ログ
-        axeslog() if($HtopAxes >= 1);
-        
+        axeslog() if ($HtopAxes >= 1);
+
         unless($ENV{'HTTP_COOKIE'}) {
             cookieOutput();                 # COOKIEが削除されたかどうか書き込みチェック
-            next if($ENV{'HTTP_COOKIE'});   # 書き込みOK
+            next if ($ENV{'HTTP_COOKIE'});  # 書き込みOK
         # クッキーを有効にしていない
         #    unlock();
         #    tempHeader();
@@ -596,16 +594,16 @@ our ($Body) = '<body>';
             my ($free) = 0;
 
             foreach (@freepass) {
-                $free += 1 if(($_ == $defaultID) || ($_ == $HcurrentID));
+                $free += 1 if (($_ == $defaultID) || ($_ == $HcurrentID));
             }
             my ($icheck) = !($checkID && ($HcurrentID != $defaultID) && $defaultID);
             my ($lcheck) = !($checkImg && ($HimgLine eq '' || $HimgLine eq $HimageDir));
             # パスワード
-            if(($pcheck != 2) && ($free != 2) && (!$icheck || !$lcheck)) {
+            if (($pcheck != 2) && ($free != 2) && (!$icheck || !$lcheck)) {
                 # １つの島を初心者用に解放する時などは ($free != 2) の部分を !$free に変更して下さい。
                 unlock();
                 tempHeader();
-                if(!$icheck) {
+                if (!$icheck) {
 
                     tempWrong("自分の島以外には入れません！"); # ID違い
                 }
@@ -635,7 +633,7 @@ our ($Body) = '<body>';
                 || ($HmainMode eq 'yaku_chg')                       # 首都名変更モード
                 || ($HmainMode eq 'preab')                          # 陣営共同開発モード
                                                 ) )
-        || (0)) { 
+        || (0)) {
 
         $Htitle_sub = ' マップ 開発';
         $Body = "<body onload=\"SelectList('');init()\">";
@@ -1254,7 +1252,7 @@ sub cgiInput {
         $HmainMode = 'totoyoso2';
         $HcurrentID = $1;
         # YOSO2
-        if($line =~ /YOSOMESSAGE2=([^\&]*)\&/) {
+        if ($line =~ /YOSOMESSAGE2=([^\&]*)\&/) {
             $HyosoMessage[1] = cutColumn($1, $HlengthYoso*2);
         }
 
@@ -1262,7 +1260,7 @@ sub cgiInput {
         $HmainMode = 'shuto';
         $HcurrentID = $1;
         # shuto
-        if($line =~ /SHUTOMESSAGE=([^\&]*)\&/) {
+        if ($line =~ /SHUTOMESSAGE=([^\&]*)\&/) {
             $HshutoMessage = cutColumn($1, $HlengthShuto*2);
         }
 
@@ -1270,7 +1268,7 @@ sub cgiInput {
         $HmainMode = 'teamname';
         $HcurrentID = $1;
         # team
-        if($line =~ /TEAMMESSAGE=([^\&]*)\&/) {
+        if ($line =~ /TEAMMESSAGE=([^\&]*)\&/) {
             $HteamMessage = cutColumn($1, $HlengthTeam*2);
         }
 
@@ -1279,11 +1277,11 @@ sub cgiInput {
         $HcurrentID = $1;
 
         $HYaku_Chg_Yotei = 0;
-        if($line =~ /YAKU_YOTEI=([^\&]*)*/) {
+        if ($line =~ /YAKU_YOTEI=([^\&]*)*/) {
             $HYaku_Chg_Yotei = 1;
         }
         $HYaku_Chg_Narasi = 0;
-        if($line =~ /YAKU_NARASI=([^\&]*)*/) {
+        if ($line =~ /YAKU_NARASI=([^\&]*)*/) {
             $HYaku_Chg_Narasi = 1;
         }
 
@@ -1306,21 +1304,25 @@ sub cgiInput {
     elsif ($getLine =~ /MONUMENT_NUM/) {
         $HmainMode = 'monument_num';
 
-    } elsif($getLine =~ /TaijiList=([0-9]*)/) {
+    }
+    elsif ($getLine =~ /TaijiList=([0-9]*)/) {
+
         $HmainMode = 'taijilist';
         $HcurrentID = $1;
+    }
+    elsif ($getLine =~ /JoinA=([^\&]*)/) {
 
-    } elsif($getLine =~ /JoinA=([^\&]*)/) {
         $HmainMode = 'joinally';
         $HdefaultPassword = $1;
+    }
+    elsif ($line =~ /NewAllyButton/) {
 
-    } elsif($line =~ /NewAllyButton/) {
         $HmainMode = 'newally';
         # 同盟名の取得
-        if($line =~ /ALLYNUMBER=([0-9]*)\&/) {
+        if ($line =~ /ALLYNUMBER=([0-9]*)\&/) {
             $HcurrentAnumber = $1;
         }
-        if($line =~ /ALLYID=([0-9]*)\&/) {
+        if ($line =~ /ALLYID=([0-9]*)\&/) {
             $HallyID = $1;
         }
         $line =~ /ALLYNAME=([^\&]*)\&/;
@@ -1328,11 +1330,11 @@ sub cgiInput {
         $line =~ /MARK=([^\&]*)\&/;
         $HallyMark = $1;
         $line =~ /COLOR1=([0-9A-F])\&COLOR2=([0-9A-F])\&COLOR3=([0-9A-F])\&COLOR4=([0-9A-F])\&COLOR5=([0-9A-F])\&COLOR6=([0-9A-F])\&/;
-        our $HallyColor = $1 . $2 . $3 . $ 4 . $5 . $6;
-
-    } elsif($line =~ /DeleteAllyButton/) {
+        our ($HallyColor) = $1 . $2 . $3 . $4 . $5 . $6;
+    }
+    elsif ($line =~ /DeleteAllyButton/) {
         $HmainMode = 'delally';
-        if($line =~ /ALLYID=([0-9]*)\&/) {
+        if ($line =~ /ALLYID=([0-9]*)\&/) {
             $HallyID = $1;
         }
         $line =~ /ALLYNUMBER=([0-9]*)\&/;
@@ -1398,10 +1400,10 @@ sub cgiInput {
             $HinputPassword = $1;
             $HdefaultPassword = $1;
         }
-        if($line =~ /jpass=([a-zA-Z0-9]*)/) {
+        if ($line =~ /jpass=([a-zA-Z0-9]*)/) {
             $HcampPassward = $1; # 陣営パスワード
         }
-        if($line =~ /id=([0-9]*)/) {
+        if ($line =~ /id=([0-9]*)/) {
             $HcurrentID = $1;
         }
 
@@ -1458,7 +1460,7 @@ sub cgiInput {
         }
 
         # BattleField作成モード
-    } elsif($getLine =~ /Bfield=([^\&]*)/) {    
+    } elsif($getLine =~ /Bfield=([^\&]*)/) {
         # 最初の起動
         $HmainMode = 'bfield';
         $HbfieldMode = 0;
@@ -1514,7 +1516,7 @@ sub cgiInput {
         $HlchangeMode = 1;
         $HdefaultPassword = $1;
         $line =~ /POINTX=([^\&]*)\&/;
-        our ($HcommandX) = $1;
+        $HcommandX = $1;
         $HdefaultX = $1;
         $line =~ /POINTY=([^\&]*)\&/;
         our ($HcommandY) = $1;
@@ -1559,39 +1561,39 @@ sub cookieInput {
 #   $cookie = jcode::euc($ENV{'HTTP_COOKIE'});
     $cookie = $ENV{'HTTP_COOKIE'};
 
-    if($cookie =~ /${HthisFile}OWNISLANDID=\(([^\)]*)\)/) {
+    if ($cookie =~ /${HthisFile}OWNISLANDID=\(([^\)]*)\)/) {
         $defaultID = $1;
         $init_ID = $defaultID;
     }
-    if($cookie =~ /${HthisFile}OWNISLANDPASSWORD=\(([^\)]*)\)/) {
+    if ($cookie =~ /${HthisFile}OWNISLANDPASSWORD=\(([^\)]*)\)/) {
         $HdefaultPassword = $1;             # cookie
     }
-    if($cookie =~ /${HthisFile}TARGETISLANDID=\(([^\)]*)\)/) {
+    if ($cookie =~ /${HthisFile}TARGETISLANDID=\(([^\)]*)\)/) {
         $defaultTarget = $1;
     }
-    if($cookie =~ /${HthisFile}LBBSNAME=\(([^\)]*)\)/) {
+    if ($cookie =~ /${HthisFile}LBBSNAME=\(([^\)]*)\)/) {
         $HdefaultName = $1;
     }
-    if($cookie =~ /${HthisFile}POINTX=\(([^\)]*)\)/) {
+    if ($cookie =~ /${HthisFile}POINTX=\(([^\)]*)\)/) {
         $HdefaultX = $1;
     }
-    if($cookie =~ /${HthisFile}POINTY=\(([^\)]*)\)/) {
+    if ($cookie =~ /${HthisFile}POINTY=\(([^\)]*)\)/) {
         $HdefaultY = $1;
     }
-    if($cookie =~ /${HthisFile}KIND=\(([^\)]*)\)/) {
+    if ($cookie =~ /${HthisFile}KIND=\(([^\)]*)\)/) {
         $HdefaultKind = $1;
     }
-    if($cookie =~ /${HthisFile}JAVAMODESET=\(([^\)]*)\)/) {
+    if ($cookie =~ /${HthisFile}JAVAMODESET=\(([^\)]*)\)/) {
         $HjavaModeSet = $1;
     }
 
-    if($cookie =~ /${HthisFile}IMGLINE=\(([^\)]*)\)/) {
+    if ($cookie =~ /${HthisFile}IMGLINE=\(([^\)]*)\)/) {
         $HimgLine = $1;
     }
 
     # wiiU 救済措置
-    if($access eq 'WiiU'){
-        $init_ID = $rqID if($rqID > -1);
+    if ($access eq 'WiiU'){
+        $init_ID = $rqID if ($rqID > -1);
         $HjavaModeSet = $wiiU_javamode;
         $HdefaultPassword = $wiiU_password;
         $HjavaModeSet = 'java' if ( $HjavaModeSet eq '');
@@ -1610,10 +1612,10 @@ sub cookieOutput {
 
     # 2ケタ化
     $year += 1900;
-    $date = "0$date" if($date < 10);
-    $hour = "0$hour" if($hour < 10);
-    $min  = "0$min" if($min < 10);
-    $sec  = "0$sec" if($sec < 10);
+    $date = "0$date" if ($date < 10);
+    $hour = "0$hour" if ($hour < 10);
+    $min  = "0$min" if ($min < 10);
+    $sec  = "0$sec" if ($sec < 10);
 
     # 曜日を文字に
     $day = ("Sunday", "Monday", "Tuesday", "Wednesday",    "Thursday", "Friday", "Saturday")[$day];
@@ -1710,20 +1712,23 @@ sub GetNumberSelectNum {
 #----------------------------------------------------------------------
 sub wiiU_ip_check_write {
     my ($number) = @_;
+
     my ($agent) = $ENV{'HTTP_USER_AGENT'};
     my ($line) = "";
     my ($tempjava) = "";
     my ($temppass) = "";
 
-    if (  (0) 
-        || ( index($agent , '(Nintendo WiiU)') > 5 )
-        || ( index($agent , '(Nintendo 3DS;') > 5 )
-        || ( index($agent , 'New Nintendo 3DS') > 5 ) ) {
+    if (   (0)
+        || (index($agent, '(Nintendo WiiU)') > 5)
+        || (index($agent, '(Nintendo 3DS;') > 5)
+        || (index($agent, 'New Nintendo 3DS') > 5) ) {
 
         open IDFILE, $WiiUaxesFile;
-        while($line = <IDFILE>) {
+        while ($line = <IDFILE>) {
+
             $line =~ /^(.+)to([^,]*),([^,]*),([^,]*)/;
-            if ( $ENV{'REMOTE_ADDR'} eq $1 ){
+
+            if ($ENV{'REMOTE_ADDR'} eq $1) {
                 $rqID = $2;
                 $tempjava = $3;
                 $temppass = $4;
@@ -1736,15 +1741,17 @@ sub wiiU_ip_check_write {
             || ($number != $rqID)
             || ($HjavaMode ne $tempjava)
             || ($temppass ne $HinputPassword)
-                                ){
+                                              ){
+
             open(IDFILE, "$WiiUaxesFile");
             my @lines = <IDFILE>;
-            while (100 <= @lines) { pop @lines; }
+            while (100 <= @lines) {pop @lines;}
             close(IDFILE);
             unshift(@lines, "$ENV{'REMOTE_ADDR'}to$number,$HjavaMode,$HinputPassword,$rqID - $tempjava - $temppass\n");
 
             open(IDFILE, ">$WiiUaxesFile");
             foreach $line (@lines) {
+
                 print IDFILE $line;
             }
             close(IDFILE);
@@ -2076,14 +2083,16 @@ sub makeRandomPointArray {
     my ($y);
     @Hrpx = (0..$islandSize) x $HislandSize;
     foreach $y (0..$islandSize) {
+
         push(@Hrpy, ($y) x $HislandSize);
     }
 
     # シャッフル
     my ($i, $j);
     for ($i = $HpointNumber; --$i; ) {
-        $j = int(rand($i+1));
-        next if($i == $j);
+
+        $j = int(rand($i + 1));
+        next if ($i == $j);
         @Hrpx[$i,$j] = @Hrpx[$j,$i];
         @Hrpy[$i,$j] = @Hrpy[$j,$i];
     }
@@ -2141,6 +2150,22 @@ sub seqnum2 {
 
 
 #----------------------------------------------------------------------
+sub isBattleField {
+    my ($island) = @_;
+
+    my ($ret) = 0;
+
+    if (   ($island->{'id'} > $HPlayableIslandMaxID)
+        || ($island->{'BF_Flag'})) {
+
+        $ret = 1;
+    }
+
+    return ($ret);
+}
+
+
+#----------------------------------------------------------------------
 # ソート
 #----------------------------------------------------------------------
 sub islandSort {
@@ -2155,7 +2180,7 @@ sub islandSort {
         $Hislands[$b]->{$kind} <=> $Hislands[$a]->{$kind} ||
         $a <=> $b
     } @idx;
-    @Hislands = @Hislands[@idx] if($kind eq 'pts');
+    @Hislands = @Hislands[@idx] if ($kind eq 'pts');
     if ($mode) {
         my @Hidx;
         foreach (0..$#idx) {
@@ -2198,6 +2223,7 @@ sub allySort {
 # ファイル番号指定でログ表示
 sub logFilePrint {
     my ($fileNumber, $id, $mode) = @_;
+
     my ($set_turn) = 0;
     open(LIN, "${HdirName}/hakojima.log$_[0]");
     my ($line, $m, $turn, $id1, $id2, $message);
@@ -2207,14 +2233,16 @@ sub logFilePrint {
 
         # 機密関係
         if ($m == 1) {
+
             if (   ($mode == 0)
                 || ($id1 != $id) ) {
-                # 機密表示権利なし
+                                                                # 機密表示権利なし
                 next;
             }
             $m = '<b>(機密)</b>:';
         }
         else {
+
             $m = '';
         }
 
@@ -2222,6 +2250,7 @@ sub logFilePrint {
         if ($id != 0) {
             if (   ($id != $id1)
                 && ($id != $id2) ) {
+
                 next;
             }
         }
@@ -2252,12 +2281,14 @@ sub tempInitialize {
 # 島データのプルダウンメニュー用
 sub getIslandList {
     my ($select, $mode) = @_;
+
     my ($list, $name, $id, $s, $i,$island);
 
     #島リストのメニュー
     $list = '';
     my ($predel);
     foreach $i (0..$islandNumber) {
+
         $island = $Hislands[$i];
         $predel = ($island->{'predelete'}) ? '[預]' : '';
         $name = islandName($island);
@@ -2436,6 +2467,12 @@ END
 # ヘッダプリント
 sub HeaderTagPring {
 
+    $baseIMG = $HimageDir;
+    $baseSKIN = "${efileDir}/$HcssFile";
+
+    #季節なし
+    $seasonIMG = '';
+
     out(<<END);
 <html lang="ja">
   <head>
@@ -2455,7 +2492,6 @@ sub HeaderTagPring {
     <meta name="twitter:creator" content="@minimal97">
     <meta name="twitter:title" content="minimal97の箱庭諸島">
     <meta name="twitter:description" content="minimal97が運営する無料ブラウザゲームです。">
-    <meta property="og:image" content="http://graphics8.nytimes.com/images/2011/12/08/technology/bits-newtwitter/bits-newtwitter-tmagArticle.jpg">
     <base href="${baseIMG}/${seasonIMG}">
     <link rel="shortcut icon" href="./img/fav.ico">
     <link rel="stylesheet" type="text/css" href="${baseSKIN}">

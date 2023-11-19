@@ -570,7 +570,6 @@ END
         $factory    = $island->{'factory'};
         $factoryHT  = $island->{'factoryHT'};
         $mountain   = $island->{'mountain'};
-        $BF_Flag    = $island->{'BF_Flag'};
         $pop        = $island->{'pop'};
         if ($pop) {
             $unemployed = ($pop - ($farm + $factory +$factoryHT+ $mountain) * 10) / $pop * 100;
@@ -593,7 +592,10 @@ END
         $absent = $island->{'absent'};
 
         $name = islandName($island);
-        if ( ($id > 100) || ($BF_Flag) ) {
+
+        $BF_Flag    = isBattleField($island);
+
+        if ($BF_Flag) {
 
             $j = '¡ú';
             $name = ${HtagNumber_}. $name. ${H_tagNumber};
@@ -655,7 +657,7 @@ END
 
                 if ($stshoka >= 1) {
 
-                    $ssss = "<img src='./img/sc.gif' title=\"".$nn.' ¹¶('.$sto.')¼é('.$std.')KP('.$stk.')'.$rt.'¥Á¡¼¥àÀ®ÀÓ ¾¡ÅÀ' . $island->{'kachiten'} .'/ '.$stwin.'¾¡'.$stlose.'ÇÔ'.$stdrow.'Ê¬'.$rt." / ÄÌ»»$stwint¾¡$stlosetÇÔ$stdrowtÊ¬ / Í¥¾¡$styusho²ó\" alt='' class='landinfoIcon'> "
+                    $ssss = "<img src=\"./img/sc.gif\" title=\"".$nn.' ¹¶('.$sto.')¼é('.$std.')KP('.$stk.')'.$rt.'¥Á¡¼¥àÀ®ÀÓ ¾¡ÅÀ' . $island->{'kachiten'} .'/ '.$stwin.'¾¡'.$stlose.'ÇÔ'.$stdrow.'Ê¬'.$rt." / ÄÌ»»$stwint¾¡$stlosetÇÔ$stdrowtÊ¬ / Í¥¾¡$styusho²ó\" alt='' class='landinfoIcon'> "
                 }
                 elsif ($stshoka == 0) {
 
@@ -778,8 +780,7 @@ END
 </th>
 END
 
-        if (   ($id <= 100)
-            && (!$BF_Flag) ) {
+        if (!$BF_Flag) {
 
             out(<<END);
 <td $HbgNameCell rowspan="4" align="left">
