@@ -373,8 +373,6 @@ sub readIsland {
             }
         }
 
-
-        my (@pro_data1);
         {
             my ($readed_line) = 1;
             my ($word) = '';
@@ -712,7 +710,7 @@ sub writeIsland {
 
 
         # コマンド
-        my ($command, $i);
+        my ($command);
         $command = $island->{'command'};
         for ($i = 0; $i < $HcommandMax; $i++) {
             printf IOUT ("%d,%d,%d,%d,%d\n",
