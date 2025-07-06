@@ -11,6 +11,8 @@
 #
 # KEI PAGE: http://www5b.biglobe.ne.jp/~k-e-i/
 #----------------------------------------------------------------------
+use warnings;
+
 require './hako-landinfo.cgi';
 require './server_config.pm';
 #----------------------------------------------------------------------
@@ -75,7 +77,7 @@ sub PrintTopMenuLink {
   $output
   [<a class='Nret' href="$HthisFile?Rekidai=0" target="_blank">歴代最多人口記録</a>] 
   [<a class='Nret' href="$HthisFile?Rank=0" target="_blank">ランキング</a>] 
-</div><!-- $init_server -->
+</div>
 END
 }
 
