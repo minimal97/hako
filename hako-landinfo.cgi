@@ -18,7 +18,7 @@ sub ScoreBoard_Taiji {
 
         my ($image) = $HMapImgDir . $HmonsterImage[$monsters];
         $prize .= "<span class='monsm'><img alt='' src=\"${image}\" title=\"[$HmonsterName[$monsters]]\" ";
-        $prize .= " class='landinfoIcon'>$island->{'taiji'}$HunitMonster轉慫</span> ";
+        $prize .= " class='landinfoIcon'>$island->{'taiji'}${HunitMonster}轉慫</span> ";
     }
     return $prize;
 }
@@ -153,7 +153,7 @@ sub ScoreBoard_LiveMonster {
         my ($image) = $HmonsterImage[$island->{'monsterlivetype'}];
         $monsliveimg = "<img src=\"${HMapImgDir}${image}\"  alt=''  title=\"$mName\" ";
         $monsliveimg .= "class='landinfoIcon'>";
-        $monsm = "${monsterlive}$HunitMonster請蜇醱!!";
+        $monsm = "${monsterlive}${HunitMonster}請蜇醱!!";
         $ret = '<span class="unemploy2">' . $monsliveimg . $monsm . '</span> ';
     }
 
@@ -177,6 +177,7 @@ sub ScoreBoard_Bumon {
     foreach (0..$#HrankingID) {
         $rID = $HrankingID[$_];
         $element = $island->{$BUMON_ELEMENTS[$_]};
+        $element = ($element) ? $element : '';
         if (   ($island->{'id'} == $rID)
             && ($element ne '')
             && ($element != 0)) {
